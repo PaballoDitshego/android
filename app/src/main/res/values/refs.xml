@@ -1,0 +1,14 @@
+<resources>
+
+
+
+
+
+    <!--
+    Layout alias to replace the single-pane version of the loading_footer with a
+    two-pane version on Large screens.
+
+    For more on loading_footer aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+    -->
+    <item name="fragment_timeline" type="layout">@layout/fragment_timeline_list</item></resources>

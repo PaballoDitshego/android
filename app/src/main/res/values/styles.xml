@@ -1,0 +1,53 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="background">@color/action_color</item>
+        <item name="searchViewStyle">@style/SearchViewStyle</item>
+
+    </style>
+
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="background">@color/action_color</item>
+        <item name="logo">@mipmap/ic_launcher</item>
+        <item name="displayOptions">useLogo|showHome</item>
+
+
+    </style>
+
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+    <!-- Background for the search query section (e.g. EditText) -->
+
+    <!-- Background for the actions section (e.g. voice, submit) -->
+    <item name="submitBackground">@color/background_material_light</item>
+    <!-- Close button icon -->
+    <item name="closeIcon">@mipmap/ic_cancel</item>
+    <!-- Search button icon -->
+     <item name="android:searchButtonText">@string/search_button_text</item>
+
+    <!-- Go/commit button icon -->
+    <item name="goIcon">@drawable/abc_ic_go_search_api_mtrl_alpha</item>
+    <!-- Voice search button icon -->
+    <item name="voiceIcon">@drawable/abc_ic_voice_search_api_mtrl_alpha</item>
+    <!-- Commit icon shown in the query suggestion row -->
+    <item name="commitIcon">@drawable/abc_ic_commit_search_api_mtrl_alpha</item>
+    <!-- Layout for query suggestion rows -->
+
+
+  </style>
+
+
+    <style name="myspinner" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
+        <item name="android:divider">@null</item>
+
+    </style>
+
+
+
+
+</resources>

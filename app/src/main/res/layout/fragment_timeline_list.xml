@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="za.co.moxomo.TimeLineFragment">
+
+    <Spinner
+        android:id="@+id/categories"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+
+
+        />
+
+    <ListView android:id="@+id/list" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/list_divider"
+        android:layout_below="@id/categories"
+        android:dividerHeight="1dp"
+        android:layout_alignParentLeft="true"
+        android:listSelector="@drawable/list_row_selector"
+        android:descendantFocusability="blocksDescendants"
+         />
+
+
+
+    <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:focusable="false"
+        android:clickable="false"/>
+
+
+    <TextView android:id="@+id/empty" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No matching records found."
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:focusable="false"
+        android:clickable="false"
+        />
+
+</RelativeLayout>

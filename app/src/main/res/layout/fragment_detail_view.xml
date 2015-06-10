@@ -1,0 +1,148 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="za.co.moxomo.DetailViewFragment"
+    android:background="@color/detail_view_color"
+    android:id="@+id/scrollView"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="2dp"
+            android:focusable="false"
+            android:clickable="false"/>
+
+        <!-- Job Title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/thumbnail"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textSize="@dimen/title"
+            android:textStyle="bold"
+            android:focusable="false"
+            android:clickable="false"
+            />
+
+        <!-- Location -->
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="1dip"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textSize="@dimen/location"
+            android:focusable="false"
+            android:clickable="false"
+            />
+
+        <!-- company -->
+        <TextView
+            android:id="@+id/company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/location"
+            android:layout_marginTop="1dip"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textSize="@dimen/location"
+            android:focusable="false"
+            android:clickable="false"
+            />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/company"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textColor="@color/description"
+            android:textSize="@dimen/description"
+            android:focusable="false"
+            android:clickable="false"
+            />
+        <!-- qualifications -->
+        <TextView
+            android:id="@+id/qualifications"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/description"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textColor="@color/description"
+            android:textSize="@dimen/description"
+            android:focusable="false"
+            android:clickable="false"
+            />
+        <!-- responsibilities -->
+        <TextView
+            android:id="@+id/responsibilites"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/qualifications"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textColor="@color/description"
+            android:textSize="@dimen/description"
+            android:focusable="false"
+            android:clickable="false"
+            />
+
+        <!-- time -->
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:layout_below="@id/responsibilites"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/time"
+            android:textSize="@dimen/time"
+            android:textStyle="bold"
+            android:focusable="false"
+            android:clickable="false"
+            />
+
+        <!-- Apply button -->
+        <Button
+            android:id="@+id/apply"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/time"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/description"
+            android:textSize="@dimen/description"
+            android:textStyle="bold"
+            android:focusable="true"
+            android:text="Apply"
+            android:clickable="true"
+            android:visibility="gone"
+            />
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+</ScrollView>
