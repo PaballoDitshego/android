@@ -10,6 +10,7 @@
         android:id="@+id/categories"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
         style="@style/Widget.AppCompat.Spinner.Underlined"
 
 
