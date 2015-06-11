@@ -126,7 +126,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
         Integer[] array = new Integer[activity.getBackStack().size()];
         activity.getBackStack().copyInto(array);
         ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
-        for (int i = 0; i < array.length; i++) {
+        for (Integer i:integerArrayList) {
             integerArrayList.add(array[i]);
         }
 
@@ -171,7 +171,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
         mView.findViewById(R.id.loading).setVisibility(View.VISIBLE);
         spinner = (Spinner) mView.findViewById(R.id.categories);
         ArrayAdapter<CharSequence> sAdapter = MyArrayAdapter.createFromResource(getActivity(), R.array.categories_array, R.layout.custom_spinner);
-        sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner.setAdapter(sAdapter);
         spinner.setOnItemSelectedListener(this);
 
@@ -432,7 +432,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
 
 
     private List<Vacancy> parse(JSONObject json) throws JSONException {
-        ArrayList<Vacancy> records = new ArrayList<Vacancy>();
+        ArrayList<Vacancy> records = new ArrayList<>();
 
         mNext_Cursor = json.getString("nextPageToken");
 

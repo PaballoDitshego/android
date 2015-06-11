@@ -49,9 +49,9 @@ public class WebFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static WebFragment newInstance() {
-        WebFragment fragment = new WebFragment();
 
-        return fragment;
+
+        return new WebFragment();
     }
 
     public WebFragment() {
@@ -141,6 +141,7 @@ public class WebFragment extends Fragment {
         }
         else{
             final MainActivity activity = (MainActivity)getActivity();
+            //todo: fix emptystackexception issues
             int previousItem = activity.getBackStack().pop();
             activity.getPager().setCurrentItem(previousItem);
         }
