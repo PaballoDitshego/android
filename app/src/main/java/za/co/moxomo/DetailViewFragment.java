@@ -59,7 +59,6 @@ public class DetailViewFragment extends Fragment {
     private TextView title;
     private ImageView image;
     private TextView location;
-    private TextView advertDate;
     private TextView closingDate;
     private TextView description;
     private TextView qualifications;
@@ -202,10 +201,7 @@ public class DetailViewFragment extends Fragment {
                                 updateUI(vacancy);
                                 MainActivity activity = (MainActivity) getActivity();
                                 activity.getPager().setCurrentItem(1);
-
-
                             }
-
 
                         } catch (JSONException e) {
                             progressDialog.dismiss();
@@ -232,7 +228,6 @@ public class DetailViewFragment extends Fragment {
     }
 
     public void init(Long id) {
-
 
         String url = URL + id;
 
@@ -290,10 +285,8 @@ public class DetailViewFragment extends Fragment {
             shareIntent.putExtra(Intent.EXTRA_TEXT, vacancy.getWebsite());
 
 
-
         }
     }
-
 
 
     public void onEvent(DetailViewEvent event) {

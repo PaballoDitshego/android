@@ -47,20 +47,21 @@ import za.co.moxomo.events.DetailViewInitEvent;
  * Activities containing this fragment MUST implement the {@link OnSearchInteractionListener}
  * interface.
  */
-public class TimeLineFragment extends Fragment implements AbsListView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class TimeLineFragment extends Fragment implements AbsListView.OnItemClickListener, AdapterView.OnItemSelectedListener,
+        AbsListView.OnScrollListener {
 
-
+    ///service url
     private static String URL = "https://moxomoapp.appspot.com/_ah/api/vacancyEndpoint/v1.1/list";
 
 
     private String mCategory;
     private String mNext_Cursor;
     private View mView;
-    private EndlessScrollListener endlessScrollListener;
+    private int threshold = 10;
 
 
     private OnSearchInteractionListener mListener;
-    private  boolean restoreMode =false;
+    private boolean restoreMode = false;
 
     /**
      * The fragment's ListView
@@ -70,7 +71,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
 
 
     /**
-     * The Adapter which will be used to populate the ListView/GridView with
+     * The Adapter which will be used to populate the ListView/ with
      * Views.
      */
     private MoxomoListAdapter mAdapter;
@@ -78,9 +79,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
 
     // TODO: Rename and change types of parameters
     public static TimeLineFragment newInstance() {
-        TimeLineFragment fragment = new TimeLineFragment();
-
-        return fragment;
+        return new TimeLineFragment();
     }
 
     /**
@@ -93,8 +92,6 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         if (savedInstanceState != null) {
             if (mListView != null) {
                 if (mAdapter != null) {
@@ -103,11 +100,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
                         mAdapter.updateList(values);
                     }
                 }
-                MainActivity activity = (MainActivity) getActivity();
-                if (activity.getBackStack().empty()) {
-                    ArrayList<Integer> values = savedInstanceState.getIntegerArrayList("back_stack");
-                    activity.getBackStack().addAll(values);
-                }
+
                 mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
                 mNext_Cursor = savedInstanceState.getString("cursor");
             }
@@ -122,15 +115,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
         savedState.putParcelable("list_state", mListView.onSaveInstanceState());
         savedState.putString("cursor", mNext_Cursor);
         savedState.putParcelable("list_values", Parcels.wrap(list));
-        MainActivity activity = (MainActivity) getActivity();
-        Integer[] array = new Integer[activity.getBackStack().size()];
-        activity.getBackStack().copyInto(array);
-        ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
-        for (Integer i:integerArrayList) {
-            integerArrayList.add(array[i]);
-        }
 
-        savedState.putIntegerArrayList("back_stack", integerArrayList);
 
 
     }
@@ -142,7 +127,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
             if (mAdapter != null && mAdapter.getCount() == 0) {
                 List<Vacancy> values = (ArrayList<Vacancy>) Parcels.unwrap(savedInstanceState.getParcelable("list_values"));
                 if (values != null) {
-                    restoreMode =true; //prevent app from calling network operations
+                    restoreMode = true; //prevent app from calling network operations
                     mAdapter.updateList(values);
 
                 }
@@ -153,7 +138,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
             restoreMode = false;
 
         }
-         setRetainInstance(true);
+        setRetainInstance(true);
 
 
     }
@@ -166,7 +151,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
 
 
         mListView = (ListView) mView.findViewById(R.id.list);
-        mListView.setOnScrollListener(new EndlessScrollListener());
+        mListView.setOnScrollListener(this);
         mListView.setEmptyView(mView.findViewById(R.id.loading));
         mView.findViewById(R.id.loading).setVisibility(View.VISIBLE);
         spinner = (Spinner) mView.findViewById(R.id.categories);
@@ -227,16 +212,14 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //spinner item selection
-
         mCategory = (String) parent.getSelectedItem();
-
         mNext_Cursor = null;
         if (mCategory.equals(("All Categories"))) {
             mCategory = null;
         }
 
-        if(!restoreMode) {
-            fetch(mCategory, mNext_Cursor);
+        if (!restoreMode) {
+            fetch(mCategory);
         }
     }
 
@@ -250,6 +233,23 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
      */
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        if (scrollState == SCROLL_STATE_IDLE) {
+            if (view.getLastVisiblePosition() >= view.getCount() - 1 - threshold) {
+
+                fetchMore(mCategory, mNext_Cursor);
+
+            }
+        }
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
     }
 
@@ -268,37 +268,29 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
         public void onFragmentInteraction(Long id);
     }
 
+    /**
+     * Calls webservice, retrieves a json response and parses it into a list,
+     * this method is called initially when the application loads and when the category changes
+     *
+     * @param category The category to fetch.
+     */
+    private void fetch(String category) {
 
-    private void fetch(String category, String cursor) {
-
-        final MainActivity acivity = (MainActivity) getActivity();
-        acivity.getmProgressBar().setVisibility(View.VISIBLE);
+        final MainActivity activity = (MainActivity) getActivity();
+        activity.getmProgressBar().setVisibility(View.VISIBLE);
         String url = null;
-        if (cursor != null & category == null) {
 
-            url = URL + "?cursor=" + cursor;
-        }
-        if (cursor != null & category != null) {
-
-            try {
-                category = URLEncoder.encode(category, "utf-8");
-            } catch (UnsupportedEncodingException e) {
-
-            }
-
-            url = URL + "?category=" + category + "&cursor=" + cursor;
-        }
-        if (cursor == null & category != null) {
-            try {
-                category = URLEncoder.encode(category, "utf-8");
-            } catch (UnsupportedEncodingException e) {
-
-            }
-            url = URL + "?category=" + category;
-        }
-        if (cursor == null & category == null) {
+        if (category == null) {
             url = URL;
 
+        } else {
+            try {
+                category = URLEncoder.encode(category, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+
+            }
+
+            url = URL + "?category=" + category;
         }
 
 
@@ -311,28 +303,23 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
                         try {
 
 
-                            acivity.getmProgressBar().setVisibility(View.INVISIBLE);
+                            activity.getmProgressBar().setVisibility(View.INVISIBLE);
                             List<Vacancy> results = parse(jsonObject);
 
-
                             mAdapter.updateList(results);
-
                             mListView.getRootView().findViewById(R.id.loading).setVisibility(View.INVISIBLE);
                             if (!results.isEmpty()) {
-                                Vacancy temp = results.get(0);
-                                bus.post(new DetailViewInitEvent(temp.getId()));
-                               // bus.post(new BrowserViewInitEvent(temp.getWebsite()));
+                                Vacancy temp = results.get(0); //get first element
+                                bus.post(new DetailViewInitEvent(temp.getId())); //updates detailview but does not show it
+
                             }
-
-
-
                         } catch (JSONException e) {
-                            acivity.getmProgressBar().setVisibility(View.INVISIBLE);
+                            activity.getmProgressBar().setVisibility(View.INVISIBLE);
                             mListView.getRootView().findViewById(R.id.search_loading).setVisibility(View.INVISIBLE);
                             mAdapter.clearList();
                             mListView.getRootView().findViewById(R.id.search_empty).setVisibility(View.VISIBLE);
 
-                           // Toast.makeText(getActivity(), "Unable to parse data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
                         }
                     }
 
@@ -341,7 +328,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        acivity.getmProgressBar().setVisibility(View.INVISIBLE);
+                        activity.getmProgressBar().setVisibility(View.INVISIBLE);
                         Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
                         if (mListView.getCount() == 0) {
                             mListView.getRootView().findViewById(R.id.loading).setVisibility(View.INVISIBLE);
@@ -369,13 +356,11 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
             url = URL + "?cursor=" + cursor;
         }
         if (cursor != null & category != null) {
-
             try {
                 category = URLEncoder.encode(category, "utf-8");
             } catch (UnsupportedEncodingException e) {
 
             }
-
             url = URL + "?category=" + category + "&cursor=" + mNext_Cursor;
         }
         if (cursor == null & category != null) {
@@ -393,26 +378,18 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
 
 
         JsonObjectRequest request = new JsonObjectRequest(
-
                 url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         try {
-
-
                             activity.getmProgressBar().setVisibility(View.INVISIBLE);
-                            List<Vacancy> results = parse(jsonObject);
-
-                            mAdapter.fetchMore(results);
+                            mAdapter.addMore(parse(jsonObject));
 
                         } catch (JSONException e) {
                             activity.getmProgressBar().setVisibility(View.INVISIBLE);
-                          //  Toast.makeText(getActivity(), "Unable to parse data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
-
-
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -426,18 +403,14 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
                 15000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
 
     private List<Vacancy> parse(JSONObject json) throws JSONException {
         ArrayList<Vacancy> records = new ArrayList<>();
-
-        mNext_Cursor = json.getString("nextPageToken");
-
+        mNext_Cursor = json.getString("nextPageToken"); //next results cursor
         JSONArray vacancies = json.getJSONArray("items");
-
 
         for (int i = 0; i < vacancies.length(); i++) {
             JSONObject item = vacancies.getJSONObject(i);
@@ -450,8 +423,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
             }
             String description = item.getString("description");
             String title = item.getString("job_title");
-            String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-            DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+            DateTimeFormatter dtf = DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             DateTime dateTime = null;
             if (item.has("advertDate")) {
 
@@ -494,29 +466,6 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
 
     }
 
-    private class EndlessScrollListener implements AbsListView.OnScrollListener {
-
-        int threshold = 10;
-
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem,
-                             int visibleItemCount, int totalItemCount) {
-
-        }
-
-        @Override
-        public void onScrollStateChanged(AbsListView listView, int scrollState) {
-            if (scrollState == SCROLL_STATE_IDLE) {
-                if (listView.getLastVisiblePosition() >= listView.getCount() - 1 - threshold) {
-
-                    fetchMore(mCategory, mNext_Cursor);
-
-                }
-            }
-        }
-
-
-    }
 
 }
 

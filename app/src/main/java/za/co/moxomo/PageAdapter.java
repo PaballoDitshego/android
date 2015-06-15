@@ -47,12 +47,9 @@ public class PageAdapter extends FragmentStatePagerAdapter {
 
     }
 
-
-
     @Override
 
     public int getCount() {
-
         return NUM;
 
     }

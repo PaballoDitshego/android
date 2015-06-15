@@ -146,7 +146,7 @@ public class MoxomoListAdapter extends BaseAdapter {
     }
 
 
-    public void fetchMore(List<Vacancy> newList) {
+    public void addMore(List<Vacancy> newList) {
         int pos = getCount() - 1;
         for (Vacancy vacancy : newList) {
             vacancyItems.add(pos, vacancy);

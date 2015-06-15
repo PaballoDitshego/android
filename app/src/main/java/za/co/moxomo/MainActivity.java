@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 import de.greenrobot.event.EventBus;
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
 
 
     }
+
 
 
 
@@ -89,6 +90,29 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
 
 
         return true;
+    }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+
+        Integer[] array = new Integer[getBackStack().size()];
+        getBackStack().copyInto(array);
+        ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
+        for (Integer i : integerArrayList) {
+            integerArrayList.add(array[i]);
+        }
+
+        savedInstanceState.putIntegerArrayList("back_stack", integerArrayList);
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        if (getBackStack().empty()) {
+            ArrayList<Integer> values = savedInstanceState.getIntegerArrayList("back_stack");
+            getBackStack().addAll(values);
+        }
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
