@@ -2,7 +2,6 @@ package za.co.moxomo;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,9 +21,6 @@ import za.co.moxomo.events.PageBackEvent;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link WebFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link WebFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -38,8 +34,9 @@ public class WebFragment extends Fragment {
     private EventBus bus = EventBus.getDefault();
 
 
-
-    private OnFragmentInteractionListener mListener;
+    public WebFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -47,15 +44,11 @@ public class WebFragment extends Fragment {
      *
      * @return A new instance of fragment WebFragment.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static WebFragment newInstance() {
 
 
         return new WebFragment();
-    }
-
-    public WebFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -118,13 +111,6 @@ public class WebFragment extends Fragment {
         super.onDestroy();
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
 
     public void onEvent(BrowserViewEvent event) {
 
@@ -170,18 +156,13 @@ public class WebFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnSearchInteractionListener");
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
     }
 
     public WebView getWebView() {
@@ -199,10 +180,7 @@ public class WebFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
 
-        public void onFragmentInteraction(Uri uri);
-    }
 
     private class ViewClient extends WebViewClient {
         @Override

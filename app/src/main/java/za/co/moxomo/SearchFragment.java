@@ -46,7 +46,7 @@ import za.co.moxomo.events.SearchEvent;
  */
 public class SearchFragment extends Fragment implements AbsListView.OnItemClickListener, AbsListView.OnScrollListener {
 
-
+    //service url
     private static String URL = "https://moxomoapp.appspot.com/_ah/api/vacancyEndpoint/v1.1/search";
 
 

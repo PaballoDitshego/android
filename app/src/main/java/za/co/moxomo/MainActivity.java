@@ -5,13 +5,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +29,7 @@ import za.co.moxomo.events.SearchEvent;
 
 
 public class MainActivity extends AppCompatActivity implements TimeLineFragment.OnSearchInteractionListener,
-        DetailViewFragment.OnFragmentInteractionListener, WebFragment.OnFragmentInteractionListener, SearchFragment.OnSearchItemInteractionListener {
+        DetailViewFragment.OnFragmentInteractionListener, SearchFragment.OnSearchItemInteractionListener {
 
 
 
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
     private Stack<Integer> backStack = new Stack<>();
     private Toolbar mToolbar;
     private ProgressBar mProgressBar;
-    public Long id = null;
+
 
 
 
@@ -96,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
 
         Integer[] array = new Integer[getBackStack().size()];
         getBackStack().copyInto(array);
-        ArrayList<Integer> integerArrayList = new ArrayList<Integer>();
+        ArrayList<Integer> integerArrayList = new ArrayList<>();
         for (Integer i : integerArrayList) {
             integerArrayList.add(array[i]);
         }
@@ -108,11 +106,12 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
         if (getBackStack().empty()) {
             ArrayList<Integer> values = savedInstanceState.getIntegerArrayList("back_stack");
             getBackStack().addAll(values);
         }
-        super.onRestoreInstanceState(savedInstanceState);
+
     }
 
     @Override
@@ -194,9 +193,6 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
         }
     }
 
-    public Long getId() {
-       return id;
-    }
 
     public ProgressBar getmProgressBar() {
         return mProgressBar;
@@ -208,10 +204,7 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
         return mViewPager;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
 
     @Override
 
@@ -227,8 +220,6 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
         if (view != null) {
             if (view instanceof TextView) {
                 ((TextView) view).setTextColor(Color.WHITE);
-
-                return;
             } else if (view instanceof ViewGroup) {
                 ViewGroup viewGroup = (ViewGroup) view;
                 for (int i = 0; i < viewGroup.getChildCount(); i++) {
