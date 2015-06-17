@@ -3,6 +3,7 @@ package za.co.moxomo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,10 +52,9 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
 
     private String mQuery;
     private String mNext_Cursor;
-    private View mView;
     private OnSearchItemInteractionListener mListener;
     private ListView mListView;
-    private EventBus bus = EventBus.getDefault();
+    private EventBus mEventBus = EventBus.getDefault();
     private TextView mSearchText;
     private  boolean restoreMode =false;
     private int threshold =10;
@@ -67,14 +67,6 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
     private MoxomoListAdapter mAdapter;
 
 
-    // TODO: Rename and change types of parameters
-    public static SearchFragment newInstance() {
-        SearchFragment fragment = new SearchFragment();
-
-
-        return fragment;
-    }
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -82,23 +74,30 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
     public SearchFragment() {
     }
 
+
+    public static SearchFragment newInstance() {
+
+
+        return new SearchFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        bus.register(this);
+        mEventBus.register(this);
 
 
         if (savedInstanceState != null) {
             if (mListView != null) {
                 if (mAdapter != null) {
-                    List<Vacancy> values = (ArrayList<Vacancy>) Parcels.unwrap(savedInstanceState.getParcelable("list_values"));
+                    List<Vacancy> values = (ArrayList<Vacancy>) Parcels.unwrap(savedInstanceState.getParcelable("values"));
                     if (values != null) {
                         mAdapter.updateList(values);
                     }
                 }
-                mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
-                mNext_Cursor = savedInstanceState.getString("cursor");
+                //    mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
+                mNext_Cursor = savedInstanceState.getString("next_cursor");
             }
         }
         mAdapter = new MoxomoListAdapter(getActivity());
@@ -109,9 +108,9 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
     public void onSaveInstanceState(Bundle savedState) {
         super.onSaveInstanceState(savedState);
         List<Vacancy> list = mAdapter.getList();
-        savedState.putParcelable("list_state", mListView.onSaveInstanceState());
-        savedState.putString("cursor", mNext_Cursor);
-        savedState.putParcelable("list_values", Parcels.wrap(list));
+        //  savedState.putParcelable("list_state", mListView.onSaveInstanceState());
+        savedState.putString("next_cursor", mNext_Cursor);
+        savedState.putParcelable("values", Parcels.wrap(list));
 
 
 
@@ -122,14 +121,14 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             if (mAdapter != null && mAdapter.getCount() == 0) {
-                List<Vacancy> values = (ArrayList<Vacancy>) Parcels.unwrap(savedInstanceState.getParcelable("list_values"));
+                List<Vacancy> values = (ArrayList<Vacancy>) Parcels.unwrap(savedInstanceState.getParcelable("values"));
                 if (values != null) {
                     restoreMode =true; //prevent app from calling network operations
                     mAdapter.updateList(values);
                 }
             }
-            mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
-            mNext_Cursor = savedInstanceState.getString("cursor");
+            //   mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
+            mNext_Cursor = savedInstanceState.getString("next_cursor");
             restoreMode =false;
         }
 
@@ -140,17 +139,17 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_search, container, false);
-        mListView = (ListView) mView.findViewById(R.id.search_list);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        mListView = (ListView) view.findViewById(R.id.search_list);
         mListView.setOnScrollListener(this);
-        mView.findViewById(R.id.search_loading).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.search_loading).setVisibility(View.VISIBLE);
         mListView.setOnItemClickListener(this);
         mListView.setAdapter(mAdapter);
-        mSearchText = (TextView) mView.findViewById(R.id.search_text);
+        mSearchText = (TextView) view.findViewById(R.id.search_text);
         mSearchText.setVisibility(View.VISIBLE);
 
 
-        return mView;
+        return view;
     }
 
     @Override
@@ -198,21 +197,12 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
        }
     }
 
-
-    public interface OnSearchItemInteractionListener {
-
-        public void onSearchInteraction(Long id);
-    }
-
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if (scrollState == SCROLL_STATE_IDLE) {
             if (view.getLastVisiblePosition() >= view.getCount() - 1 - threshold) {
-                if(mNext_Cursor !=null && !mNext_Cursor.equals("EOR")) {
+                if (mNext_Cursor != null && !mNext_Cursor.equals("EOR")) {
                     fetchMore(mQuery, mNext_Cursor);
-                }
-                else{
-                    return;
                 }
             }
         }
@@ -223,7 +213,6 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
     }
-
 
     private void fetch(String query) {
         //initial fetch
@@ -237,7 +226,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
             try {
                 query = URLEncoder.encode(query, "utf-8");
             } catch (UnsupportedEncodingException e) {
-
+                Log.d(this.getClass().getName(), e.getMessage());
             }
             url = URL + "?query=" + query;
 
@@ -290,20 +279,18 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-
-
     private void fetchMore(String query, String cursor) {
 
         final MainActivity activity = (MainActivity) getActivity();
         activity.getmProgressBar().setVisibility(View.VISIBLE);
-        String url = null;
 
+        String url;
         if (cursor != null) {
 
             try {
                 query = URLEncoder.encode(query, "utf-8");
             } catch (UnsupportedEncodingException e) {
-
+                Log.d(getClass().getName(), e.getMessage());
             }
 
             url = URL + "?query=" + query + "&cursor=" + mNext_Cursor;
@@ -311,7 +298,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
             try {
                 query = URLEncoder.encode(query, "utf-8");
             } catch (UnsupportedEncodingException e) {
-
+                Log.d(getClass().getName(), e.getMessage());
             }
             url = URL + "?query=" + query;
         }
@@ -344,7 +331,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
                     public void onErrorResponse(VolleyError volleyError) {
                         activity.getmProgressBar().setVisibility(View.INVISIBLE);
                         mListView.getRootView().findViewById(R.id.search_loading).setVisibility(View.INVISIBLE);
-                        Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -356,9 +343,8 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-
     private List<Vacancy> parse(JSONObject json) throws JSONException {
-        ArrayList<Vacancy> records = new ArrayList<Vacancy>();
+        ArrayList<Vacancy> records = new ArrayList<>();
 
 
         if(json.has("nextPageToken")) {
@@ -400,6 +386,12 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
         }
 
         return records;
+    }
+
+
+    public interface OnSearchItemInteractionListener {
+
+        void onSearchInteraction(Long id);
     }
 
 

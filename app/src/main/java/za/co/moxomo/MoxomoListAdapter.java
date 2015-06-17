@@ -6,7 +6,6 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,28 +15,15 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import za.co.moxomo.Vacancy;
-
 /**
  * Created by Paballo Ditshego on 5/14/15.
  */
 public class MoxomoListAdapter extends BaseAdapter {
 
+    protected int selectedPosition;
     private Activity activity;
     private LayoutInflater inflater;
     private List<Vacancy> vacancyItems = new ArrayList<>();
-    ;
-    protected int selectedPosition;
-
-    static class ViewHolder {
-        TextView title;
-        TextView description;
-        TextView location;
-        ImageView thumbNail;
-        TextView time;
-
-    }
-
 
     public MoxomoListAdapter(Activity activity) {
         this.activity = activity;
@@ -96,23 +82,18 @@ public class MoxomoListAdapter extends BaseAdapter {
         if (v != null) {
 
             Picasso.with(activity).load(v.getImageUrl()).into(viewHolder.thumbNail);
-            viewHolder.thumbNail.setTag(v.getAd_id());
             viewHolder.title.setText(v.getJob_title());
-            viewHolder.title.setTag(v.getAd_id());
             viewHolder.location.setText(v.getLocation());
-            viewHolder.location.setTag(v.getAd_id());
             viewHolder.description.setText(v.getDescription());
-            viewHolder.description.setTag(v.getAd_id());
             viewHolder.time.setText(DateUtils.getRelativeDateTimeString(activity,
                             v.getAdvertDate().getMillis(), DateUtils.SECOND_IN_MILLIS,
                             DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL)
             );
-            viewHolder.time.setTag(v.getAd_id());
+
 
         }
         return convertView;
     }
-
 
     public int indexOf(Vacancy item) {
         return vacancyItems.indexOf(item);
@@ -140,11 +121,11 @@ public class MoxomoListAdapter extends BaseAdapter {
         vacancyItems.addAll(newList);
         this.notifyDataSetChanged();
     }
+
     public void clearList(){
         vacancyItems.clear();
         notifyDataSetChanged();
     }
-
 
     public void addMore(List<Vacancy> newList) {
         int pos = getCount() - 1;
@@ -154,6 +135,15 @@ public class MoxomoListAdapter extends BaseAdapter {
 
         }
         this.notifyDataSetChanged();
+    }
+
+    static class ViewHolder {
+        TextView title;
+        TextView description;
+        TextView location;
+        ImageView thumbNail;
+        TextView time;
+
     }
 
 }

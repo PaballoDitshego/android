@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,10 +57,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
 
     private String mCategory;
     private String mNext_Cursor;
-    private View mView;
     private int threshold = 10;
-
-
     private OnSearchInteractionListener mListener;
     private boolean restoreMode = false;
 
@@ -77,16 +75,16 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
     private MoxomoListAdapter mAdapter;
     private Spinner spinner;
 
-    // TODO: Rename and change types of parameters
-    public static TimeLineFragment newInstance() {
-        return new TimeLineFragment();
-    }
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public TimeLineFragment() {
+    }
+
+
+    public static TimeLineFragment newInstance() {
+        return new TimeLineFragment();
     }
 
     @Override
@@ -101,7 +99,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
                     }
                 }
 
-                mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
+                //  mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
                 mNext_Cursor = savedInstanceState.getString("cursor");
             }
         }
@@ -112,7 +110,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
     public void onSaveInstanceState(Bundle savedState) {
         super.onSaveInstanceState(savedState);
         List<Vacancy> list = mAdapter.getList();
-        savedState.putParcelable("list_state", mListView.onSaveInstanceState());
+        //   savedState.putParcelable("list_state", mListView.onSaveInstanceState());
         savedState.putString("cursor", mNext_Cursor);
         savedState.putParcelable("list_values", Parcels.wrap(list));
 
@@ -133,12 +131,12 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
                 }
             }
 
-            mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
+            //  mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
             mNext_Cursor = savedInstanceState.getString("cursor");
             restoreMode = false;
 
         }
-        setRetainInstance(true);
+        //   setRetainInstance(true);
 
 
     }
@@ -147,24 +145,24 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_timeline, container, false);
+        View view = inflater.inflate(R.layout.fragment_timeline, container, false);
 
 
-        mListView = (ListView) mView.findViewById(R.id.list);
+        mListView = (ListView) view.findViewById(R.id.list);
         mListView.setOnScrollListener(this);
-        mListView.setEmptyView(mView.findViewById(R.id.loading));
-        mView.findViewById(R.id.loading).setVisibility(View.VISIBLE);
-        spinner = (Spinner) mView.findViewById(R.id.categories);
-        ArrayAdapter<CharSequence> sAdapter = MyArrayAdapter.createFromResource(getActivity(), R.array.categories_array, R.layout.custom_spinner);
-        sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinner.setAdapter(sAdapter);
+        mListView.setEmptyView(view.findViewById(R.id.loading));
+        view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+        spinner = (Spinner) view.findViewById(R.id.categories);
+        ArrayAdapter<CharSequence> arrayAdapter = MyArrayAdapter.createFromResource(getActivity(), R.array.categories_array, R.layout.custom_spinner);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinner.setAdapter(arrayAdapter);
         spinner.setOnItemSelectedListener(this);
 
         mListView.setOnItemClickListener(this);
         mListView.setAdapter(mAdapter);
 
 
-        return mView;
+        return view;
     }
 
     @Override
@@ -254,21 +252,6 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnSearchInteractionListener {
-
-        public void onFragmentInteraction(Long id);
-    }
-
-    /**
      * Calls webservice, retrieves a json response and parses it into a list,
      * this method is called initially when the application loads and when the category changes
      *
@@ -278,7 +261,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
 
         final MainActivity activity = (MainActivity) getActivity();
         activity.getmProgressBar().setVisibility(View.VISIBLE);
-        String url = null;
+        String url;
 
         if (category == null) {
             url = URL;
@@ -287,7 +270,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
             try {
                 category = URLEncoder.encode(category, "utf-8");
             } catch (UnsupportedEncodingException e) {
-
+                Log.d(getClass().getName(), e.getMessage());
             }
 
             url = URL + "?category=" + category;
@@ -359,7 +342,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
             try {
                 category = URLEncoder.encode(category, "utf-8");
             } catch (UnsupportedEncodingException e) {
-
+                Log.d(getClass().getName(), e.getMessage());
             }
             url = URL + "?category=" + category + "&cursor=" + mNext_Cursor;
         }
@@ -367,6 +350,7 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
             try {
                 category = URLEncoder.encode(category, "utf-8");
             } catch (UnsupportedEncodingException e) {
+                Log.d(getClass().getName(), e.getMessage());
 
             }
             url = URL + "?category=" + category;
@@ -406,7 +390,6 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-
     private List<Vacancy> parse(JSONObject json) throws JSONException {
         ArrayList<Vacancy> records = new ArrayList<>();
         mNext_Cursor = json.getString("nextPageToken"); //next results cursor
@@ -445,6 +428,21 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
         return records;
     }
 
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnSearchInteractionListener {
+
+        void onFragmentInteraction(Long id);
+    }
 
     private class MyArrayAdapter extends ArrayAdapter {
 

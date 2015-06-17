@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.internal.view.SupportMenu;
-import android.support.v4.internal.view.SupportMenuItem;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
@@ -36,7 +34,6 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import de.greenrobot.event.EventBus;
-import za.co.moxomo.events.BrowserViewInitEvent;
 import za.co.moxomo.events.DetailViewEvent;
 import za.co.moxomo.events.DetailViewInitEvent;
 
@@ -51,9 +48,8 @@ import za.co.moxomo.events.DetailViewInitEvent;
  */
 public class DetailViewFragment extends Fragment {
 
-    private static String URL = "https://moxomoapp.appspot.com/_ah/api/vacancyEndpoint/v1.1/vacancy/";
     public static Long id = null;
-
+    private static String URL = "https://moxomoapp.appspot.com/_ah/api/vacancyEndpoint/v1.1/vacancy/";
     private OnFragmentInteractionListener mListener;
     private Vacancy vacancy = null;
     private TextView title;
@@ -71,15 +67,14 @@ public class DetailViewFragment extends Fragment {
     private Intent shareIntent;
 
 
-    public static DetailViewFragment newInstance() {
-        DetailViewFragment fragment = new DetailViewFragment();
-
-
-        return fragment;
-    }
-
     public DetailViewFragment() {
         // Required empty public constructor
+    }
+
+    public static DetailViewFragment newInstance() {
+
+
+        return new DetailViewFragment();
     }
 
     @Override
@@ -249,7 +244,7 @@ public class DetailViewFragment extends Fragment {
 
 
                         } catch (JSONException e) {
-
+                            Log.d(getClass().getName(), e.getMessage());
                         }
                     }
 
@@ -349,7 +344,6 @@ public class DetailViewFragment extends Fragment {
         record.setLocation(location);
         record.setAdvertDate(advertDate);
         record.setImageUrl(imageUrl);
-        record.setCategory(category);
         record.setClosingDate(closingDate);
         record.setDuties(duties);
         record.setWebsite(website);
@@ -391,7 +385,7 @@ public class DetailViewFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String url);
+        void onFragmentInteraction(String url);
     }
 
 
