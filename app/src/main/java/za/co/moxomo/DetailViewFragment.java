@@ -149,7 +149,6 @@ public class DetailViewFragment extends Fragment {
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(String url) {
         if (mListener != null) {
             mListener.onFragmentInteraction(url);
@@ -385,7 +384,7 @@ public class DetailViewFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(String url);
     }
 
