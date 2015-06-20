@@ -180,8 +180,9 @@ public class DetailViewFragment extends Fragment {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading .....");
         progressDialog.setIndeterminate(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
         JsonObjectRequest request = new JsonObjectRequest(
 
                 url, null,

@@ -135,6 +135,13 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
 
     }
 
+    @Override
+    public void onDestroy() {
+        // Unregister this class from the eventbus on destroy
+        mEventBus.unregister(this);
+        super.onDestroy();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

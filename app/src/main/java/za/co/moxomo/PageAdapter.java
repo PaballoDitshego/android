@@ -55,7 +55,6 @@ public class PageAdapter extends FragmentStatePagerAdapter {
     }
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        // TODO Auto-generated method stub
         super.destroyItem(container,  position,  object);
     }
 

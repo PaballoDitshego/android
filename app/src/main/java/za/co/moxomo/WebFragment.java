@@ -128,13 +128,13 @@ public class WebFragment extends Fragment {
         else{
             final MainActivity activity = (MainActivity)getActivity();
             //todo: fix emptystackexception issues
-            int previousItem = activity.getBackStack().pop();
+            int previousItem = activity.getmBackStack().pop();
             activity.getPager().setCurrentItem(previousItem);
         }
     }
     public void apply(String url) {
         MainActivity activity = (MainActivity) getActivity();
-        activity.getBackStack().add(activity.getPager().getCurrentItem());
+        activity.getmBackStack().add(activity.getPager().getCurrentItem());
         activity.getPager().setCurrentItem(2);
         if(webView.canGoBack()){
             webView.clearHistory();

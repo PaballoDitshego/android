@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
     private PageAdapter mAdapter;
     private ViewPager mViewPager;
     private EventBus bus = EventBus.getDefault();
-    private Stack<Integer> backStack = new Stack<>();
+    private Stack<Integer> mBackStack = new Stack<>();
     private Toolbar mToolbar;
     private ProgressBar mProgressBar;
 
@@ -92,8 +92,8 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
 
-        Integer[] array = new Integer[getBackStack().size()];
-        getBackStack().copyInto(array);
+        Integer[] array = new Integer[getmBackStack().size()];
+        getmBackStack().copyInto(array);
         ArrayList<Integer> integerArrayList = new ArrayList<>();
         for (Integer i : integerArrayList) {
             integerArrayList.add(array[i]);
@@ -107,9 +107,9 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
-        if (getBackStack().empty()) {
+        if (getmBackStack().empty()) {
             ArrayList<Integer> values = savedInstanceState.getIntegerArrayList("back_stack");
-            getBackStack().addAll(values);
+            getmBackStack().addAll(values);
         }
 
     }
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             if(mViewPager.getCurrentItem() !=3) {
-                backStack.add(mViewPager.getCurrentItem());
+                mBackStack.add(mViewPager.getCurrentItem());
             }
             bus.post(new SearchEvent(query));
 
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
     public void onFragmentInteraction(Long id) {
 
         //this will call the getEntry(id) method in DetailViewFragment and show page
-        backStack.add(mViewPager.getCurrentItem()); //add current page to custom backstack
+        mBackStack.add(mViewPager.getCurrentItem()); //add current page to custom backstack
         bus.post(new DetailViewEvent(id));
 
 
@@ -170,8 +170,8 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
     }
 
 
-    public Stack<Integer> getBackStack() {
-        return backStack;
+    public Stack<Integer> getmBackStack() {
+        return mBackStack;
     }
 
     @Override
@@ -182,10 +182,10 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
            bus.post(new PageBackEvent());
         }
         else {
-            if (getBackStack().empty()) {
+            if (getmBackStack().empty()) {
                 super.onBackPressed(); //exits application
             } else {
-                int previousItem = getBackStack().pop();
+                int previousItem = getmBackStack().pop();
                 mViewPager.setCurrentItem(previousItem);
 
             }
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
 
     public void onSearchInteraction(Long id) {
         //implements inteface defined in SearchFragment.java
-        backStack.add(mViewPager.getCurrentItem()); //add current page to custom backstack
+        mBackStack.add(mViewPager.getCurrentItem()); //add current page to custom backstack
         bus.post(new DetailViewEvent(id));
     }
 
