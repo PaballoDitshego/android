@@ -405,7 +405,13 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
                 location = (String) item.get("location");
             }
             String description = item.getString("description");
-            String title = item.getString("job_title");
+            if (description.length() > 400) {
+                description = description.substring(0, 400) + "....";
+            }
+            String title = null;
+            if (item.has("job_title")) {
+                title = item.getString("job_title");
+            }
             DateTimeFormatter dtf = DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             DateTime dateTime = null;
             if (item.has("advertDate")) {
@@ -421,8 +427,9 @@ public class TimeLineFragment extends Fragment implements AbsListView.OnItemClic
             record.setLocation(location);
             record.setAdvertDate(dateTime);
             record.setImageUrl(imageUrl);
-
+            if (title != null) {
             records.add(record);
+            }
         }
 
         return records;

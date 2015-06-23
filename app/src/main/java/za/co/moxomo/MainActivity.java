@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
     private Stack<Integer> mBackStack = new Stack<>();
     private Toolbar mToolbar;
     private ProgressBar mProgressBar;
+    private SearchView mSearchView;
 
 
 
@@ -77,12 +78,12 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
+        mSearchView =
                 (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_button));
-        searchView.setSearchableInfo(
+        mSearchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
-       changeSearchViewTextColor(searchView);
+        changeSearchViewTextColor(mSearchView);
 
 
 
@@ -176,12 +177,16 @@ public class MainActivity extends AppCompatActivity implements TimeLineFragment.
 
     @Override
     public void onBackPressed() {
+
+
         //Handles back button navigation
         if (mViewPager.getCurrentItem() == 2) {
           //workaround to enable back on the
            bus.post(new PageBackEvent());
         }
         else {
+            mSearchView.setIconified(true);
+            mSearchView.onActionViewCollapsed();
             if (getmBackStack().empty()) {
                 super.onBackPressed(); //exits application
             } else {

@@ -199,9 +199,9 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
         mQuery = query;
         mNext_Cursor = null;
 
-       if(!restoreMode) {
+        //   if(!restoreMode) {
            fetch(mQuery);
-       }
+        //   }
     }
 
     @Override
@@ -370,7 +370,13 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
                 location = (String) item.get("location");
             }
             String description = item.getString("description");
-            String title = item.getString("job_title");
+            if (description.length() > 700) {
+                description = description.substring(0, 700) + "....";
+            }
+            String title = null;
+            if (item.has("job_title")) {
+                title = item.getString("job_title");
+            }
 
             String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
             DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
@@ -388,8 +394,9 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
             record.setLocation(location);
             record.setAdvertDate(dateTime);
             record.setImageUrl(imageUrl);
-
+            if (title != null) {
             records.add(record);
+            }
         }
 
         return records;
