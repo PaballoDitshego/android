@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -15,51 +16,36 @@ import android.widget.ProgressBar;
 
 import de.greenrobot.event.EventBus;
 import za.co.moxomo.events.BrowserViewEvent;
-import za.co.moxomo.events.BrowserViewInitEvent;
 import za.co.moxomo.events.PageBackEvent;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WebFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class WebFragment extends Fragment {
+public class WebViewFragment extends Fragment {
 
 
-
+    private static String url;
     private WebView webView;
     private ProgressBar progressBar;
-
     private EventBus bus = EventBus.getDefault();
 
 
-    public WebFragment() {
+    public WebViewFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment WebFragment.
-     */
+    public static WebViewFragment newInstance(String address) {
+        url = address;
 
-    public static WebFragment newInstance() {
-
-
-        return new WebFragment();
+        return new WebViewFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
-            if(webView!=null){
+        if (savedInstanceState != null) {
+            if (webView != null) {
                 webView.restoreState(savedInstanceState);
             }
         }
-
 
 
     }
@@ -69,8 +55,15 @@ public class WebFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_web, container, false);
-        final MainActivity activity = (MainActivity)getActivity();
-        progressBar = activity.getmProgressBar();
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity) getActivity();
+            progressBar = activity.getProgressBar();
+        } else {
+            NotificationActivity activity = (NotificationActivity) getActivity();
+            progressBar = activity.getProgressBar();
+        }
+
+
         webView = (WebView) view.findViewById(R.id.webView);
         progressBar.setMax(0);
 
@@ -79,14 +72,36 @@ public class WebFragment extends Fragment {
         webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
         webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
-                activity.setProgress(0);
+                // getActivity().setProgress(0);
             }
         });
+
         webView.setWebViewClient(new ViewClient());
 
-   if(!bus.isRegistered(this))
-        bus.register(this);
+        webView.requestFocus(View.FOCUS_DOWN);
+        webView.setOnTouchListener(new View.OnTouchListener() {
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_UP:
+                        if (!v.hasFocus()) {
+                            v.requestFocus();
+                        }
+                        break;
+                }
+
+                return false;
+            }
+        });
+        webView.loadUrl(url);
+        webView.pageUp(true);
+
+
+        if (!bus.isRegistered(this)) {
+            bus.register(this);
+        }
         return view;
     }
 
@@ -104,6 +119,7 @@ public class WebFragment extends Fragment {
 
 
     }
+
     @Override
     public void onDestroy() {
         // Unregister this class from the eventbus on destroy
@@ -117,41 +133,25 @@ public class WebFragment extends Fragment {
         apply(event.getUrl());
     }
 
-    public void onEvent(BrowserViewInitEvent event) {
 
-        init(event.getUrl());
-    }
     public void onEvent(PageBackEvent event) {
         if (webView.canGoBack()) {
             webView.goBack();
-        }
-        else{
-            final MainActivity activity = (MainActivity)getActivity();
-            //todo: fix emptystackexception issues
-            int previousItem = activity.getmBackStack().pop();
+        } else {
+            final MainActivity activity = (MainActivity) getActivity();
+            int previousItem = activity.getBackStack().pop();
             activity.getPager().setCurrentItem(previousItem);
         }
     }
+
     public void apply(String url) {
-        MainActivity activity = (MainActivity) getActivity();
-        activity.getmBackStack().add(activity.getPager().getCurrentItem());
-        activity.getPager().setCurrentItem(2);
-        if(webView.canGoBack()){
+        if (webView.canGoBack()) {
             webView.clearHistory();
         }
         webView.loadUrl(url);
 
     }
-    public void init(String url) {
-        MainActivity activity = (MainActivity) getActivity();
 
-
-        if(webView.canGoBack()){
-            webView.clearHistory();
-        }
-        webView.loadUrl(url);
-
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -170,18 +170,6 @@ public class WebFragment extends Fragment {
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-
-
     private class ViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -190,10 +178,12 @@ public class WebFragment extends Fragment {
             view.loadUrl(url);
             return true;
         }
+
         @Override
         public void onPageFinished(WebView view, String url) {
             progressBar.setVisibility(View.GONE);
             progressBar.setProgress(100);
+            view.scrollTo(0, 0);
             super.onPageFinished(view, url);
         }
 

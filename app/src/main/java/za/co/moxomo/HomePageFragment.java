@@ -1,6 +1,8 @@
 package za.co.moxomo;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,85 +36,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import za.co.moxomo.events.SearchEvent;
+import za.co.moxomo.adapters.MoxomoListAdapter;
+import za.co.moxomo.events.DetailViewInitEvent;
 
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Large screen devices (such as tablets) are supported by replacing the ListView
- * with a GridView.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnSearchItemInteractionListener}
- * interface.
- */
-public class SearchFragment extends Fragment implements AbsListView.OnItemClickListener, AbsListView.OnScrollListener {
+public class HomePageFragment extends Fragment implements AbsListView.OnItemClickListener, AdapterView.OnItemSelectedListener,
+        AbsListView.OnScrollListener {
 
-    //service url
-    private static String URL = "https://moxomoapp.appspot.com/_ah/api/vacancyEndpoint/v1.1/search";
-
-
-    private String mQuery;
+    ///service url
+    private static String URL = "https://moxomoapp.appspot.com/_ah/api/vacancyEndpoint/v1.1/list";
+    private String mCategory;
     private String mNext_Cursor;
-    private OnSearchItemInteractionListener mListener;
+    private int threshold = 10;
+    private OnHomeListInteractionListener mListener;
+    private boolean restoreMode = false;
+
+    /**
+     * The fragment's ListView
+     */
     private ListView mListView;
-    private EventBus mEventBus = EventBus.getDefault();
-    private TextView mSearchText;
-    private  boolean restoreMode =false;
-    private int threshold =10;
+    private EventBus bus = EventBus.getDefault();
 
 
     /**
-     * The Adapter which will be used to populate the ListView with
+     * The Adapter which will be used to populate the ListView/ with
      * Views.
      */
     private MoxomoListAdapter mAdapter;
 
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public SearchFragment() {
+    public HomePageFragment() {
     }
 
 
-    public static SearchFragment newInstance() {
-
-
-        return new SearchFragment();
+    public static HomePageFragment newInstance() {
+        return new HomePageFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mEventBus.register(this);
-
-
         if (savedInstanceState != null) {
             if (mListView != null) {
                 if (mAdapter != null) {
-                    List<Vacancy> values = (ArrayList<Vacancy>) Parcels.unwrap(savedInstanceState.getParcelable("values"));
+                    List<Vacancy> values = (ArrayList<Vacancy>) Parcels.unwrap(savedInstanceState.getParcelable("list_values"));
                     if (values != null) {
                         mAdapter.updateList(values);
                     }
                 }
-                //    mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
-                mNext_Cursor = savedInstanceState.getString("next_cursor");
+
+                mNext_Cursor = savedInstanceState.getString("cursor");
             }
         }
         mAdapter = new MoxomoListAdapter(getActivity());
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedState) {
         super.onSaveInstanceState(savedState);
         List<Vacancy> list = mAdapter.getList();
-        //  savedState.putParcelable("list_state", mListView.onSaveInstanceState());
-        savedState.putString("next_cursor", mNext_Cursor);
-        savedState.putParcelable("values", Parcels.wrap(list));
+        savedState.putString("cursor", mNext_Cursor);
+        savedState.putParcelable("list_values", Parcels.wrap(list));
 
 
 
@@ -121,39 +106,47 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             if (mAdapter != null && mAdapter.getCount() == 0) {
-                List<Vacancy> values = (ArrayList<Vacancy>) Parcels.unwrap(savedInstanceState.getParcelable("values"));
+                List<Vacancy> values = (ArrayList<Vacancy>) Parcels.unwrap(savedInstanceState.getParcelable("list_values"));
                 if (values != null) {
-                    restoreMode =true; //prevent app from calling network operations
+                    restoreMode = true; //prevent app from calling network operations
                     mAdapter.updateList(values);
+
                 }
             }
-            //   mListView.onRestoreInstanceState(savedInstanceState.getParcelable("list_state"));
-            mNext_Cursor = savedInstanceState.getString("next_cursor");
-            restoreMode =false;
+
+            mNext_Cursor = savedInstanceState.getString("cursor");
+
+
         }
 
 
-    }
 
-    @Override
-    public void onDestroy() {
-        // Unregister this class from the eventbus on destroy
-        mEventBus.unregister(this);
-        super.onDestroy();
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
-        mListView = (ListView) view.findViewById(R.id.search_list);
+        View view = inflater.inflate(R.layout.fragment_timeline, container, false);
+
+
+        mListView = (ListView) view.findViewById(R.id.list);
         mListView.setOnScrollListener(this);
-        view.findViewById(R.id.search_loading).setVisibility(View.VISIBLE);
+        mListView.setEmptyView(view.findViewById(R.id.loading));
+        view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+        Spinner spinner = (Spinner) view.findViewById(R.id.categories);
+
+        ArrayAdapter<CharSequence> arrayAdapter = MyArrayAdapter.createFromResource(getActivity(), R.array.categories_array, R.layout.custom_spinner);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_list_item_1);
+
+
+        spinner.setAdapter(arrayAdapter);
+
+
+        spinner.setOnItemSelectedListener(this);
         mListView.setOnItemClickListener(this);
         mListView.setAdapter(mAdapter);
-        mSearchText = (TextView) view.findViewById(R.id.search_text);
-        mSearchText.setVisibility(View.VISIBLE);
+
 
 
         return view;
@@ -163,10 +156,10 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnSearchItemInteractionListener) activity;
+            mListener = (OnHomeListInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSearchInteractionListener");
+                    + " must implement OnHomeListInteractionListener");
         }
     }
 
@@ -179,38 +172,43 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
-            mListener.onSearchInteraction(mAdapter.getItemId(position));
+            // Notify the active callbacks interface (the activity, if the
+            // fragment is attached to one) that an item has been selected.
+
+            mListener.onHomeListInteraction(mAdapter.getItemId(position));
         }
     }
 
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //spinner item selection
+        mCategory = (String) parent.getSelectedItem();
+        mNext_Cursor = null;
+        if (mCategory.equals(("All Categories"))) {
+            mCategory = null;
+        }
 
-    public void onEvent(SearchEvent event) {
-       //
-        MainActivity activity = (MainActivity) getActivity();
-        activity.getPager().setCurrentItem(3);
-        queryString(event.getQuery());
+        if (!restoreMode) {
+            fetch(mCategory);
+        }
+        restoreMode = false;
     }
 
 
-    public void queryString(String query) {
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
-        mQuery = query;
-        mNext_Cursor = null;
-
-        //   if(!restoreMode) {
-           fetch(mQuery);
-        //   }
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if (scrollState == SCROLL_STATE_IDLE) {
             if (view.getLastVisiblePosition() >= view.getCount() - 1 - threshold) {
-                if (mNext_Cursor != null && !mNext_Cursor.equals("EOR")) {
-                    fetchMore(mQuery, mNext_Cursor);
-                }
+
+                fetchMore(mCategory, mNext_Cursor);
+
             }
         }
 
@@ -221,21 +219,30 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
 
     }
 
-    private void fetch(String query) {
-        //initial fetch
+    /**
+     * Calls webservice, retrieves a json response and parses it into a list,
+     * this method is called initially when the application loads and when the category changes
+     *
+     * @param category The category to fetch.
+     */
+    private void fetch(String category) {
+
         final MainActivity activity = (MainActivity) getActivity();
-        activity.getmProgressBar().setVisibility(View.VISIBLE);
-        mListView.getRootView().findViewById(R.id.search_loading).setVisibility(View.VISIBLE);
-        mListView.getRootView().findViewById(R.id.search_empty).setVisibility(View.INVISIBLE);
-        mSearchText.setText("Searching for: " + mQuery);
+        activity.getProgressBar().setVisibility(View.VISIBLE);
         String url;
 
+        if (category == null) {
+            url = URL;
+
+        } else {
             try {
-                query = URLEncoder.encode(query, "utf-8");
+                category = URLEncoder.encode(category, "utf-8");
             } catch (UnsupportedEncodingException e) {
-                Log.d(this.getClass().getName(), e.getMessage());
+                Log.d(getClass().getName(), e.getMessage());
             }
-            url = URL + "?query=" + query;
+
+            url = URL + "?category=" + category;
+        }
 
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -247,18 +254,22 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
                         try {
 
 
-                            activity.getmProgressBar().setVisibility(View.INVISIBLE);
-                            mSearchText.setText("Search results for: " + mQuery);
-                            mAdapter.updateList(parse(jsonObject));
-                            mListView.getRootView().findViewById(R.id.search_loading).setVisibility(View.INVISIBLE);
-                            mListView.setSelection(0);
+                            activity.getProgressBar().setVisibility(View.INVISIBLE);
+                            List<Vacancy> results = parse(jsonObject);
 
+                            mAdapter.updateList(results);
+                            mListView.getRootView().findViewById(R.id.loading).setVisibility(View.INVISIBLE);
+                            if (!results.isEmpty()) {
+                                Vacancy temp = results.get(0); //get first element
+                                bus.post(new DetailViewInitEvent(temp.getId())); //updates detailview but does not show it
+
+                            }
                         } catch (JSONException e) {
-                            mSearchText.setText("Search results for: " + mQuery);
-                            activity.getmProgressBar().setVisibility(View.INVISIBLE);
+                            activity.getProgressBar().setVisibility(View.INVISIBLE);
                             mListView.getRootView().findViewById(R.id.search_loading).setVisibility(View.INVISIBLE);
                             mAdapter.clearList();
                             mListView.getRootView().findViewById(R.id.search_empty).setVisibility(View.VISIBLE);
+
 
                         }
                     }
@@ -268,11 +279,11 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        activity.getmProgressBar().setVisibility(View.INVISIBLE);
+                        activity.getProgressBar().setVisibility(View.INVISIBLE);
                         Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
                         if (mListView.getCount() == 0) {
-                            mListView.getRootView().findViewById(R.id.search_loading).setVisibility(View.INVISIBLE);
-                            mListView.getRootView().findViewById(R.id.search_empty).setVisibility(View.VISIBLE);
+                            mListView.getRootView().findViewById(R.id.loading).setVisibility(View.INVISIBLE);
+                            mListView.setEmptyView(mListView.getRootView().findViewById(R.id.empty));
 
                         }
                     }
@@ -286,59 +297,57 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
-    private void fetchMore(String query, String cursor) {
+    private void fetchMore(String category, String cursor) {
 
         final MainActivity activity = (MainActivity) getActivity();
-        activity.getmProgressBar().setVisibility(View.VISIBLE);
+        activity.getProgressBar().setVisibility(View.VISIBLE);
+        String url = null;
+        if (cursor != null & category == null) {
 
-        String url;
-        if (cursor != null) {
-
+            url = URL + "?cursor=" + cursor;
+        }
+        if (cursor != null & category != null) {
             try {
-                query = URLEncoder.encode(query, "utf-8");
+                category = URLEncoder.encode(category, "utf-8");
             } catch (UnsupportedEncodingException e) {
                 Log.d(getClass().getName(), e.getMessage());
             }
-
-            url = URL + "?query=" + query + "&cursor=" + mNext_Cursor;
-        } else {
+            url = URL + "?category=" + category + "&cursor=" + mNext_Cursor;
+        }
+        if (cursor == null & category != null) {
             try {
-                query = URLEncoder.encode(query, "utf-8");
+                category = URLEncoder.encode(category, "utf-8");
             } catch (UnsupportedEncodingException e) {
                 Log.d(getClass().getName(), e.getMessage());
+
             }
-            url = URL + "?query=" + query;
+            url = URL + "?category=" + category;
+        }
+        if (cursor == null & category == null) {
+            url = URL;
+
         }
 
 
         JsonObjectRequest request = new JsonObjectRequest(
-
                 url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         try {
-
-
-                            activity.getmProgressBar().setVisibility(View.INVISIBLE);
-                            mListView.getRootView().findViewById(R.id.search_loading).setVisibility(View.INVISIBLE);
+                            activity.getProgressBar().setVisibility(View.INVISIBLE);
                             mAdapter.addMore(parse(jsonObject));
 
                         } catch (JSONException e) {
-                            activity.getmProgressBar().setVisibility(View.INVISIBLE);
-                            mListView.getRootView().findViewById(R.id.search_loading).setVisibility(View.INVISIBLE);
-
+                            activity.getProgressBar().setVisibility(View.INVISIBLE);
                         }
                     }
-
-
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        activity.getmProgressBar().setVisibility(View.INVISIBLE);
-                        mListView.getRootView().findViewById(R.id.search_loading).setVisibility(View.INVISIBLE);
-                        //  Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+                        activity.getProgressBar().setVisibility(View.INVISIBLE);
+                        Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -346,40 +355,32 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
                 15000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
     private List<Vacancy> parse(JSONObject json) throws JSONException {
         ArrayList<Vacancy> records = new ArrayList<>();
-
-
-        if(json.has("nextPageToken")) {
-            mNext_Cursor = json.getString("nextPageToken");
-        }
+        mNext_Cursor = json.getString("nextPageToken"); //next results cursor
         JSONArray vacancies = json.getJSONArray("items");
 
         for (int i = 0; i < vacancies.length(); i++) {
             JSONObject item = vacancies.getJSONObject(i);
+
             Long id = item.getLong("id");
-
-
             String imageUrl = item.getString("imageUrl");
             String location = null;
             if (item.has("location")) {
                 location = (String) item.get("location");
             }
             String description = item.getString("description");
-            if (description.length() > 700) {
-                description = description.substring(0, 700) + "....";
+            if (description.length() > 400) {
+                description = description.substring(0, 400) + "....";
             }
             String title = null;
             if (item.has("job_title")) {
                 title = item.getString("job_title");
             }
-
-            String pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-            DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+            DateTimeFormatter dtf = DateTimeFormat.forPattern( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             DateTime dateTime = null;
             if (item.has("advertDate")) {
 
@@ -403,12 +404,30 @@ public class SearchFragment extends Fragment implements AbsListView.OnItemClickL
     }
 
 
-    public interface OnSearchItemInteractionListener {
+    public interface OnHomeListInteractionListener {
 
-        void onSearchInteraction(Long id);
+        void onHomeListInteraction(Long id);
     }
 
+    private class MyArrayAdapter extends ArrayAdapter {
 
+        public MyArrayAdapter(Context context, int textViewResourceId) {
+            super(context, textViewResourceId);
+        }
+
+        public TextView getView(int position, View convertView, ViewGroup parent) {
+            TextView v = (TextView) super.getView(position, convertView, parent);
+            v.setTypeface(Typeface.SANS_SERIF);
+            return v;
+        }
+
+        public TextView getDropDownView(int position, View convertView, ViewGroup parent) {
+            TextView v = (TextView) super.getView(position, convertView, parent);
+            v.setTypeface(Typeface.DEFAULT_BOLD);
+            return v;
+        }
+
+    }
 
 
 }

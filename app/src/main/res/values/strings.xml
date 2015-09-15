@@ -33,11 +33,677 @@
         <item>Transportation</item>
     </string-array>
 
+    <string-array name="titles_array">
+        <item>.net developer </item>
+        <item>abnormal truck driver</item>
+        <item>ac motor tester</item>
+        <item>account assistant</item>
+        <item>account manager</item>
+        <item>accountant</item>
+        <item>accounting administrator</item>
+        <item>accounting assistant</item>
+        <item>accounting clerk</item>
+        <item>accounting controller</item>
+        <item>accounting manager</item>
+        <item>accounting officer</item>
+        <item>accounts admin</item>
+        <item>accounts assistant</item>
+        <item>accounts clerk</item>
+        <item>accounts executive</item>
+        <item>accounts internship</item>
+        <item>accounts payable administrator</item>
+        <item>accounts payable clerk</item>
+        <item>accounts payable controller</item>
+        <item>accounts receivable controller</item>
+        <item>accounts supervisor</item>
+        <item>acquisition marketer</item>
+        <item>active stylists</item>
+        <item>actuarial analyst</item>
+        <item>actuarial assistant</item>
+        <item>actuarial consultant</item>
+        <item>actuarial manager</item>
+        <item>actuarial product and underwriting manager</item>
+        <item>acturial student</item>
+        <item>admin controller</item>
+        <item>administration assistant</item>
+        <item>administration clerk</item>
+        <item>administration coordinator - stellenbosch</item>
+        <item>administration manager</item>
+        <item>administration support</item>
+        <item>administrative assistant</item>
+        <item>administrator</item>
+        <item>advertising sales executive</item>
+        <item>advertising/media sales executive</item>
+        <item>agricultural service technician</item>
+        <item>air freight product manager</item>
+        <item>alarm technician</item>
+        <item>allocations clerk</item>
+        <item>allocator</item>
+        <item>analyst</item>
+        <item>analyst programmer</item>
+        <item>android developer</item>
+        <item>angularjs developer</item>
+        <item>animator / illustrator</item>
+        <item>api developer</item>
+        <item>api manual tester</item>
+        <item>application consultant</item>
+        <item>application developer</item>
+        <item>application engineer</item>
+        <item>application support engineer</item>
+        <item>appointment setter</item>
+        <item>apprentice</item>
+        <item>arabic account manager</item>
+        <item>arabic speaking general manager shipping</item>
+        <item>architect</item>
+        <item>area manager</item>
+        <item>armed guard</item>
+        <item>art director</item>
+        <item>article clerk</item>
+        <item>articles clerk saica</item>
+        <item>artisan</item>
+        <item>asp.net developer</item>
+        <item>asset integrator</item>
+        <item>asset manager</item>
+        <item>associate - forensics</item>
+        <item>associate - investment client management</item>
+        <item>associate - patents</item>
+        <item>associate product manager (cape town)</item>
+        <item>associate-real estate</item>
+        <item>attorney</item>
+        <item>au pair</item>
+        <item>audiologist</item>
+        <item>audit clerk</item>
+        <item>audit manager</item>
+        <item>audit supervisor</item>
+        <item>auditor</item>
+        <item>auto electrician</item>
+        <item>automation engineer</item>
+        <item>automation specialist</item>
+        <item>back-end developer</item>
+        <item>bank administrator</item>
+        <item>banking strategy consultant</item>
+        <item>banqueting manager</item>
+        <item>barista</item>
+        <item>barman</item>
+        <item>bartender</item>
+        <item>beauty therapist</item>
+        <item>bi developer</item>
+        <item>billing manager</item>
+        <item>biokineticist</item>
+        <item>boilermaker</item>
+        <item>bookeeper</item>
+        <item>bpm developer </item>
+        <item>branch accountant</item>
+        <item>branch administrator</item>
+        <item>branch manager</item>
+        <item>brand ambassador</item>
+        <item>brand consultant</item>
+        <item>brand manager</item>
+        <item>bridge engineer</item>
+        <item>bridge engineer (msp)</item>
+        <item>broker consultant</item>
+        <item>bus driver</item>
+        <item>business advisor</item>
+        <item>business analyst</item>
+        <item>business development analyst</item>
+        <item>business development consultant</item>
+        <item>business development manager</item>
+        <item>buyer</item>
+        <item>c# .net developer</item>
+        <item>c# developer</item>
+        <item>c++ developer</item>
+        <item>ca (sa) </item>
+        <item>cad designer</item>
+        <item>cad operator</item>
+        <item>call centre agent</item>
+        <item>candidate attorney</item>
+        <item>candidate quantity surveyor</item>
+        <item>car sales executive</item>
+        <item>career consultant</item>
+        <item>case manager</item>
+        <item>cashbook clerk</item>
+        <item>cashier</item>
+        <item>cfo</item>
+        <item>channel manager</item>
+        <item>chartered accountant</item>
+        <item>chef</item>
+        <item>chemical engineer</item>
+        <item>chief operating officer</item>
+        <item>civil draughtsman</item>
+        <item>civil draughtsperson</item>
+        <item>civil engineer</item>
+        <item>civil site agent</item>
+        <item>civil technician</item>
+        <item>civil technologist</item>
+        <item>claims assessor</item>
+        <item>claims consultant</item>
+        <item>claims handler</item>
+        <item>cleaner</item>
+        <item>client care consultant</item>
+        <item>client liaison</item>
+        <item>client relationship manager</item>
+        <item>clinic administrator</item>
+        <item>clinical applications specialist</item>
+        <item>clinical claims adjudicator</item>
+        <item>clinical consultant</item>
+        <item>clinical nursing specialist - maternity</item>
+        <item>clinical research manager</item>
+        <item>clinical researcher</item>
+        <item>clothing designer</item>
+        <item>cnc machinist</item>
+        <item>cnc programmer</item>
+        <item>coldfusion developer</item>
+        <item>commercial manager</item>
+        <item>commercial underwriter</item>
+        <item>commodity buyer</item>
+        <item>commodity manager</item>
+        <item>communications manager</item>
+        <item>communications officer</item>
+        <item>company secretary</item>
+        <item>compliance consultant</item>
+        <item>compliance manager</item>
+        <item>consultant</item>
+        <item>control and instrumentation designer</item>
+        <item>control and instrumentation engineer</item>
+        <item>control and instrumentation technician</item>
+        <item>control room operator</item>
+        <item>controller</item>
+        <item>conveyancing paralegal</item>
+        <item>conveyancing secretary</item>
+        <item>conveyancing typist</item>
+        <item>coo</item>
+        <item>copy writer</item>
+        <item>corporate financier</item>
+        <item>corporate tax consultant</item>
+        <item>corporate tax manager</item>
+        <item>cost accountant</item>
+        <item>cost analyst</item>
+        <item>costing administrator</item>
+        <item>costing agent</item>
+        <item>costing clerk</item>
+        <item>costing manager</item>
+        <item>credit analyst</item>
+        <item>credit controller</item>
+        <item>credit manager</item>
+        <item>crm developer</item>
+        <item>customer care agent</item>
+        <item>customer care agent r 6900 per month recruiter: quest staffing solutions 3 location: not specified</item>
+        <item>customer care consultant</item>
+        <item>customer support assistant</item>
+        <item>customs entry clerk</item>
+        <item>data analyst</item>
+        <item>data capturer</item>
+        <item>data warehousing analyst</item>
+        <item>database administrator</item>
+        <item>debt collection agent</item>
+        <item>debtors clerk</item>
+        <item>delivery manager</item>
+        <item>delphi developer</item>
+        <item>demand analyst</item>
+        <item>demand planner</item>
+        <item>designer</item>
+        <item>developer</item>
+        <item>diesel mechanic</item>
+        <item>digital sales</item>
+        <item>digital sales manager</item>
+        <item>director</item>
+        <item>director:real estate</item>
+        <item>dispatch controller</item>
+        <item>dispensary manager</item>
+        <item>dispensing pharmacist</item>
+        <item>divisional manager</item>
+        <item>divorce attorney</item>
+        <item>django/python developer</item>
+        <item>draughtsman</item>
+        <item>drill and blast engineer</item>
+        <item>driver</item>
+        <item>driver code 14</item>
+        <item>dtp operator</item>
+        <item>dynamic developer</item>
+        <item>earthmoving mechanic</item>
+        <item>economist</item>
+        <item>electrical engineer</item>
+        <item>electrical engineering technologist</item>
+        <item>electrical technician</item>
+        <item>electrician</item>
+        <item>electronics engineer</item>
+        <item>employee benefits consultant</item>
+        <item>employee services manager</item>
+        <item>engineer</item>
+        <item>engineering manager</item>
+        <item>enrolled nurse</item>
+        <item>enterprise architect</item>
+        <item>entry clerk</item>
+        <item>environmental specialist</item>
+        <item>equity analyst</item>
+        <item>equity and investment analyst</item>
+        <item>erlang developer</item>
+        <item>erp consultant</item>
+        <item>erp system administrator</item>
+        <item>essbase developer</item>
+        <item>estate agent</item>
+        <item>estimator</item>
+        <item>etl developer</item>
+        <item>events &amp; marketing coordinatorr</item>
+        <item>events manager</item>
+        <item>executive assistant</item>
+        <item>export consultant</item>
+        <item>export manager</item>
+        <item>exports administrator</item>
+        <item>external auditor</item>
+        <item>facilitator</item>
+        <item>facilities manager</item>
+        <item>factory manager</item>
+        <item>factory stock controller</item>
+        <item>family practice specialist</item>
+        <item>fica administrator</item>
+        <item>field guide</item>
+        <item>field technician</item>
+        <item>finance administrator</item>
+        <item>finance clerk/creditors clerk</item>
+        <item>finance consultant</item>
+        <item>finance controller</item>
+        <item>finance manager</item>
+        <item>financial accountant</item>
+        <item>financial advisor</item>
+        <item>financial analyst</item>
+        <item>financial clerk</item>
+        <item>financial consultant</item>
+        <item>financial manager</item>
+        <item>financial officer</item>
+        <item>financial planner</item>
+        <item>fitness instructor</item>
+        <item>fitter</item>
+        <item>fleet technician</item>
+        <item>flow manager</item>
+        <item>fmcg administration manager</item>
+        <item>fmcg sales representative</item>
+        <item>fmcg storeman</item>
+        <item>food technologist</item>
+        <item>foreman</item>
+        <item>forensic investigator</item>
+        <item>forex systems analyst</item>
+        <item>forklift driver</item>
+        <item>forlift driver</item>
+        <item>front end developer</item>
+        <item>frontend web developer</item>
+        <item>frontline client liaison</item>
+        <item>full stack developer</item>
+        <item>fund accountant</item>
+        <item>fundraising manager</item>
+        <item>gcc engineer</item>
+        <item>gearbox technician</item>
+        <item>general administrator</item>
+        <item>general worker</item>
+        <item>geologist</item>
+        <item>geotechnical engineer</item>
+        <item>graphic artist</item>
+        <item>graphic designer</item>
+        <item>group accountant</item>
+        <item>group compliance manager</item>
+        <item>hair stylist</item>
+        <item>hardware engineer</item>
+        <item>health &amp; safety manager</item>
+        <item>healthcare consultant</item>
+        <item>heavy truck workshop manager</item>
+        <item>hedge fund accountant</item>
+        <item>help desk technician</item>
+        <item>homeloan administrator</item>
+        <item>hospital pharmacist</item>
+        <item>hotel manager</item>
+        <item>hotel receptionist</item>
+        <item>hr administrator</item>
+        <item>hr admnistrator/assistant</item>
+        <item>hr assistant</item>
+        <item>hr consultant</item>
+        <item>hr manager</item>
+        <item>html developer</item>
+        <item>human resources manager</item>
+        <item>hvac engineer</item>
+        <item>hydrogeologist</item>
+        <item>ict risk manager</item>
+        <item>icu registered nurse</item>
+        <item>immigration officer</item>
+        <item>implementation manager</item>
+        <item>inbound call centre agent</item>
+        <item>industrial engineer</item>
+        <item>information technology manager</item>
+        <item>information technology specialist</item>
+        <item>infrastructure manager</item>
+        <item>instrument specialist</item>
+        <item>instrumentation technician</item>
+        <item>integration analyst</item>
+        <item>integration consultant</item>
+        <item>integration developer</item>
+        <item>intermediate developer</item>
+        <item>intern</item>
+        <item>internal assessor</item>
+        <item>internal audit manager</item>
+        <item>internal auditor</item>
+        <item>internship</item>
+        <item>inventory and distribution manager</item>
+        <item>inventory controller</item>
+        <item>inventory manager</item>
+        <item>investment advisor</item>
+        <item>investment analyst</item>
+        <item>investment specialist</item>
+        <item>invoice clerk</item>
+        <item>ios developer</item>
+        <item>java architect</item>
+        <item>java developer</item>
+        <item>java ee developer</item>
+        <item>junior .net developer</item>
+        <item>junior</item>
+        <item>key account manager</item>
+        <item>kitchen designer</item>
+        <item>lead generator</item>
+        <item>learnership</item>
+        <item>legal advisor</item>
+        <item>legal compliance officer</item>
+        <item>legal secretary</item>
+        <item>lighting sales consultant</item>
+        <item>linux server technician</item>
+        <item>linux systems adminstrator</item>
+        <item>litigation attorney</item>
+        <item>lodge general manager</item>
+        <item>lodge receptionist</item>
+        <item>logistics administrator</item>
+        <item>logistics manager</item>
+        <item>machine operator</item>
+        <item>maintanance manager</item>
+        <item>maintenance coordinator</item>
+        <item>maintenance engineer</item>
+        <item>management accountant</item>
+        <item>marine engineer</item>
+        <item>market analyst</item>
+        <item>marketing agent</item>
+        <item>marketing consultants</item>
+        <item>marketing manager</item>
+        <item>mathematician</item>
+        <item>mechanical engineer</item>
+        <item>media liaison</item>
+        <item>medical administrator</item>
+        <item>medical doctor</item>
+        <item>merchandise planner</item>
+        <item>metallurgist</item>
+        <item>meter reader</item>
+        <item>metrologist</item>
+        <item>microfinance manager</item>
+        <item>microsoft crm developer</item>
+        <item>midwife</item>
+        <item>millwright</item>
+        <item>mine manager</item>
+        <item>mobile developer</item>
+        <item>mobile test analyst</item>
+        <item>mobile tester</item>
+        <item>motor technician</item>
+        <item>multimedia manager</item>
+        <item>municipal engineer</item>
+        <item>municipal services engineer</item>
+        <item>nail technician</item>
+        <item>network administrator</item>
+        <item>ngo finance manager</item>
+        <item>nursing manager</item>
+        <item>office administrator</item>
+        <item>operator</item>
+        <item>oracle dba</item>
+        <item>oracle developer</item>
+        <item>outbound agent</item>
+        <item>paralegal</item>
+        <item>payroll accountant</item>
+        <item>payroll administrator</item>
+        <item>payroll auditor</item>
+        <item>payroll clerk</item>
+        <item>payroll manager</item>
+        <item>payroll officer</item>
+        <item>personal assistant</item>
+        <item>personnel officer</item>
+        <item>pharmacist</item>
+        <item>pharmacy manager</item>
+        <item>php developer</item>
+        <item>planner</item>
+        <item>plant manager</item>
+        <item>portfolio manager </item>
+        <item>postilion developer</item>
+        <item>pr /marketing consultant</item>
+        <item>practice administrator</item>
+        <item>practice manager</item>
+        <item>private banker</item>
+        <item>process manager</item>
+        <item>procurement manager</item>
+        <item>procurement officer</item>
+        <item>product accounting administrator</item>
+        <item>product accounting manager</item>
+        <item>product analyst</item>
+        <item>product development manager</item>
+        <item>product manager</item>
+        <item>product owner</item>
+        <item>professional nurse</item>
+        <item>project administrator</item>
+        <item>project coordinator</item>
+        <item>project engineer</item>
+        <item>project manager</item>
+        <item>project planner</item>
+        <item>psychometrist</item>
+        <item>public relations manager</item>
+        <item>python developer</item>
+        <item>qa tester</item>
+        <item>qlikview consultant</item>
+        <item>quality assurance</item>
+        <item>quantitative analyst</item>
+        <item>quantity surveyor</item>
+        <item>receiving clerk</item>
+        <item>receiving manager</item>
+        <item>receptionist</item>
+        <item>recruitment consultant</item>
+        <item>refrigeration technician</item>
+        <item>registered midwife</item>
+        <item>registered nurse</item>
+        <item>registered professional nurse</item>
+        <item>relationship consultant</item>
+        <item>reliability engineer</item>
+        <item>rental agent</item>
+        <item>researcher</item>
+        <item>resident engineer</item>
+        <item>resource analyst</item>
+        <item>restaurant manager</item>
+        <item>retail manager</item>
+        <item>retail planner</item>
+        <item>retail promoter</item>
+        <item>retail sales and administration consultant</item>
+        <item>retail sales assistant</item>
+        <item>retail managers</item>
+        <item>retentions agent</item>
+        <item>revenue analyst</item>
+        <item>rigger</item>
+        <item>risk analyst</item>
+        <item>risk manager</item>
+        <item>risk officer</item>
+        <item>road design engineer</item>
+        <item>route controller</item>
+        <item>rpg developer</item>
+        <item>ruby on rails developer</item>
+        <item>safety officer</item>
+        <item>sage crm consultants</item>
+        <item>sage developer</item>
+        <item>saica clerk</item>
+        <item>sales administrators</item>
+        <item>sales advisor</item>
+        <item>sales agent</item>
+        <item>sales and marketing manager</item>
+        <item>sales consultant</item>
+        <item>sales coordinator</item>
+        <item>sales engineer</item>
+        <item>sales executive</item>
+        <item>sales manager</item>
+        <item>sales representative</item>
+        <item>sales support assistant</item>
+        <item>sap abap consultant</item>
+        <item>sas developer</item>
+        <item>scrum master</item>
+        <item>secretary</item>
+        <item>security administrator</item>
+        <item>security analyst</item>
+        <item>security guard</item>
+        <item>security manager</item>
+        <item>security officer</item>
+        <item>senior .net developer</item>
+        <item>sensual massage therapist</item>
+        <item>seo specialist</item>
+        <item>service advisor</item>
+        <item>service consultant</item>
+        <item>service controller</item>
+        <item>service desk agent</item>
+        <item>service manager</item>
+        <item>shaft surveyor</item>
+        <item>sharepoint administrator</item>
+        <item>sharepoint developer</item>
+        <item>she compliance officer</item>
+        <item>she manager</item>
+        <item>shift manager</item>
+        <item>shipping clerk</item>
+        <item>shipping manager</item>
+        <item>short term insurance broker</item>
+        <item>short term insurance consultant</item>
+        <item>short term insurance representative</item>
+        <item>short term underwriter</item>
+        <item>site agent</item>
+        <item>site engineer</item>
+        <item>site manager</item>
+        <item>site surveyor</item>
+        <item>smalltalk developer</item>
+        <item>social investment specialist</item>
+        <item>social media consultant</item>
+        <item>social worker</item>
+        <item>software architect</item>
+        <item>software developer</item>
+        <item>software engineer</item>
+        <item>software tester</item>
+        <item>solar electrical engineer</item>
+        <item>solution architect</item>
+        <item>sonographer</item>
+        <item>sourcing and recruiting consultant</item>
+        <item>sourcing manager</item>
+        <item>sous chef</item>
+        <item>spa administrator</item>
+        <item>spa manager</item>
+        <item>spa therapist</item>
+        <item>sql database developer</item>
+        <item>sql dba</item>
+        <item>sql developer</item>
+        <item>start up manager</item>
+        <item>statistical analyst</item>
+        <item>stock controller</item>
+        <item>store manager</item>
+        <item>storeman</item>
+        <item>structural engineer</item>
+        <item>structural technician</item>
+        <item>structural technologist</item>
+        <item>student advisor</item>
+        <item>student counsellor</item>
+        <item>stylist</item>
+        <item>superintendent</item>
+        <item>supply chain analyst</item>
+        <item>supply chain manager</item>
+        <item>supply planner</item>
+        <item>support engineer</item>
+        <item>surveyor</item>
+        <item>switchboard operator</item>
+        <item>syspro specialist</item>
+        <item>systems administrator</item>
+        <item>systems developer</item>
+        <item>systems engineer</item>
+        <item>talent acquisition manager</item>
+        <item>tax accountant</item>
+        <item>tax compliance officer</item>
+        <item>teacher</item>
+        <item>team lead</item>
+        <item>technical advisor</item>
+        <item>technical buyer</item>
+        <item>technical manager</item>
+        <item>technician</item>
+        <item>telemarketer</item>
+        <item>tender administrator</item>
+        <item>test analyst</item>
+        <item>test manager</item>
+        <item>trade assistant</item>
+        <item>traffic fines administrator</item>
+        <item>trainer</item>
+        <item>tranport manager</item>
+        <item>transformation consultant</item>
+        <item>transport analyst</item>
+        <item>transport controller</item>
+        <item>transport engineer</item>
+        <item>transport manager</item>
+        <item>transportation engineer</item>
+        <item>travel consultant</item>
+        <item>trip advisor</item>
+        <item>truck driver</item>
+        <item>truck electrician</item>
+        <item>truck mechanic</item>
+        <item>truck parts sales executive</item>
+        <item>truck working supervisor</item>
+        <item>trust administrator</item>
+        <item>tu planner</item>
+        <item>turbine part repair manufacturing planner</item>
+        <item>turner &amp; machinist</item>
+        <item>ui/ux developer</item>
+        <item>underground boilermaker</item>
+        <item>underground fitter</item>
+        <item>underground rigger</item>
+        <item>underwriter</item>
+        <item>ux designer</item>
+        <item>validation officer</item>
+        <item>validations co ordinator</item>
+        <item>vat consultant</item>
+        <item>vb .net developer</item>
+        <item>vehicle sales consultant</item>
+        <item>venture accounting</item>
+        <item>verification analyst</item>
+        <item>vip payroll administrator</item>
+        <item>visual merchandiser</item>
+        <item>warehouse administrator</item>
+        <item>warehouse controller</item>
+        <item>warehouse manager</item>
+        <item>warehouse supervisor</item>
+        <item>warranty clerk</item>
+        <item>warranty credit controller</item>
+        <item>waste engineer / technologist</item>
+        <item>water design engineer / technologist (msp)</item>
+        <item>water engineer</item>
+        <item>water engineer/technologist</item>
+        <item>water infrastructure design engineer</item>
+        <item>water resources engineer</item>
+        <item>water technologist</item>
+        <item>wealth consultant</item>
+        <item>wealth investment analyst</item>
+        <item>wealth manager</item>
+        <item>wealth planner</item>
+        <item>web designer</item>
+        <item>web developer</item>
+        <item>website administrator</item>
+        <item>websphere mq/message broker specialist</item>
+        <item>welder</item>
+        <item>windows mobile app developer</item>
+        <item>wireless technician</item>
+        <item>wordpress developer</item>
+        <item>workshop manager</item>
 
-    <string name="search_hint">Search Jobs</string>
+    </string-array>
+
+
+    <string name="search_hint">Search Moxomo</string>
     <string name="search_button_text">Search</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="job_title_instruction">Please enter positions you would like us to notify you of.</string>
+    <string name="full_name">Full Name:</string>
+    <string name="email">Email:</string>
+    <string name="register">Register</string>
+    <string name="update">Update</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_browser">BrowserActivity</string>
 
 
 </resources>

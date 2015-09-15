@@ -12,8 +12,8 @@
         android:layout_height="80dp"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="8dp"
-        android:focusable="false"
-        android:clickable="false"/>
+        android:clickable="false"
+        android:focusable="false" />
 
     <!-- Job Title -->
     <TextView
@@ -22,10 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
+        android:clickable="false"
+        android:focusable="false"
         android:textSize="@dimen/title"
         android:textStyle="bold"
-        android:focusable="false"
-        android:clickable="false"
         />
 
     <!-- Location -->
@@ -36,9 +36,9 @@
         android:layout_below="@id/title"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
-        android:textSize="@dimen/location"
-        android:focusable="false"
         android:clickable="false"
+        android:focusable="false"
+        android:textSize="@dimen/location"
         />
 
     <!-- Description -->
@@ -49,24 +49,25 @@
         android:layout_below="@id/location"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/thumbnail"
+        android:clickable="false"
+        android:focusable="false"
         android:textColor="@color/description"
         android:textSize="@dimen/description"
-        android:focusable="false"
-        android:clickable="false"
         />
 
     <!-- time -->
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/description"
+        android:clickable="false"
+        android:focusable="false"
         android:textColor="@color/time"
         android:textSize="@dimen/time"
-        android:focusable="false"
-        android:clickable="false"
         />
 
 

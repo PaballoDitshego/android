@@ -9,20 +9,20 @@ import org.parceler.ParcelPropertyConverter;
 public class Vacancy {
 
 
-    private Long id;
-    private String job_title;
-    private String description;
-    private String company_name;
-    private String location;
-    private String min_qual;
-    private String duties;
+    public Long id;
+    public String job_title;
+    public String description;
+    public String company_name;
+    public String location;
+    public String min_qual;
+    public String duties;
 
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
-    private DateTime advertDate;
+    public DateTime advertDate;
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
-    private DateTime closingDate;
-    private String website;
-    private String imageUrl;
+    public DateTime closingDate;
+    public String website;
+    public String imageUrl;
 
     public String getCompany_name() {
         return company_name;

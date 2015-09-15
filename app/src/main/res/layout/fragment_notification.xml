@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="za.co.moxomo.NotificationFragment">
+
+    <TextView
+        android:id="@+id/notification_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Notifications"
+        android:textSize="17dp"
+        android:textStyle="bold"
+
+        />
+
+    <ListView
+        android:id="@+id/notification_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/notification_text"
+        android:descendantFocusability="blocksDescendants"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1dp"
+
+        android:listSelector="@drawable/list_row_selector" />
+
+
+    <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/notification_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:clickable="false"
+        android:focusable="false"
+        android:indeterminate="false"
+        android:visibility="gone" />
+
+
+    <TextView
+        android:id="@+id/notifications_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="No notifications."
+        android:visibility="gone" />
+
+</RelativeLayout>

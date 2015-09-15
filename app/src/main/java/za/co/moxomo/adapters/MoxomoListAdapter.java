@@ -1,11 +1,14 @@
-package za.co.moxomo;
+package za.co.moxomo.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +17,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import za.co.moxomo.FontCache;
+import za.co.moxomo.R;
+import za.co.moxomo.Vacancy;
 
 /**
  * Created by Paballo Ditshego on 5/14/15.
@@ -24,6 +31,8 @@ public class MoxomoListAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Vacancy> vacancyItems = new ArrayList<>();
+    private int lastPosition = -1;
+
 
     public MoxomoListAdapter(Activity activity) {
         this.activity = activity;
@@ -81,15 +90,28 @@ public class MoxomoListAdapter extends BaseAdapter {
         Vacancy v = vacancyItems.get(position);
         if (v != null) {
 
+
             Picasso.with(activity).load(v.getImageUrl()).into(viewHolder.thumbNail);
+            Typeface typeface = FontCache.get("Roboto-Thin.ttf", activity);
             viewHolder.title.setText(v.getJob_title());
+            viewHolder.title.setTypeface(typeface);
+
             viewHolder.location.setText(v.getLocation());
             viewHolder.description.setText(v.getDescription());
+            Typeface regular = FontCache.get("Roboto-Regular.ttf", activity);
+            viewHolder.description.setTypeface(regular);
             viewHolder.time.setText(DateUtils.getRelativeDateTimeString(activity,
                             v.getAdvertDate().getMillis(), DateUtils.SECOND_IN_MILLIS,
                             DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL)
             );
+            viewHolder.time.setTypeface(regular);
 
+            //
+            Animation animation = AnimationUtils.loadAnimation(activity, (position > lastPosition) ?
+                    R.anim.up_from_bottom : R.anim.down_from_top);
+            // Animation animation = AnimationUtils.loadAnimation(activity,  R.anim.up_from_bottom );
+            convertView.startAnimation(animation);
+            lastPosition = position;
 
         }
         return convertView;
@@ -122,7 +144,7 @@ public class MoxomoListAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
-    public void clearList(){
+    public void clearList() {
         vacancyItems.clear();
         notifyDataSetChanged();
     }

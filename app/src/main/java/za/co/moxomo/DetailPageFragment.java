@@ -1,8 +1,8 @@
 package za.co.moxomo;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,19 +39,11 @@ import za.co.moxomo.events.DetailViewEvent;
 import za.co.moxomo.events.DetailViewInitEvent;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DetailViewFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DetailViewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class DetailViewFragment extends Fragment {
+public class DetailPageFragment extends Fragment {
 
     public static Long id = null;
     private static String URL = "https://moxomoapp.appspot.com/_ah/api/vacancyEndpoint/v1.1/vacancy/";
-    private OnFragmentInteractionListener mListener;
+    private OnApplyButtonInteractionListener mListener;
     private Vacancy vacancy = null;
     private TextView title;
     private ImageView image;
@@ -65,16 +58,16 @@ public class DetailViewFragment extends Fragment {
     private Button apply;
     private ShareActionProvider shareAction;
     private Intent shareIntent;
+    private ProgressBar progressBar;
 
 
-    public DetailViewFragment() {
+    public DetailPageFragment() {
         // Required empty public constructor
     }
 
-    public static DetailViewFragment newInstance() {
+    public static DetailPageFragment newInstance() {
 
-
-        return new DetailViewFragment();
+        return new DetailPageFragment();
     }
 
     @Override
@@ -105,6 +98,13 @@ public class DetailViewFragment extends Fragment {
         company = (TextView) view.findViewById(R.id.company);
         closingDate = (TextView) view.findViewById(R.id.time);
         apply = (Button) view.findViewById(R.id.apply);
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity) getActivity();
+            progressBar = activity.getProgressBar();
+        } else {
+            NotificationActivity activity = (NotificationActivity) getActivity();
+            progressBar = activity.getProgressBar();
+        }
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,7 +151,7 @@ public class DetailViewFragment extends Fragment {
 
     public void onButtonPressed(String url) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(url);
+            mListener.onApplyButtonInteraction(url);
         }
     }
 
@@ -172,15 +172,13 @@ public class DetailViewFragment extends Fragment {
 
     }
 
-    public void getEntry(Long id) {
+    public void getEntry(final Long id) {
 
 
         String url = URL + id;
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Loading .....");
-        progressDialog.setIndeterminate(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+
+
+        progressBar.setVisibility(View.VISIBLE);
 
         JsonObjectRequest request = new JsonObjectRequest(
 
@@ -190,16 +188,20 @@ public class DetailViewFragment extends Fragment {
                     public void onResponse(JSONObject jsonObject) {
                         try {
 
-                            progressDialog.dismiss();
+                            // progressDialog.dismiss();
+                            progressBar.setVisibility(View.INVISIBLE);
                             vacancy = parse(jsonObject);
                             if (vacancy != null) {
                                 updateUI(vacancy);
-                                MainActivity activity = (MainActivity) getActivity();
-                                activity.getPager().setCurrentItem(1);
+                                if (getActivity() instanceof MainActivity) {
+                                    MainActivity activity = (MainActivity) getActivity();
+                                    activity.getPager().setCurrentItem(1);
+                                }
                             }
 
                         } catch (JSONException e) {
-                            progressDialog.dismiss();
+                            progressBar.setVisibility(View.INVISIBLE);
+
                             Toast.makeText(getActivity(), "Unable to parse data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -209,8 +211,10 @@ public class DetailViewFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        progressDialog.dismiss();
+                        progressBar.setVisibility(View.INVISIBLE);
+
                         Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("stupid error", id.toString());
                     }
                 });
 
@@ -234,11 +238,10 @@ public class DetailViewFragment extends Fragment {
                     public void onResponse(JSONObject jsonObject) {
                         try {
 
-
                             vacancy = parse(jsonObject);
                             if (vacancy != null) {
                                 updateUI(vacancy);
-                                //  bus.post(new BrowserViewInitEvent(vacancy.getWebsite()));
+
 
                             }
 
@@ -271,7 +274,9 @@ public class DetailViewFragment extends Fragment {
             title.setText(result.getJob_title());
             Picasso.with(getActivity()).load(result.getImageUrl()).into(image);
             location.setText(result.getLocation());
+            Typeface regular = FontCache.get("Roboto-Regular.ttf", getActivity());
             description.setText(result.getDescription());
+            description.setTypeface(regular);
             qualifications.setText(result.getMin_qual());
             responsibilities.setText(result.getDuties());
             company.setText(result.getCompany_name());
@@ -329,7 +334,7 @@ public class DetailViewFragment extends Fragment {
         if (json.has("duties")) {
             duties = json.getString("duties");
         }
-        String category = json.getString("category");
+
         String company = "";
         if (json.has("company_name")) {
             company = json.getString("company_name");
@@ -348,21 +353,21 @@ public class DetailViewFragment extends Fragment {
         record.setDuties(duties);
         record.setWebsite(website);
         record.setCompany_name(company);
-
         record.setMin_qual(min_qual);
 
 
         return record;
     }
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnFragmentInteractionListener) activity;
+            mListener = (OnApplyButtonInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnSearchInteractionListener");
+                    + " must implement OnApplyButtonInteractionListener");
         }
     }
 
@@ -373,19 +378,9 @@ public class DetailViewFragment extends Fragment {
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
+    public interface OnApplyButtonInteractionListener {
 
-        void onFragmentInteraction(String url);
+        void onApplyButtonInteraction(String url);
     }
 
 

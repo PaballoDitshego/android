@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="za.co.moxomo.TimeLineFragment">
+    tools:context="za.co.moxomo.HomePageFragment">
 
     <Spinner
         android:id="@+id/categories"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
+        style="@style/SpinnerCustomSpin"
+        android:layout_width="match_parent"
 
 
-        />
+        android:layout_height="wrap_content" />
+
+
+    />
 
     <ListView android:id="@+id/list" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/list_divider"
-        android:layout_below="@id/categories"
-        android:dividerHeight="1dp"
         android:layout_alignParentLeft="true"
-        android:listSelector="@drawable/list_row_selector"
+        android:layout_below="@id/categories"
         android:descendantFocusability="blocksDescendants"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_row_selector"
          />
 
 
@@ -32,22 +34,22 @@
         android:id="@+id/loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="false"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="gone"
+        android:clickable="false"
         android:focusable="false"
-        android:clickable="false"/>
+        android:indeterminate="false"
+        android:visibility="gone" />
 
 
     <TextView android:id="@+id/empty" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No matching records found."
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="gone"
-        android:focusable="false"
         android:clickable="false"
+        android:focusable="false"
+        android:text="No matching records found."
+        android:visibility="gone"
         />
 
 </RelativeLayout>
