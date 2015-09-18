@@ -203,7 +203,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void storeRegIdinSharedPref(Context context, String regId,
                                         String emailID, String fullNames, String area, String keywords) {
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false).apply();
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("sentTokenToServer", false).apply();
         SharedPreferences prefs = getSharedPreferences("UserDetails",
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -253,7 +253,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
                         } catch (Exception e) {
-                            //  mProgressBar.setVisibility(View.INVISIBLE);
+                            mProgressBar.setVisibility(View.INVISIBLE);
 
 
                         }

@@ -68,9 +68,6 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
         mListView.setEmptyView(view.findViewById(R.id.notifications_empty));
         view.findViewById(R.id.notification_loading).setVisibility(View.INVISIBLE);
 
-        //  NotificationDatabaseHelper handler = new NotificationDatabaseHelper(getActivity());
-        //   db = handler.getWritableDatabase();
-
 
         notificationsAdapter = new NotificationsCursorAdapter(getActivity(),
                 null,
@@ -116,8 +113,8 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Uri deleteUri = ContentUris.withAppendedId(NotificationsContentProvider.CONTENT_URI, id);
-                getActivity().getContentResolver().delete(deleteUri, null, null);
-                //  update(mCursor);
+
+                getActivity().getContentResolver().delete(deleteUri, "_id=" + id, null);
 
                 return false;
             }
