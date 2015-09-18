@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.greenrobot.event.EventBus;
 import za.co.moxomo.adapters.NotificationsCursorAdapter;
@@ -115,7 +116,7 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
                 Uri deleteUri = ContentUris.withAppendedId(NotificationsContentProvider.CONTENT_URI, id);
 
                 getActivity().getContentResolver().delete(deleteUri, "_id=" + id, null);
-
+                Toast.makeText(getActivity(), "Item Deleted", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
