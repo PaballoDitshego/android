@@ -189,7 +189,7 @@ public class DetailPageFragment extends Fragment {
 
 
         String url = URL + id;
-        
+
         if (getActivity() instanceof MainActivity) {
             progressBar.setVisibility(View.VISIBLE);
 

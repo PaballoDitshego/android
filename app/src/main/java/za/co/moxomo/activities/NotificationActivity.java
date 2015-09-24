@@ -44,8 +44,6 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
         progressBar.setVisibility(View.VISIBLE);
-        detailPageFragment = DetailPageFragment.newInstance();
-        fm.beginTransaction().addToBackStack("df").add(R.id.frame, detailPageFragment).commit();
 
         Intent intent = getIntent();
 
@@ -72,9 +70,10 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
                         detailPageFragment = DetailPageFragment.newInstance();
                     }
 
-
+                    fm.beginTransaction().addToBackStack("df").add(R.id.frame, detailPageFragment).commit();
                     detailPageFragment.getEntry(Long.parseLong(action_string));
                     break;
+
                 default:
                     break;
             }
@@ -109,7 +108,7 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
             webViewFragment = WebViewFragment.newInstance(url);
             webViewFragment.setRetainInstance(true);
         }
-        fm.beginTransaction().addToBackStack("wv").replace(R.id.frame, webViewFragment).commit();
+        fm.beginTransaction().addToBackStack("wv").add(R.id.frame, webViewFragment).commit();
 
 
     }

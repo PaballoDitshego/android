@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/detail_view_color"
-    tools:context="za.co.moxomo.DetailPageFragment"
+    tools:context="za.co.moxomo.fragments.DetailPageFragment"
     >
 
     <RelativeLayout
