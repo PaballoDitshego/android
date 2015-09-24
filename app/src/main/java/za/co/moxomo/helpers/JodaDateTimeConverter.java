@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.helpers;
 
 import org.joda.time.DateTime;
 import org.parceler.ParcelConverter;

@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.fragments;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -15,6 +15,9 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import de.greenrobot.event.EventBus;
+import za.co.moxomo.R;
+import za.co.moxomo.activities.MainActivity;
+import za.co.moxomo.activities.NotificationActivity;
 import za.co.moxomo.events.BrowserViewEvent;
 import za.co.moxomo.events.PageBackEvent;
 

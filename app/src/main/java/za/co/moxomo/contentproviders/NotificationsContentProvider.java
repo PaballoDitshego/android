@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.contentproviders;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

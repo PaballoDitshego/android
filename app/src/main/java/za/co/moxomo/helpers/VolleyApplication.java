@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.helpers;
 
 import android.app.Application;
 
@@ -14,17 +14,18 @@ private static VolleyApplication sInstance;
 
 private RequestQueue mRequestQueue;
 
+        public synchronized static VolleyApplication getInstance() {
+                return sInstance;
+        }
+
 @Override
 public void onCreate() {
+
         super.onCreate();
 
         mRequestQueue = Volley.newRequestQueue(this);
 
         sInstance = this;
-        }
-
-public synchronized static VolleyApplication getInstance() {
-        return sInstance;
         }
 
 public RequestQueue getRequestQueue() {

@@ -18,9 +18,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import za.co.moxomo.FontCache;
 import za.co.moxomo.R;
-import za.co.moxomo.Vacancy;
+import za.co.moxomo.helpers.FontCache;
+import za.co.moxomo.model.Vacancy;
 
 /**
  * Created by Paballo Ditshego on 5/14/15.

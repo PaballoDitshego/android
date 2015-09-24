@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -35,8 +35,14 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import de.greenrobot.event.EventBus;
+import za.co.moxomo.R;
+import za.co.moxomo.activities.MainActivity;
+import za.co.moxomo.activities.NotificationActivity;
 import za.co.moxomo.events.DetailViewEvent;
 import za.co.moxomo.events.DetailViewInitEvent;
+import za.co.moxomo.helpers.FontCache;
+import za.co.moxomo.helpers.VolleyApplication;
+import za.co.moxomo.model.Vacancy;
 
 
 public class DetailPageFragment extends Fragment {
@@ -74,9 +80,9 @@ public class DetailPageFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setHasOptionsMenu(true);
         shareIntent = new Intent(Intent.ACTION_SEND)
-
                 .setType("text/plain");
 
     }
@@ -86,6 +92,15 @@ public class DetailPageFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_detail_view, container, false);
+
+        if (getActivity() instanceof MainActivity) {
+            MainActivity activity = (MainActivity) getActivity();
+            progressBar = activity.getProgressBar();
+
+        } else {
+            NotificationActivity activity = (NotificationActivity) getActivity();
+            progressBar = activity.getProgressBar();
+        }
 
 
         mScrollView = (ScrollView) view.findViewById(R.id.scrollView);
@@ -98,13 +113,8 @@ public class DetailPageFragment extends Fragment {
         company = (TextView) view.findViewById(R.id.company);
         closingDate = (TextView) view.findViewById(R.id.time);
         apply = (Button) view.findViewById(R.id.apply);
-        if (getActivity() instanceof MainActivity) {
-            MainActivity activity = (MainActivity) getActivity();
-            progressBar = activity.getProgressBar();
-        } else {
-            NotificationActivity activity = (NotificationActivity) getActivity();
-            progressBar = activity.getProgressBar();
-        }
+
+
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +146,7 @@ public class DetailPageFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         if (savedInstanceState != null) {
 
             vacancy = Parcels.unwrap(savedInstanceState.getParcelable("values"));
@@ -154,6 +165,7 @@ public class DetailPageFragment extends Fragment {
             mListener.onApplyButtonInteraction(url);
         }
     }
+
 
     @Override
     public void onDestroy() {
@@ -175,10 +187,14 @@ public class DetailPageFragment extends Fragment {
     public void getEntry(final Long id) {
 
 
+
         String url = URL + id;
+        
+        if (getActivity() instanceof MainActivity) {
+            progressBar.setVisibility(View.VISIBLE);
 
+        }
 
-        progressBar.setVisibility(View.VISIBLE);
 
         JsonObjectRequest request = new JsonObjectRequest(
 
@@ -188,7 +204,7 @@ public class DetailPageFragment extends Fragment {
                     public void onResponse(JSONObject jsonObject) {
                         try {
 
-                            // progressDialog.dismiss();
+
                             progressBar.setVisibility(View.INVISIBLE);
                             vacancy = parse(jsonObject);
                             if (vacancy != null) {
@@ -223,6 +239,7 @@ public class DetailPageFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
+        // progressBar.setVisibility(View.VISIBLE);
         VolleyApplication.getInstance().getRequestQueue().add(request);
     }
 
@@ -363,6 +380,7 @@ public class DetailPageFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         try {
             mListener = (OnApplyButtonInteractionListener) activity;
         } catch (ClassCastException e) {

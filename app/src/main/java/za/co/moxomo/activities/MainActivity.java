@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.activities;
 
 
 import android.app.SearchManager;
@@ -23,9 +23,14 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import de.greenrobot.event.EventBus;
+import za.co.moxomo.R;
 import za.co.moxomo.adapters.ViewPagerAdapter;
 import za.co.moxomo.events.DetailViewEvent;
 import za.co.moxomo.events.SearchEvent;
+import za.co.moxomo.fragments.DetailPageFragment;
+import za.co.moxomo.fragments.HomePageFragment;
+import za.co.moxomo.fragments.SearchResultsFragment;
+import za.co.moxomo.helpers.PageTransformer;
 
 
 public class MainActivity extends AppCompatActivity implements HomePageFragment.OnHomeListInteractionListener,

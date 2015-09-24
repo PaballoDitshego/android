@@ -1,8 +1,10 @@
-package za.co.moxomo;
+package za.co.moxomo.model;
 
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
 import org.parceler.ParcelPropertyConverter;
+
+import za.co.moxomo.helpers.JodaDateTimeConverter;
 
 
 @Parcel

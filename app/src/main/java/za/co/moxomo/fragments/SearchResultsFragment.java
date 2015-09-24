@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.fragments;
 
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -33,8 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import za.co.moxomo.R;
+import za.co.moxomo.activities.MainActivity;
 import za.co.moxomo.adapters.MoxomoListAdapter;
 import za.co.moxomo.events.SearchEvent;
+import za.co.moxomo.helpers.FontCache;
+import za.co.moxomo.helpers.VolleyApplication;
+import za.co.moxomo.model.Vacancy;
 
 
 /**

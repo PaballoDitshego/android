@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.gcm;
 
 /**
  * Created by Paballo Ditshego on 8/22/15.
@@ -16,6 +16,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
+
+import za.co.moxomo.R;
 
 public class RegistrationIntentService extends IntentService {
 

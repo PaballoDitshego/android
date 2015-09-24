@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.gcm;
 
 /**
  * Created by Paballo Ditshego on 8/22/15.

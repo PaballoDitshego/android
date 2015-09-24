@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.helpers;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

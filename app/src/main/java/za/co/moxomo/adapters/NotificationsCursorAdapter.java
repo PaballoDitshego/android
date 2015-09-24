@@ -19,8 +19,8 @@ import org.joda.time.DateTime;
 
 import java.util.Date;
 
-import za.co.moxomo.FontCache;
 import za.co.moxomo.R;
+import za.co.moxomo.helpers.FontCache;
 
 /**
  * Created by Paballo Ditshego on 7/31/15.

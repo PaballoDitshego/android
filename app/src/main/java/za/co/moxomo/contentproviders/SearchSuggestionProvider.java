@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.contentproviders;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;
@@ -19,7 +19,7 @@ import za.co.moxomo.databasehelpers.SearchSuggestionDatabaseHelper;
  */
 public class SearchSuggestionProvider extends ContentProvider {
 
-    private static final String PROVIDER_NAME = "za.co.moxomo.SEARCH";
+    private static final String PROVIDER_NAME = "za.co.moxomo.contentproviders.SEARCH";
     private static final String URL = "content://" + PROVIDER_NAME + "/suggestions";
     private static final String SUGGESTIONS_TABLE_NAME = "search_strings";
     private static final Uri CONTENT_URI = Uri.parse(URL);

@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.gcm;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -13,6 +13,11 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.gcm.GcmListenerService;
 
 import java.util.Calendar;
+
+import za.co.moxomo.R;
+import za.co.moxomo.activities.NotificationActivity;
+import za.co.moxomo.contentproviders.NotificationsContentProvider;
+import za.co.moxomo.helpers.ApplicationConstants;
 
 /**
  * Created by Paballo Ditshego on 7/28/15.

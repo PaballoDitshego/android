@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.helpers;
 
 /**
  * Created by Paballo Ditshego on 7/29/15.

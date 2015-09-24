@@ -54,6 +54,7 @@ public class NotificationDatabaseHelper extends SQLiteOpenHelper {
         Cursor mCursor = db.query(true, TABLE_NOTIFICATIONS, new String[]{
                         COLUMN_ID, TYPE, ACTION_STRING}, COLUMN_ID + "=" + rowId,
                 null, null, null, null, null);
+
         if (mCursor != null) {
             mCursor.moveToFirst();
         }

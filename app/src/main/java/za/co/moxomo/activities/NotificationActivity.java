@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.activities;
 
 
 import android.content.Intent;
@@ -9,12 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 
+import za.co.moxomo.R;
 import za.co.moxomo.databasehelpers.NotificationDatabaseHelper;
+import za.co.moxomo.fragments.DetailPageFragment;
+import za.co.moxomo.fragments.WebViewFragment;
+import za.co.moxomo.helpers.ApplicationConstants;
 
 /**
- * The activity that handles pendingintents, also used by other activities to show webpages
+ * The activity that handles pendingintents, also used as the webview activity
  */
 
 
@@ -37,8 +42,12 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Intent intent = getIntent();
         progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+        progressBar.setVisibility(View.VISIBLE);
+        detailPageFragment = DetailPageFragment.newInstance();
+        fm.beginTransaction().addToBackStack("df").add(R.id.frame, detailPageFragment).commit();
+
+        Intent intent = getIntent();
 
 
         NotificationDatabaseHelper helper = new NotificationDatabaseHelper(this);
@@ -62,8 +71,9 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
                     if (detailPageFragment == null) {
                         detailPageFragment = DetailPageFragment.newInstance();
                     }
+
+
                     detailPageFragment.getEntry(Long.parseLong(action_string));
-                    fm.beginTransaction().addToBackStack("df").add(R.id.frame, detailPageFragment).commit();
                     break;
                 default:
                     break;
@@ -99,15 +109,13 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
             webViewFragment = WebViewFragment.newInstance(url);
             webViewFragment.setRetainInstance(true);
         }
-        fm.beginTransaction().addToBackStack("wv").add(R.id.frame, webViewFragment).commit();
+        fm.beginTransaction().addToBackStack("wv").replace(R.id.frame, webViewFragment).commit();
 
 
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-
-
         super.onSaveInstanceState(savedInstanceState);
     }
 

@@ -1,9 +1,10 @@
-package za.co.moxomo;
+package za.co.moxomo.fragments;
 
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +13,10 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,15 +25,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import de.greenrobot.event.EventBus;
+import za.co.moxomo.R;
+import za.co.moxomo.activities.NotificationActivity;
 import za.co.moxomo.adapters.NotificationsCursorAdapter;
+import za.co.moxomo.contentproviders.NotificationsContentProvider;
 import za.co.moxomo.events.DetailViewEvent;
+import za.co.moxomo.helpers.ApplicationConstants;
+import za.co.moxomo.helpers.FontCache;
 
 
 public class NotificationFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
     private EventBus bus = EventBus.getDefault();
-    // private SQLiteDatabase db;
+    private SQLiteDatabase db;
     private NotificationsCursorAdapter notificationsAdapter;
     private ListView mListView;
     private CursorLoader cursorLoader;
@@ -110,16 +119,8 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
 
             }
         });
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Uri deleteUri = ContentUris.withAppendedId(NotificationsContentProvider.CONTENT_URI, id);
 
-                getActivity().getContentResolver().delete(deleteUri, "_id=" + id, null);
-                Toast.makeText(getActivity(), "Item Deleted", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+        registerForContextMenu(mListView);
 
         return view;
     }
@@ -145,6 +146,30 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
                 null, null, null, null);
         return cursorLoader;
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId() == R.id.notification_list) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+            menu.setHeaderTitle("Notifications");
+            String[] menuItems = getResources().getStringArray(R.array.context_menu_items);
+            for (int i = 0; i < menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Uri deleteUri = ContentUris.withAppendedId(NotificationsContentProvider.CONTENT_URI, info.id);
+        getActivity().getContentResolver().delete(deleteUri, "_id=" + info.id, null);
+        Toast.makeText(getActivity(), "Item Deleted", Toast.LENGTH_SHORT).show();
+
+        return true;
     }
 
     @Override

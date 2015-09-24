@@ -1,4 +1,4 @@
-package za.co.moxomo;
+package za.co.moxomo.activities;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -33,6 +33,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+
+import za.co.moxomo.R;
+import za.co.moxomo.helpers.ApplicationConstants;
+import za.co.moxomo.helpers.Utility;
+import za.co.moxomo.helpers.VolleyApplication;
 
 
 public class ProfileActivity extends AppCompatActivity {

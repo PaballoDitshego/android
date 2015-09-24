@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import za.co.moxomo.DetailPageFragment;
-import za.co.moxomo.HomePageFragment;
-import za.co.moxomo.NotificationFragment;
-import za.co.moxomo.SearchResultsFragment;
+import za.co.moxomo.fragments.DetailPageFragment;
+import za.co.moxomo.fragments.HomePageFragment;
+import za.co.moxomo.fragments.NotificationFragment;
+import za.co.moxomo.fragments.SearchResultsFragment;
 
 /**
  * Created by Paballo Ditshego on 5/19/15.
