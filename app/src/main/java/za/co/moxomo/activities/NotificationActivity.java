@@ -36,6 +36,7 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_notification);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
@@ -44,13 +45,27 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
         progressBar.setVisibility(View.VISIBLE);
+        handleIntent(getIntent());
 
-        Intent intent = getIntent();
 
 
-        NotificationDatabaseHelper helper = new NotificationDatabaseHelper(this);
+    }
+
+    @Override
+    public void onApplyButtonInteraction(String url) {
+        if (webViewFragment == null) {
+            webViewFragment = WebViewFragment.newInstance(url);
+            webViewFragment.setRetainInstance(true);
+        }
+        fm.beginTransaction().addToBackStack("wv").replace(R.id.frame, webViewFragment).commit();
+
+
+    }
+
+    private void handleIntent(Intent intent) {
         if (intent.hasExtra("notification")) {
 
+            NotificationDatabaseHelper helper = new NotificationDatabaseHelper(this);
             long row_id = intent.getLongExtra("row_id", 0);
             Cursor cursor = helper.getNotification(row_id);
             String type = cursor.getString(cursor.getColumnIndexOrThrow(NotificationDatabaseHelper.TYPE));
@@ -83,17 +98,6 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
             String url = intent.getStringExtra("url");
             loadInBrowser(url);
         }
-
-
-    }
-
-    @Override
-    public void onApplyButtonInteraction(String url) {
-        if (webViewFragment == null) {
-            webViewFragment = WebViewFragment.newInstance(url);
-            webViewFragment.setRetainInstance(true);
-        }
-        fm.beginTransaction().addToBackStack("wv").replace(R.id.frame, webViewFragment).commit();
 
 
     }

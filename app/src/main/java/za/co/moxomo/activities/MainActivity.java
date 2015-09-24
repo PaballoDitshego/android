@@ -197,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
             getPager().setCurrentItem(2);
         }
 
-
         return super.onOptionsItemSelected(item);
     }
 
