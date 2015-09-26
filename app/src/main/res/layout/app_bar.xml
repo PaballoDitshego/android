@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/action_color"
-
     android:minHeight="?attr/actionBarSize">
 
     <ProgressBar
+
         android:id="@+id/progress_spinner"
         style="@android:style/Widget.ProgressBar.Small"
         android:layout_width="wrap_content"

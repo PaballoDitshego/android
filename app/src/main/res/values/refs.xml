@@ -11,4 +11,5 @@
     For more on loading_footer aliases, see:
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
-    <item name="fragment_timeline" type="layout">@layout/fragment_timeline_list</item></resources>
+    <item name="fragment_timeline" type="layout">@layout/fragment_homepage</item>
+</resources>

@@ -43,8 +43,10 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
         progressBar.setVisibility(View.VISIBLE);
+
         handleIntent(getIntent());
 
 
@@ -63,8 +65,8 @@ public class NotificationActivity extends AppCompatActivity implements DetailPag
     }
 
     private void handleIntent(Intent intent) {
-        if (intent.hasExtra("notification")) {
 
+        if (intent.hasExtra("notification")) {
             NotificationDatabaseHelper helper = new NotificationDatabaseHelper(this);
             long row_id = intent.getLongExtra("row_id", 0);
             Cursor cursor = helper.getNotification(row_id);
