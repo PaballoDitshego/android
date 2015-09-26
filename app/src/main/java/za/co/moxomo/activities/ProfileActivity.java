@@ -235,6 +235,13 @@ public class ProfileActivity extends AppCompatActivity {
             user.put("email", email);
             user.put("province", location);
             user.put("keywords", keywords);
+            SharedPreferences prefs = getSharedPreferences("UserDetails",
+                    Context.MODE_PRIVATE);
+            if (prefs.contains(REG_ID)) {
+                user.put("id", (prefs.getString("id", "")));
+            }
+
+
         } catch (JSONException e) {
 
         }

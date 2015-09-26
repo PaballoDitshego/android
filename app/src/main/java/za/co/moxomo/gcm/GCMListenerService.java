@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -35,6 +36,16 @@ public class GCMListenerService extends GcmListenerService {
     private void sendNotification(Bundle msg) {
 
         Long row_id = saveToDatabase(msg);
+
+        //store user.id locally
+        if (msg.getString("id").equals(null)) {
+            SharedPreferences prefs = getSharedPreferences("UserDetails",
+                    Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("id", msg.getString("id"));
+            editor.commit();
+
+        }
 
 
         Intent resultIntent = new Intent(this, NotificationActivity.class);
@@ -72,6 +83,8 @@ public class GCMListenerService extends GcmListenerService {
       returns Long row id/_id
      */
     private Long saveToDatabase(Bundle msg) {
+
+
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", msg.getString(ApplicationConstants.TITLE_KEY));
         contentValues.put("body", msg.getString(ApplicationConstants.BODY));
