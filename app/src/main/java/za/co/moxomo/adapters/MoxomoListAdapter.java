@@ -27,12 +27,10 @@ import za.co.moxomo.model.Vacancy;
  */
 public class MoxomoListAdapter extends BaseAdapter {
 
-    protected int selectedPosition;
     private Activity activity;
     private LayoutInflater inflater;
     private List<Vacancy> vacancyItems = new ArrayList<>();
     private int lastPosition = -1;
-
 
     public MoxomoListAdapter(Activity activity) {
         this.activity = activity;
@@ -52,17 +50,11 @@ public class MoxomoListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-
         return vacancyItems.get(position).getId();
     }
 
     public List<Vacancy> getList() {
         return vacancyItems;
-    }
-
-    public Vacancy[] getAllValues() {
-
-        return vacancyItems.toArray(new Vacancy[vacancyItems.size()]);
     }
 
     @Override
@@ -105,11 +97,8 @@ public class MoxomoListAdapter extends BaseAdapter {
                             DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_ABBREV_ALL)
             );
             viewHolder.time.setTypeface(regular);
-
-            //
             Animation animation = AnimationUtils.loadAnimation(activity, (position > lastPosition) ?
                     R.anim.up_from_bottom : R.anim.down_from_top);
-            // Animation animation = AnimationUtils.loadAnimation(activity,  R.anim.up_from_bottom );
             convertView.startAnimation(animation);
             lastPosition = position;
 
@@ -117,31 +106,12 @@ public class MoxomoListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public int indexOf(Vacancy item) {
-        return vacancyItems.indexOf(item);
-    }
 
-    public Vacancy getSelectedItem() {
-        if (selectedPosition < 0 || selectedPosition >= getCount()) {
-            return null;
-        } else {
-            return vacancyItems.get(selectedPosition);
-        }
-    }
-
-    public int getSelectedPosition() {
-        return selectedPosition;
-    }
-
-    public void setSelectedPosition(int selectedPosition) {
-        this.selectedPosition = selectedPosition;
-    }
 
     public void updateList(List<Vacancy> newList) {
         vacancyItems.clear();
-        this.notifyDataSetChanged();
         vacancyItems.addAll(newList);
-        this.notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     public void clearList() {

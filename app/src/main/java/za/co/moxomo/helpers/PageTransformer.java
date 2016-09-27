@@ -7,7 +7,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.nineoldandroids.view.ViewHelper;
+
 
 /**
  * Created by Paballo Ditshego on 8/2/15.
@@ -30,7 +30,7 @@ public class PageTransformer implements ViewPager.PageTransformer {
     public void transformPage(View page, float position) {
         final float transformValue = Math.abs(Math.abs(position) - 1);
         // apply fade effect
-        ViewHelper.setAlpha(page, transformValue);
+      /*  ViewHelper.setAlpha(page, transformValue);
         if (position > 0) {
             // apply zoom effect only for pages to the right
             ViewHelper.setScaleX(page, transformValue);
@@ -41,8 +41,8 @@ public class PageTransformer implements ViewPager.PageTransformer {
                 ViewHelper.setTranslationX(page, translateValue);
             } else {
                 ViewHelper.setTranslationX(page, 0);
-            }
-        }
+            }*
+        }*/
     }
 
 }

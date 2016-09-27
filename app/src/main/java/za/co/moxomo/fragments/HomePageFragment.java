@@ -114,16 +114,11 @@ public class HomePageFragment extends Fragment implements AbsListView.OnItemClic
                 if (values != null) {
                     restoreMode = true; //prevent app from calling network operations
                     mAdapter.updateList(values);
-
                 }
             }
-
             mNext_Cursor = savedInstanceState.getString("cursor");
 
-
         }
-
-
 
     }
 
@@ -176,9 +171,6 @@ public class HomePageFragment extends Fragment implements AbsListView.OnItemClic
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-
             mListener.onHomeListInteraction(mAdapter.getItemId(position));
         }
     }
@@ -193,7 +185,6 @@ public class HomePageFragment extends Fragment implements AbsListView.OnItemClic
         if (mCategory.equals(("All Categories"))) {
             mCategory = null;
         }
-
         if (!restoreMode) {
             fetch(mCategory);
         }
@@ -210,9 +201,7 @@ public class HomePageFragment extends Fragment implements AbsListView.OnItemClic
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if (scrollState == SCROLL_STATE_IDLE) {
             if (view.getLastVisiblePosition() >= view.getCount() - 1 - threshold) {
-
                 fetchMore(mCategory, mNext_Cursor);
-
             }
         }
 
@@ -257,10 +246,8 @@ public class HomePageFragment extends Fragment implements AbsListView.OnItemClic
                     public void onResponse(JSONObject jsonObject) {
                         try {
 
-
                             activity.getProgressBar().setVisibility(View.INVISIBLE);
                             List<Vacancy> results = parse(jsonObject);
-
                             mAdapter.updateList(results);
                             mListView.getRootView().findViewById(R.id.loading).setVisibility(View.INVISIBLE);
                             if (!results.isEmpty()) {
@@ -287,7 +274,9 @@ public class HomePageFragment extends Fragment implements AbsListView.OnItemClic
                         Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
                         if (mListView.getCount() == 0) {
                             mListView.getRootView().findViewById(R.id.loading).setVisibility(View.INVISIBLE);
-                            mListView.setEmptyView(mListView.getRootView().findViewById(R.id.empty));
+                            TextView emptyView = (TextView) mListView.getRootView().findViewById(R.id.empty);
+                            if(volleyError.networkResponse.statusCode == 503) emptyView.setText("Service Quota Exceeded. Please try again later.");
+                             mListView.setEmptyView(emptyView);
 
                         }
                     }
@@ -351,7 +340,10 @@ public class HomePageFragment extends Fragment implements AbsListView.OnItemClic
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         activity.getProgressBar().setVisibility(View.INVISIBLE);
-                        Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
+                        if(volleyError.networkResponse.statusCode == 503){
+                            Toast.makeText(getActivity(), "Service quota exeeded. Please try again later: " , Toast.LENGTH_SHORT).show();
+                        }
+                       // Toast.makeText(getActivity(), "Unable to fetch data: " + volleyError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 

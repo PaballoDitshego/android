@@ -27,16 +27,12 @@ android {
     }
 }
 
-
-
-
-
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     provided 'org.parceler:parceler:1.0.0'
-    compile files('libs/joda-time-1.6.2.jar')
     compile 'com.android.support:appcompat-v7:22.1.1'
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.4'
+    compile group: 'org.joda', name: 'joda-convert', version: '1.8.1'
     compile 'com.android.support:support-v4:22.1.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.mcxiaoke.volley:library:1.0.19'
@@ -46,5 +42,4 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:7.3.0'
     compile "com.google.android.gms:play-services-gcm:7.5.0"
 
-    compile files('libs/nineoldandroids-2.4.0.jar')
 }

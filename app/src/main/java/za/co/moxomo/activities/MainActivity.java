@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 
 import de.greenrobot.event.EventBus;
@@ -37,11 +38,10 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
         DetailPageFragment.OnApplyButtonInteractionListener,
         SearchResultsFragment.OnSearchListInteractionListener {
 
-
     private ViewPagerAdapter mAdapter;
     private ViewPager mViewPager;
-    private EventBus bus = EventBus.getDefault();
-    private Stack<Integer> mBackStack = new Stack<>();
+    private final EventBus bus = EventBus.getDefault();
+    private final Stack<Integer> mBackStack = new Stack<>();
     private ProgressBar mProgressBar;
     private SearchView mSearchView;
 
@@ -62,9 +62,7 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
         mViewPager.setPageTransformer(false, new PageTransformer(this));
         mViewPager.setOffscreenPageLimit(2);
 
-
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-
         mViewPager.setAdapter(mAdapter);
 
         handleIntent(getIntent());
@@ -115,9 +113,7 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
         Integer[] array = new Integer[getBackStack().size()];
         getBackStack().copyInto(array);
         ArrayList<Integer> integerArrayList = new ArrayList<>();
-        for (int i = 0; i < array.length; i++) {
-            integerArrayList.add(array[i]);
-        }
+        Collections.addAll(integerArrayList, array);
 
         savedInstanceState.putIntegerArrayList("back_stack", integerArrayList);
         super.onSaveInstanceState(savedInstanceState);
@@ -153,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
                 }
             }
             query = intent.getStringExtra(SearchManager.QUERY);
-
 
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             Uri detailUri = intent.getData();
