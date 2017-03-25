@@ -48,7 +48,7 @@ import za.co.moxomo.model.Vacancy;
 public class DetailPageFragment extends Fragment {
 
     public static Long id = null;
-    private static String URL = "https://moxomoapp.appspot.com/_ah/api/vacancyEndpoint/v1.1/vacancy/";
+    private static final String URL = "https://moxomoapp.appspot.com/_ah/api/vacancyEndpoint/v1.1/vacancy/";
     private OnApplyButtonInteractionListener mListener;
     private Vacancy vacancy = null;
     private TextView title;
