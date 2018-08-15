@@ -4,11 +4,11 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "za.co.moxomo"
-        minSdkVersion 19
+        minSdkVersion 20
         targetSdkVersion 22
         versionCode 7
         versionName "3.5.0"
@@ -27,19 +27,20 @@ android {
     }
 }
 
+android.defaultConfig.javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    provided 'org.parceler:parceler:1.0.0'
-    compile 'com.android.support:appcompat-v7:22.1.1'
-    compile group: 'joda-time', name: 'joda-time', version: '2.9.4'
-    compile group: 'org.joda', name: 'joda-convert', version: '1.8.1'
-    compile 'com.android.support:support-v4:22.1.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
-    compile 'org.parceler:parceler-api:1.0.0'
-    compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
-    compile 'com.google.android.gms:play-services-gcm:7.3.0'
-    compile "com.google.android.gms:play-services-gcm:7.5.0"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly 'org.parceler:parceler:1.0.0'
+    implementation 'com.android.support:appcompat-v7:22.1.1'
+    implementation group: 'joda-time', name: 'joda-time', version: '2.9.4'
+    implementation group: 'org.joda', name: 'joda-convert', version: '1.8.1'
+    implementation 'com.android.support:support-v4:22.1.1'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.mcxiaoke.volley:library:1.0.19'
+    implementation 'org.parceler:parceler-api:1.0.0'
+    implementation 'de.greenrobot:eventbus:2.4.0'
+    implementation 'com.squareup.okhttp:okhttp:2.4.0'
+  //  implementation 'com.google.android.gms:play-services-gcm:7.3.0'
+    implementation "com.google.android.gms:play-services-gcm:7.5.0"
 
 }
