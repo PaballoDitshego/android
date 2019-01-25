@@ -1,4 +1,4 @@
-        package za.co.moxomo.repository;
+package za.co.moxomo.repository;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
@@ -32,10 +32,16 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
     private Gson gson;
     private MutableLiveData<String> progressLiveStatus;
     private CompositeDisposable compositeDisposable;
-    private int pageNumber= 1;
+    private int pageNumber = 1;
+    private String searchString = null;
 
     public MutableLiveData<String> getProgressLiveStatus() {
         return progressLiveStatus;
+    }
+
+    public void setSearchString(String searchString) {
+        this.searchString = searchString;
+        this.invalidate();
     }
 
 
@@ -85,7 +91,7 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
                     progressLiveStatus.postValue(ApplicationConstants.LOADED);
                     JSONObject object = new JSONObject(gson.toJson(result));
                     List<Vacancy> arrayList = Utility.parse(object);
-                    callback.onResult(arrayList, params.key+1);
+                    callback.onResult(arrayList, params.key + 1);
 
                 },
                 throwable -> progressLiveStatus.postValue(ApplicationConstants.LOADED));

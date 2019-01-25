@@ -24,6 +24,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Stack;
 
 import javax.inject.Inject;
@@ -80,16 +81,12 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
         mBackStack = mainActivityViewModel.getmBackStack();
 
 
-
-
         mProgressBar = (ProgressBar) findViewById(R.id.progress_spinner);
 
         binding.viewpager.setPageTransformer(false, new PageTransformer(this));
         binding.viewpager.setOffscreenPageLimit(2);
-
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         binding.viewpager.setAdapter(mAdapter);
-
 
         handleIntent(getIntent());
 
@@ -109,15 +106,15 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
         mSearchView =
                 (SearchView) search.getActionView();
         mSearchView.setOnSearchClickListener(v -> {
-            if (binding.viewpager.getOffscreenPageLimit() < 3) {
-                binding.viewpager.setOffscreenPageLimit(3);
-                if (mAdapter.getCount() < 4) {
-                    mAdapter.setCount(4);
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
+                    if (binding.viewpager.getOffscreenPageLimit() < 3) {
+                        binding.viewpager.setOffscreenPageLimit(3);
+                        if (mAdapter.getCount() < 4) {
+                            mAdapter.setCount(4);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
 
-        }
+                }
 
         );
 
@@ -147,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        //restore backstack
         if (getBackStack().empty()) {
             ArrayList<Integer> values = savedInstanceState.getIntegerArrayList("back_stack");
             getBackStack().addAll(values);
@@ -165,14 +161,8 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
         String query = null;
         //handle search
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            if (binding.viewpager.getOffscreenPageLimit() < 3) {
-                binding.viewpager.setOffscreenPageLimit(3);
-                if (mAdapter.getCount() < 4) {
-                    mAdapter.setCount(4);
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
             query = intent.getStringExtra(SearchManager.QUERY);
+            mainActivityViewModel.getSearchString().postValue(!query.isEmpty() ? query : null);
 
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             Uri detailUri = intent.getData();
@@ -196,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
             return true;
         }
         if (id == android.R.id.home) {
-          //  binding.viewpager.setCurrentItem(0);
+            //  binding.viewpager.setCurrentItem(0);
             return true;
         }
         if (id == R.id.action_account) {
@@ -263,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements HomePageFragment.
     @Override
     public void onSearchListInteraction(Long id) {
         //implements inteface defined in SearchResultsFragment.java
-      getBackStack().add(binding.viewpager.getCurrentItem()); //add current page to custom backstack
+        getBackStack().add(binding.viewpager.getCurrentItem()); //add current page to custom backstack
         bus.post(new DetailViewEvent(id));
     }
 

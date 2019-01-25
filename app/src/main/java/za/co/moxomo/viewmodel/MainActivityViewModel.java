@@ -24,6 +24,7 @@ public class MainActivityViewModel extends ViewModel {
     private LiveData<PagedList<Vacancy>> vacancies;
     private LiveData<String> progressLoadStatus = new MutableLiveData<>();
     private Stack<Integer> mBackStack = new Stack<>();
+    private MutableLiveData<String> searchString = new MutableLiveData<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public MainActivityViewModel(Repository repository) {
@@ -45,6 +46,14 @@ public class MainActivityViewModel extends ViewModel {
                 .build();
          progressLoadStatus = Transformations.switchMap(vacancyClassDatasourceFactory.getMutableLiveData(), VacancyDataSource::getProgressLiveStatus);
 
+    }
+
+    public VacancyClassDatasourceFactory getVacancyClassDatasourceFactory() {
+        return vacancyClassDatasourceFactory;
+    }
+
+    public MutableLiveData<String> getSearchString() {
+        return searchString;
     }
 
     public LiveData<String> getProgressLoadStatus() {

@@ -82,7 +82,7 @@ public class HomePageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final android.support.v7.widget.LinearLayoutManager layoutManager =new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false);
+        final android.support.v7.widget.LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         binding.list.setLayoutManager(layoutManager);
         binding.list.setItemViewCacheSize(20);
@@ -112,6 +112,15 @@ public class HomePageFragment extends Fragment {
         mainActivityViewModel.getVacancies().observe(getActivity(), vacancyListAdapter::submitList);
         binding.list.setAdapter(vacancyListAdapter);
 
+        mainActivityViewModel.getSearchString().observe(getActivity(), searchString -> {
+            mainActivityViewModel.getVacancyClassDatasourceFactory()
+                    .getMutableLiveData()
+                    .getValue()
+                    .setSearchString(searchString);
+        });
+
+
+
     }
 
     @Override
@@ -134,13 +143,10 @@ public class HomePageFragment extends Fragment {
     }
 
 
-
     public interface OnHomeListInteractionListener {
 
         void onHomeListInteraction(Long id);
     }
-
-
 
 
 }

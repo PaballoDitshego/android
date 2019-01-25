@@ -16,6 +16,7 @@ public class VacancyClassDatasourceFactory extends DataSource.Factory<Integer, V
         this.repository = repository;
         this.compositeDisposable = compositeDisposable;
         liveData = new MutableLiveData<>();
+
     }
 
     public MutableLiveData<VacancyDataSource> getMutableLiveData() {
