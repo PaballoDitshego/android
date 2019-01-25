@@ -78,7 +78,6 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
         mListView.setEmptyView(view.findViewById(R.id.notifications_empty));
         view.findViewById(R.id.notification_loading).setVisibility(View.INVISIBLE);
 
-
         notificationsAdapter = new NotificationsCursorAdapter(getActivity(),
                 null,
                 0);

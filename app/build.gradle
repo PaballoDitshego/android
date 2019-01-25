@@ -1,10 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.google-services'
 
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
+
+    dataBinding {
+        enabled = true
+    }
 
     defaultConfig {
         applicationId "za.co.moxomo"
@@ -25,22 +30,60 @@ android {
             res.srcDirs = ['src/main/res', 'src/main/res/logos']
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 android.defaultConfig.javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     compileOnly 'org.parceler:parceler:1.0.0'
-    implementation 'com.android.support:appcompat-v7:22.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:animated-vector-drawable:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+
+    //implementation 'com.android.support:cardview:27.1.1'
+    implementation 'com.android.support:support-media-compat:27.1.1'
+    implementation 'com.android.support:support-fragment:27.1.1'
+
+
+    //implementation 'com.android.support:support-compat-v7:26.1.0'
     implementation group: 'joda-time', name: 'joda-time', version: '2.9.4'
     implementation group: 'org.joda', name: 'joda-convert', version: '1.8.1'
-    implementation 'com.android.support:support-v4:22.1.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'org.parceler:parceler-api:1.0.0'
     implementation 'de.greenrobot:eventbus:2.4.0'
     implementation 'com.squareup.okhttp:okhttp:2.4.0'
-  //  implementation 'com.google.android.gms:play-services-gcm:7.3.0'
-    implementation "com.google.android.gms:play-services-gcm:7.5.0"
+    //  implementation 'com.google.android.gms:play-services-gcm:7.3.0'
+    implementation "com.google.android.gms:play-services-gcm:15.0.1"
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    implementation 'android.arch.paging:runtime:1.0.1'
 
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.dagger:dagger:2.19'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.20'
+    implementation 'com.google.dagger:dagger-android:2.20'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.20'
+
+    //support libraries with dagger 2
+    implementation 'com.google.dagger:dagger-android-support:2.14.1'
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
+
+    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+
+
+
+}
+repositories {
+    mavenCentral()
 }

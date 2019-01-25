@@ -5,7 +5,6 @@ package za.co.moxomo.helpers;
  */
 public interface ApplicationConstants {
 
-    // Php Application URL to store Reg ID created
     String APP_SERVER_URL = "https://moxomoapp.appspot.com/_ah/api/userendpoint/v1/user";
 
     // Google Project Number
@@ -17,6 +16,9 @@ public interface ApplicationConstants {
     String IMAGE_URL = "image_url";
     String ACTION_JOB_ALERT = "job_alert";
     String ACTION_NEWS_ALERT = "news_alert";
+
+    public final static String LOADING = "Loading";
+    public final static String LOADED = "Loaded";
 
 
 }

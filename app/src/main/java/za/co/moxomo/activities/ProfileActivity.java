@@ -21,10 +21,6 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -37,7 +33,6 @@ import java.io.IOException;
 import za.co.moxomo.R;
 import za.co.moxomo.helpers.ApplicationConstants;
 import za.co.moxomo.helpers.Utility;
-import za.co.moxomo.helpers.VolleyApplication;
 
 
 public class ProfileActivity extends AppCompatActivity {
@@ -245,8 +240,9 @@ public class ProfileActivity extends AppCompatActivity {
         } catch (JSONException e) {
 
         }
+    }
 
-
+/*
         JsonObjectRequest request = new JsonObjectRequest(
                 url, user,
                 new Response.Listener<JSONObject>() {
@@ -288,8 +284,8 @@ public class ProfileActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        VolleyApplication.getInstance().getRequestQueue().add(request);
-    }
+        DaggerApplication.getInstance().getRequestQueue().add(request);
+    }*/
 
     private boolean checkPlayServices() {
         final int status = GooglePlayServicesUtil

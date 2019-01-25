@@ -1,74 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/list_row_selector"
-    android:padding="8dp" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Thumbnail Image -->
-    <ImageView
-        android:id="@+id/thumbnail"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="8dp"
-        android:clickable="false"
-        android:focusable="false" />
+    <data>
+        <import type="android.view.View" />
+        <import type="java.lang.String" />
+        <import type="android.text.format.DateUtils"/>
 
-    <!-- Job Title -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:clickable="false"
-        android:focusable="false"
-        android:textSize="@dimen/title"
-        android:textStyle="bold"
-        />
+        <variable
+            name="vacancy"
+            type="za.co.moxomo.model.Vacancy" />
+    </data>
 
-    <!-- Location -->
-    <TextView
-        android:id="@+id/location"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_marginTop="1dip"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:clickable="false"
-        android:focusable="false"
-        android:textSize="@dimen/location"
-        />
-
-    <!-- Description -->
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/location"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:clickable="false"
-        android:focusable="false"
-        android:textColor="@color/description"
-        android:textSize="@dimen/description"
-        />
-
-    <!-- time -->
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/description"
-        android:clickable="false"
-        android:focusable="false"
-        android:textColor="@color/time"
-        android:textSize="@dimen/time"
-        />
+        android:background="@drawable/list_row_selector"
+        android:padding="8dp">
 
 
-</RelativeLayout>
+        <!-- Thumbnail Image -->
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="8dp"
+            android:imageUrl="@{vacancy.imageUrl}"
+            android:clickable="false"
+            android:focusable="false" />
+
+        <!-- Job Title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/thumbnail"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:clickable="false"
+            android:focusable="false"
+            android:textSize="@dimen/title"
+            android:text="@{vacancy.jobTitle}"
+            android:textStyle="bold" />
+
+        <!-- Location -->
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="1dip"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:text="@{vacancy.location}"
+            android:clickable="false"
+            android:focusable="false"
+            android:textSize="@dimen/location" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/location"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:clickable="false"
+            android:focusable="false"
+            android:textColor="@color/description"
+            android:text="@={vacancy.description}"
+            android:textSize="@dimen/description" />
+
+        <!-- time -->
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/description"
+            android:clickable="false"
+            android:focusable="false"
+            android:textColor="@color/time"
+            android:advertDate="@{vacancy.advertDate}"
+            android:textSize="@dimen/time" />
+
+
+    </RelativeLayout>
+</layout>

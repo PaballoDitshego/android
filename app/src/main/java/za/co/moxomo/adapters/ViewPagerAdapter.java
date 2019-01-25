@@ -31,6 +31,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
         if (position == 0) {
+           // return NotificationFragment.newInstance();
             return HomePageFragment.newInstance();
 
         }
