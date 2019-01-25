@@ -1,6 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="za.co.moxomo.WebFragment"
+    android:layout_height="match_parent" tools:context="za.co.moxomo.fragments.WebViewFragment"
     android:orientation="horizontal">
     <ProgressBar
         android:id="@+id/progress_horizontal"
@@ -17,3 +19,4 @@
         />
 
 </LinearLayout>
+</layout>

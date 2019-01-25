@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -27,8 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +29,6 @@ import za.co.moxomo.activities.MainActivity;
 import za.co.moxomo.adapters.MoxomoListAdapter;
 import za.co.moxomo.events.SearchEvent;
 import za.co.moxomo.helpers.FontCache;
-import za.co.moxomo.helpers.VolleyApplication;
 import za.co.moxomo.model.Vacancy;
 
 
@@ -197,11 +187,10 @@ public class SearchResultsFragment extends Fragment implements AbsListView.OnIte
 
 
 
-
     public void onEvent(SearchEvent event) {
        //
         MainActivity activity = (MainActivity) getActivity();
-        activity.getPager().setCurrentItem(3);
+      //  activity.getPager().setCurrentItem(3);
         queryString(event.getQuery());
     }
 
@@ -212,7 +201,7 @@ public class SearchResultsFragment extends Fragment implements AbsListView.OnIte
         mNext_Cursor = null;
 
 
-           fetch(mQuery);
+         //  fetch(mQuery);
 
     }
 
@@ -221,7 +210,7 @@ public class SearchResultsFragment extends Fragment implements AbsListView.OnIte
         if (scrollState == SCROLL_STATE_IDLE) {
             if (view.getLastVisiblePosition() >= view.getCount() - 1 - threshold) {
                 if (mNext_Cursor != null && !mNext_Cursor.equals("EOR")) {
-                    fetchMore(mQuery, mNext_Cursor);
+                 //   fetchMore(mQuery, mNext_Cursor);
                 }
             }
         }
@@ -233,7 +222,7 @@ public class SearchResultsFragment extends Fragment implements AbsListView.OnIte
 
     }
 
-    private void fetch(String query) {
+   /* private void fetch(String query) {
         //initial fetch
         final MainActivity activity = (MainActivity) getActivity();
         activity.getProgressBar().setVisibility(View.VISIBLE);
@@ -296,7 +285,7 @@ public class SearchResultsFragment extends Fragment implements AbsListView.OnIte
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        VolleyApplication.getInstance().getRequestQueue().add(request);
+        DaggerApplication.getInstance().getRequestQueue().add(request);
     }
 
     private void fetchMore(String query, String cursor) {
@@ -362,9 +351,9 @@ public class SearchResultsFragment extends Fragment implements AbsListView.OnIte
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        VolleyApplication.getInstance().getRequestQueue().add(request);
+        DaggerApplication.getInstance().getRequestQueue().add(request);
     }
-
+*/
     private List<Vacancy> parse(JSONObject json) throws JSONException {
         ArrayList<Vacancy> records = new ArrayList<>();
 
@@ -376,7 +365,7 @@ public class SearchResultsFragment extends Fragment implements AbsListView.OnIte
 
         for (int i = 0; i < vacancies.length(); i++) {
             JSONObject item = vacancies.getJSONObject(i);
-            Long id = item.getLong("id");
+            String id = item.getString("id");
 
 
             String imageUrl = item.getString("imageUrl");
@@ -404,7 +393,7 @@ public class SearchResultsFragment extends Fragment implements AbsListView.OnIte
 
             Vacancy record = new Vacancy();
             record.setId(id);
-            record.setJob_title(title);
+            record.setJobTitle(title);
             record.setDescription(description);
             record.setLocation(location);
             record.setAdvertDate(dateTime);

@@ -19,12 +19,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
@@ -41,7 +36,6 @@ import za.co.moxomo.activities.NotificationActivity;
 import za.co.moxomo.events.DetailViewEvent;
 import za.co.moxomo.events.DetailViewInitEvent;
 import za.co.moxomo.helpers.FontCache;
-import za.co.moxomo.helpers.VolleyApplication;
 import za.co.moxomo.model.Vacancy;
 
 
@@ -196,7 +190,7 @@ public class DetailPageFragment extends Fragment {
         }
 
 
-        JsonObjectRequest request = new JsonObjectRequest(
+        /*JsonObjectRequest request = new JsonObjectRequest(
 
                 url, null,
                 new Response.Listener<JSONObject>() {
@@ -240,14 +234,14 @@ public class DetailPageFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         // progressBar.setVisibility(View.VISIBLE);
-        VolleyApplication.getInstance().getRequestQueue().add(request);
+        DaggerApplication.getInstance().getRequestQueue().add(request);*/
     }
 
     public void init(Long id) {
 
         String url = URL + id;
 
-        JsonObjectRequest request = new JsonObjectRequest(
+       /* JsonObjectRequest request = new JsonObjectRequest(
 
                 url, null,
                 new Response.Listener<JSONObject>() {
@@ -282,13 +276,13 @@ public class DetailPageFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        VolleyApplication.getInstance().getRequestQueue().add(request);
+        DaggerApplication.getInstance().getRequestQueue().add(request);*/
     }
 
     private void updateUI(Vacancy result) {
-        if (result.getJob_title() != null) {
+        if (result.getJobTitle() != null) {
             mScrollView.scrollTo(0, 0);
-            title.setText(result.getJob_title());
+            title.setText(result.getJobTitle());
             Picasso.with(getActivity()).load(result.getImageUrl()).into(image);
             location.setText(result.getLocation());
             Typeface regular = FontCache.get("Roboto-Regular.ttf", getActivity());
@@ -296,7 +290,7 @@ public class DetailPageFragment extends Fragment {
             description.setTypeface(regular);
             qualifications.setText(result.getMin_qual());
             responsibilities.setText(result.getDuties());
-            company.setText(result.getCompany_name());
+            company.setText(result.getCompany());
             closingDate.setText("Closes on: " + result.getClosingDate().toLocalDate());
             apply.setVisibility(View.VISIBLE);
             shareIntent.putExtra(Intent.EXTRA_TEXT, vacancy.getWebsite());
@@ -359,9 +353,9 @@ public class DetailPageFragment extends Fragment {
 
 
         Vacancy record = new Vacancy();
-        record.setId(id);
+      //  record.setId(id);
 
-        record.setJob_title(title);
+        record.setJobTitle(title);
         record.setDescription(description);
         record.setLocation(location);
         record.setAdvertDate(advertDate);
@@ -369,8 +363,8 @@ public class DetailPageFragment extends Fragment {
         record.setClosingDate(closingDate);
         record.setDuties(duties);
         record.setWebsite(website);
-        record.setCompany_name(company);
-        record.setMin_qual(min_qual);
+        record.setCompany(company);
+        record.setMinQual(min_qual);
 
 
         return record;

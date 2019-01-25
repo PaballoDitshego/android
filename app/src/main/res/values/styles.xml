@@ -30,9 +30,9 @@
 
 
         <!-- Go/commit button icon -->
-        <item name="goIcon">@drawable/abc_ic_go_search_api_mtrl_alpha</item>
-        <!-- Voice search button icon -->
-        <item name="voiceIcon">@drawable/abc_ic_voice_search_api_mtrl_alpha</item>
+   <!--     <item name="goIcon">@drawable/abc_ic_go_search_api_mtrl_alpha</item>
+        &lt;!&ndash; Voice search button icon &ndash;&gt;
+        <item name="voiceIcon">@drawable/abc_ic_voice_search_api_mtrl_alpha</item>-->
         <!-- Commit icon shown in the query suggestion row -->
         <item name="commitIcon">@drawable/abc_ic_commit_search_api_mtrl_alpha</item>
         <!-- Layout for query suggestion rows -->

@@ -50,7 +50,8 @@ public class MoxomoListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return vacancyItems.get(position).getId();
+        return 1L;
+      //  return vacancyItems.get(position).getId();
     }
 
     public List<Vacancy> getList() {
@@ -85,7 +86,7 @@ public class MoxomoListAdapter extends BaseAdapter {
 
             Picasso.with(activity).load(v.getImageUrl()).into(viewHolder.thumbNail);
             Typeface typeface = FontCache.get("Roboto-Thin.ttf", activity);
-            viewHolder.title.setText(v.getJob_title());
+            viewHolder.title.setText(v.getJobTitle());
             viewHolder.title.setTypeface(typeface);
 
             viewHolder.location.setText(v.getLocation());

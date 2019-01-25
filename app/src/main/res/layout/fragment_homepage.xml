@@ -1,48 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="za.co.moxomo.fragments.HomePageFragment">
 
-    <Spinner
-        android:id="@+id/categories"
-        style="@style/SpinnerCustomSpin"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-
-
-        android:layout_height="wrap_content" />
-
-
-    />
-
-    <ListView android:id="@+id/list" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/categories"
+        android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"
-        android:divider="@color/list_divider"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/list_row_selector"
-         />
+        android:visibility="visible"/>
+
+  <!--android:layout_alignParentStart="true"-->
 
 
 
     <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/loading"
-        android:layout_width="wrap_content"
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:clickable="false"
         android:focusable="false"
         android:indeterminate="false"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 
-    <TextView android:id="@+id/empty" android:layout_width="wrap_content"
+ <!--   <TextView android:id="@+id/empty" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -50,6 +39,7 @@
         android:focusable="false"
         android:text="No matching records found."
         android:visibility="gone"
-        />
+        />-->
 
 </RelativeLayout>
+</layout>
