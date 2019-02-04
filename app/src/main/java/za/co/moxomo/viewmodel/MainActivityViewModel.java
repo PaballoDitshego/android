@@ -23,7 +23,6 @@ public class MainActivityViewModel extends ViewModel {
     private VacancyClassDatasourceFactory vacancyClassDatasourceFactory;
     private LiveData<PagedList<Vacancy>> vacancies;
     private LiveData<String> progressLoadStatus = new MutableLiveData<>();
-    private Stack<Integer> mBackStack = new Stack<>();
     private MutableLiveData<String> searchString = new MutableLiveData<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -39,6 +38,7 @@ public class MainActivityViewModel extends ViewModel {
                         .setEnablePlaceholders(false)
                         .setInitialLoadSizeHint(10)
                         .setPageSize(10).build();
+
 
         executor = Executors.newFixedThreadPool(5);
         vacancies = (new LivePagedListBuilder(vacancyClassDatasourceFactory, pagedListConfig))
@@ -64,9 +64,6 @@ public class MainActivityViewModel extends ViewModel {
         return vacancies;
     }
 
-    public Stack<Integer> getmBackStack() {
-        return mBackStack;
-    }
 
     @Override
     protected void onCleared() {

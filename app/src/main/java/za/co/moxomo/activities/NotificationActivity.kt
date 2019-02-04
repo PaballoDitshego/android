@@ -143,12 +143,11 @@ class NotificationActivity : AppCompatActivity(), DetailPageFragment.OnApplyButt
     }
 
     override fun onBackPressed() {
-
+        super.onBackPressed();
         if (supportFragmentManager.findFragmentById(R.id.frame) is WebViewFragment) {
             val webViewFragment = supportFragmentManager.findFragmentById(R.id.frame) as WebViewFragment
             if (webViewFragment.webView.canGoBack()) {
                 webViewFragment.webView.goBack()
-
 
             }
 

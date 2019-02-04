@@ -8,58 +8,30 @@ import android.view.ViewGroup;
 import za.co.moxomo.fragments.DetailPageFragment;
 import za.co.moxomo.fragments.HomePageFragment;
 import za.co.moxomo.fragments.NotificationFragment;
-import za.co.moxomo.fragments.SearchResultsFragment;
 
-/**
- * Created by Paballo Ditshego on 5/19/15.
- */
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
-
-
-    private int NUM = 3;
+    private static final int NUM = 2;
 
 
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
-
-
     }
 
 
     @Override
     public Fragment getItem(int position) {
-
-
-        if (position == 0) {
-           // return NotificationFragment.newInstance();
-            return HomePageFragment.newInstance();
-
+        switch (position) {
+            case 0:
+                return HomePageFragment.newInstance();
+            case 1:
+                return NotificationFragment.newInstance();
         }
-        if (position == 1) {
-            return DetailPageFragment.newInstance();
-        }
-        if (position == 2) {
-            return NotificationFragment.newInstance();
-        }
-        if (position == 3) {
-            return SearchResultsFragment.newInstance();
-        } else {
-            return HomePageFragment.newInstance();
-        }
-
-
+        return HomePageFragment.newInstance();
     }
 
     @Override
-
     public int getCount() {
-
         return NUM;
-
-    }
-
-    public void setCount(int num) {
-        this.NUM = num;
 
     }
 

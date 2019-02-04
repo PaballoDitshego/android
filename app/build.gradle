@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:animated-vector-drawable:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
 
     //implementation 'com.android.support:cardview:27.1.1'
     implementation 'com.android.support:support-media-compat:27.1.1'

@@ -30,7 +30,7 @@ public class InjectionModule {
 
     @Provides
     @Singleton
-    CompositeDisposable getCompositeDisposable() {
+    public CompositeDisposable getCompositeDisposable() {
         return new CompositeDisposable();
 
     }
@@ -38,7 +38,7 @@ public class InjectionModule {
 
     @Provides
     @Singleton
-    Gson provideGson() {
+    public Gson provideGson() {
         GsonBuilder builder =
                 new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         return builder.setLenient().create();
@@ -46,7 +46,7 @@ public class InjectionModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(){
+    public OkHttpClient provideOkHttpClient() {
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -65,8 +65,7 @@ public class InjectionModule {
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
-
+    public Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -77,19 +76,19 @@ public class InjectionModule {
 
     @Provides
     @Singleton
-    RestAPIService getRestApi(Retrofit retrofit) {
+    public RestAPIService getRestApi(Retrofit retrofit) {
         return retrofit.create(RestAPIService.class);
     }
 
     @Provides
     @Singleton
-    Repository getRepository(RestAPIService restAPIService) {
+    public Repository getRepository(RestAPIService restAPIService) {
         return new Repository(restAPIService);
     }
 
     @Provides
     @Singleton
-    ViewModelProvider.Factory getViewModelFactory(Repository repository) {
+    public ViewModelProvider.Factory getViewModelFactory(Repository repository) {
         return new ViewModelFactory(repository);
     }
 

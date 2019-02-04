@@ -1,27 +1,24 @@
 package za.co.moxomo.adapters;
 
 import android.arch.paging.PagedListAdapter;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.squareup.picasso.Picasso;
-
 import za.co.moxomo.R;
 import za.co.moxomo.databinding.ListRowBinding;
-import za.co.moxomo.helpers.FontCache;
 import za.co.moxomo.model.Vacancy;
 
 public class VacancyListAdapter extends PagedListAdapter<Vacancy, VacancyListAdapter.ViewHolder> {
 
+    private OnItemClickListener onItemClickListener;
 
-    public VacancyListAdapter() {
+
+    public VacancyListAdapter(OnItemClickListener onItemClickListener) {
         super(Vacancy.DIFF_CALLBACK);
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -29,8 +26,7 @@ public class VacancyListAdapter extends PagedListAdapter<Vacancy, VacancyListAda
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ListRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.list_row, parent, false);
-
-        return new ViewHolder(binding);
+        return new ViewHolder(binding, onItemClickListener);
     }
 
     @Override
@@ -46,12 +42,17 @@ public class VacancyListAdapter extends PagedListAdapter<Vacancy, VacancyListAda
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private ListRowBinding binding;
-
-        ViewHolder(ListRowBinding binding) {
+        ViewHolder(ListRowBinding binding, OnItemClickListener itemClickListener) {
             super(binding.getRoot());
             this.binding = binding;
+            binding.getRoot().setOnClickListener(view -> {
+                itemClickListener.onItemClick(binding.getVacancy());
+            });
         }
+    }
 
+    public interface OnItemClickListener {
+        void onItemClick(Vacancy item);
     }
 
     }

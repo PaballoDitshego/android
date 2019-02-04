@@ -142,8 +142,8 @@ public class WebViewFragment extends Fragment {
             webView.goBack();
         } else {
             final MainActivity activity = (MainActivity) getActivity();
-            int previousItem = activity.getBackStack().pop();
-            activity.getPager().setCurrentItem(previousItem);
+           /* int previousItem = activity.getBackStack().pop();
+            activity.getPager().setCurrentItem(previousItem);*/
         }
     }
 
@@ -176,8 +176,6 @@ public class WebViewFragment extends Fragment {
     private class ViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-
-
             view.loadUrl(url);
             return true;
         }

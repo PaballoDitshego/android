@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -33,15 +34,16 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
     private MutableLiveData<String> progressLiveStatus;
     private CompositeDisposable compositeDisposable;
     private int pageNumber = 1;
-    private String searchString = null;
+
 
     public MutableLiveData<String> getProgressLiveStatus() {
         return progressLiveStatus;
     }
 
     public void setSearchString(String searchString) {
-        this.searchString = searchString;
-        this.invalidate();
+        Repository.setSearchString(searchString);
+        invalidate();
+
     }
 
 
@@ -59,7 +61,7 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, Vacancy> callback) {
 
-        repository.fetchVacancies(null, pageNumber, params.requestedLoadSize).doOnSubscribe(disposable -> {
+        repository.fetchVacancies(Repository.SEARCH_STRING, pageNumber, params.requestedLoadSize).doOnSubscribe(disposable -> {
             compositeDisposable.add(disposable);
             progressLiveStatus.postValue(ApplicationConstants.LOADING);
 
@@ -70,7 +72,6 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
                     List<Vacancy> arrayList = Utility.parse(object);
                     pageNumber++;
                     callback.onResult(arrayList, -1, pageNumber);
-
                 },
                 throwable -> progressLiveStatus.postValue(ApplicationConstants.LOADED));
     }
@@ -82,7 +83,7 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
 
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Vacancy> callback) {
-        repository.fetchVacancies(null, params.key, params.requestedLoadSize).doOnSubscribe(disposable -> {
+        repository.fetchVacancies(Repository.SEARCH_STRING, params.key, params.requestedLoadSize).doOnSubscribe(disposable -> {
             compositeDisposable.add(disposable);
             progressLiveStatus.postValue(ApplicationConstants.LOADING);
 

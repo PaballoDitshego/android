@@ -3,6 +3,7 @@ package za.co.moxomo.fragments;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,9 +12,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -21,11 +24,13 @@ import javax.inject.Inject;
 
 import de.greenrobot.event.EventBus;
 import za.co.moxomo.R;
+import za.co.moxomo.activities.NotificationActivity;
 import za.co.moxomo.adapters.VacancyListAdapter;
 import za.co.moxomo.databinding.FragmentHomepageBinding;
 import za.co.moxomo.dagger.DaggerInjectionComponent;
 import za.co.moxomo.dagger.InjectionComponent;
 import za.co.moxomo.helpers.ApplicationConstants;
+import za.co.moxomo.model.Vacancy;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 import za.co.moxomo.viewmodel.MainActivityViewModel;
 
@@ -36,7 +41,6 @@ public class HomePageFragment extends Fragment {
     @Inject
     ViewModelFactory viewModelFactory;
 
-    private OnHomeListInteractionListener mListener;
     private FragmentHomepageBinding binding;
     private VacancyListAdapter vacancyListAdapter;
     private MainActivityViewModel mainActivityViewModel;
@@ -89,7 +93,11 @@ public class HomePageFragment extends Fragment {
         binding.list.setDrawingCacheEnabled(true);
         binding.list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         binding.list.setItemAnimator(new DefaultItemAnimator());
-        vacancyListAdapter = new VacancyListAdapter();
+        vacancyListAdapter = new VacancyListAdapter(item -> {
+            Intent intent = new Intent(getActivity(), NotificationActivity.class);
+            intent.putExtra("url", item.getWebsite());
+            startActivity(intent);
+        });
         vacancyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount) {
@@ -129,7 +137,6 @@ public class HomePageFragment extends Fragment {
         super.onAttach(context);
         Activity activity = context instanceof Activity ? (Activity) context : null;
         try {
-            mListener = (OnHomeListInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHomeListInteractionListener");
@@ -139,14 +146,8 @@ public class HomePageFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-
-    public interface OnHomeListInteractionListener {
-
-        void onHomeListInteraction(Long id);
-    }
 
 
 }

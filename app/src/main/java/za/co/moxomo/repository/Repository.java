@@ -8,6 +8,7 @@ import za.co.moxomo.service.RestAPIService;
 public class Repository {
 
     private RestAPIService restAPIService;
+    public static String SEARCH_STRING = null;
 
     public Repository(RestAPIService restAPIService) {
         this.restAPIService = restAPIService;
@@ -18,4 +19,7 @@ public class Repository {
     }
 
 
+    public static void setSearchString(String searchString) {
+        SEARCH_STRING = searchString;
+    }
 }

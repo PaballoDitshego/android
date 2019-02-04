@@ -1,1 +1,14 @@
 /build
+*.log
+.idea
+*.iws
+*.iml
+*.ipr
+*.tmp
+*.gz
+
+/.idea
+.project
+.classpath
+.settings
+/.gradle
