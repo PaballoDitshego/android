@@ -85,11 +85,9 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
     public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Vacancy> callback) {
         repository.fetchVacancies(Repository.SEARCH_STRING, params.key, params.requestedLoadSize).doOnSubscribe(disposable -> {
             compositeDisposable.add(disposable);
-            progressLiveStatus.postValue(ApplicationConstants.LOADING);
 
         }).subscribe((JsonElement result) ->
                 {
-                    progressLiveStatus.postValue(ApplicationConstants.LOADED);
                     JSONObject object = new JSONObject(gson.toJson(result));
                     List<Vacancy> arrayList = Utility.parse(object);
                     callback.onResult(arrayList, params.key + 1);

@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
+        mSearchView.clearFocus();
         mSearchView.setOnSearchClickListener(v -> {
             binding.viewpager.setCurrentItem(0);
         });

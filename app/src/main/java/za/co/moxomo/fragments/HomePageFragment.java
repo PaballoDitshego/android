@@ -12,11 +12,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -30,7 +28,6 @@ import za.co.moxomo.databinding.FragmentHomepageBinding;
 import za.co.moxomo.dagger.DaggerInjectionComponent;
 import za.co.moxomo.dagger.InjectionComponent;
 import za.co.moxomo.helpers.ApplicationConstants;
-import za.co.moxomo.model.Vacancy;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 import za.co.moxomo.viewmodel.MainActivityViewModel;
 
@@ -95,7 +92,7 @@ public class HomePageFragment extends Fragment {
         binding.list.setItemAnimator(new DefaultItemAnimator());
         vacancyListAdapter = new VacancyListAdapter(item -> {
             Intent intent = new Intent(getActivity(), NotificationActivity.class);
-            intent.putExtra("url", item.getWebsite());
+            intent.putExtra("url", item.getUrl());
             startActivity(intent);
         });
         vacancyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {

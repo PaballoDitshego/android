@@ -114,7 +114,7 @@ public class DetailPageFragment extends Fragment {
             public void onClick(View v) {
                 if (vacancy != null) {
 
-                    onButtonPressed(vacancy.getWebsite());
+                    onButtonPressed(vacancy.getUrl());
                 }
 
             }
@@ -293,7 +293,7 @@ public class DetailPageFragment extends Fragment {
             company.setText(result.getCompany());
             closingDate.setText("Closes on: " + result.getClosingDate().toLocalDate());
             apply.setVisibility(View.VISIBLE);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, vacancy.getWebsite());
+            shareIntent.putExtra(Intent.EXTRA_TEXT, vacancy.getUrl());
 
 
         }
@@ -340,7 +340,7 @@ public class DetailPageFragment extends Fragment {
         if (json.has("min_qual")) {
             min_qual = json.getString("min_qual");
         }
-        String website = json.getString("website");
+        String website = json.getString("url");
         String duties = null;
         if (json.has("duties")) {
             duties = json.getString("duties");
@@ -362,7 +362,7 @@ public class DetailPageFragment extends Fragment {
         record.setImageUrl(imageUrl);
         record.setClosingDate(closingDate);
         record.setDuties(duties);
-        record.setWebsite(website);
+        record.setUrl(website);
         record.setCompany(company);
         record.setMinQual(min_qual);
 

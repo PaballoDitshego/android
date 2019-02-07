@@ -151,7 +151,8 @@ class NotificationActivity : AppCompatActivity(), DetailPageFragment.OnApplyButt
 
             }
 
-
+        }else{
+            super.onBackPressed();
         }
     }
 }

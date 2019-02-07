@@ -54,6 +54,7 @@ public class Utility {
             String id = item.getString("id");
             String imageUrl = item.getString("imageUrl");
             String location = item.optString("location");
+            String url = item.optString("url");
 
 
             String description = item.optString("description");
@@ -74,6 +75,7 @@ public class Utility {
             record.setLocation(location);
             record.setAdvertDate(dateTime);
             record.setImageUrl(imageUrl);
+            record.setUrl(url);
             if (title != null) {
                 arrayList.add(record);
             }

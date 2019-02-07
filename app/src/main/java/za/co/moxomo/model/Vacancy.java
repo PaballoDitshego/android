@@ -32,7 +32,7 @@ public class Vacancy  extends BaseObservable{
     public DateTime advertDate;
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
     public DateTime closingDate;
-    public String website;
+    public String url;
     public String imageUrl;
 
     public static DiffUtil.ItemCallback<Vacancy> DIFF_CALLBACK = new DiffUtil.ItemCallback<Vacancy>() {
@@ -136,13 +136,13 @@ public class Vacancy  extends BaseObservable{
     }
 
     @Bindable
-    public String getWebsite() {
-        return website;
+    public String getUrl() {
+        return url;
     }
 
     @Bindable
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Bindable
