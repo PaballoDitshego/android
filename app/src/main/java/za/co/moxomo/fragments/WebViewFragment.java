@@ -2,8 +2,10 @@ package za.co.moxomo.fragments;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,11 +26,9 @@ import za.co.moxomo.events.PageBackEvent;
 
 public class WebViewFragment extends Fragment {
 
-
     private static String url;
     private WebView webView;
     private ProgressBar progressBar;
-    private EventBus bus = EventBus.getDefault();
 
 
     public WebViewFragment() {
@@ -69,14 +69,33 @@ public class WebViewFragment extends Fragment {
 
         webView = (WebView) view.findViewById(R.id.webView);
         progressBar.setMax(0);
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        if(url.contains("pnet")) {
+            settings.setAllowUniversalAccessFromFileURLs(true);
+            settings.setBuiltInZoomControls(false);
+            settings.setUseWideViewPort(true);
+            settings.setJavaScriptEnabled(true);
+            settings.setSupportMultipleWindows(true);
+            settings.setJavaScriptCanOpenWindowsAutomatically(true);
+            settings.setLoadsImagesAutomatically(true);
+            settings.setDomStorageEnabled(true);
+            settings.setLoadWithOverviewMode(true);
+            settings.setMediaPlaybackRequiresUserGesture(false);
 
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setAppCacheEnabled(true);
-        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+            settings.setAllowFileAccess(true);
+//        settings.setUserAgentString("Mozilla/5.0");
+            settings.setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36");
+//        webView.setInitialScale(50);
+        }
+
         webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
-                // getActivity().setProgress(0);
+                // getActivity().setProgress(0);]
+
             }
+
+
         });
 
         webView.setWebViewClient(new ViewClient());
@@ -99,12 +118,11 @@ public class WebViewFragment extends Fragment {
             }
         });
         webView.loadUrl(url);
+
         webView.pageUp(true);
 
 
-        if (!bus.isRegistered(this)) {
-            bus.register(this);
-        }
+
         return view;
     }
 
@@ -125,42 +143,10 @@ public class WebViewFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        // Unregister this class from the eventbus on destroy
-        bus.unregister(this);
+        // Unregister this class from the eventbus on destroy;
         super.onDestroy();
     }
 
-
-    public void onEvent(BrowserViewEvent event) {
-
-        apply(event.getUrl());
-    }
-
-
-    public void onEvent(PageBackEvent event) {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            final MainActivity activity = (MainActivity) getActivity();
-           /* int previousItem = activity.getBackStack().pop();
-            activity.getPager().setCurrentItem(previousItem);*/
-        }
-    }
-
-    public void apply(String url) {
-        if (webView.canGoBack()) {
-            webView.clearHistory();
-        }
-        webView.loadUrl(url);
-
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-    }
 
     @Override
     public void onDetach() {
@@ -176,6 +162,7 @@ public class WebViewFragment extends Fragment {
     private class ViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.d("Url", url);
             view.loadUrl(url);
             return true;
         }

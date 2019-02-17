@@ -4,7 +4,9 @@ package za.co.moxomo.helpers;
  * Created by Paballo Ditshego on 7/29/15.
  */
 
-import android.util.Log;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.reactivex.Observable;
 import za.co.moxomo.model.Vacancy;
 
 /**
@@ -55,11 +58,15 @@ public class Utility {
             String imageUrl = item.getString("imageUrl");
             String location = item.optString("location");
             String url = item.optString("url");
+            boolean webViewViewable = item.optBoolean("webViewViewable");
 
 
             String description = item.optString("description");
-            if (description.length() > 400) {
-                description = description.substring(0, 400) + "....";
+            if (description.length() >= 400) {
+                description = description.substring(0, 399);
+                if (description.contains(".")) {
+                    description = description.substring(0, description.lastIndexOf("."));
+                }
             }
             String title = item.optString("jobTitle");
 
@@ -75,13 +82,25 @@ public class Utility {
             record.setLocation(location);
             record.setAdvertDate(dateTime);
             record.setImageUrl(imageUrl);
+            record.setWebViewViewable(webViewViewable);
             record.setUrl(url);
-            if (title != null) {
-                arrayList.add(record);
-            }
 
+            arrayList.add(record);
         }
 
         return arrayList;
+    }
+
+    public static Observable<Bitmap> decodeBitmap(final Context context, final int resource) {
+        return Observable.create(e -> {
+            Bitmap icon = BitmapFactory.decodeResource(context.getResources(), resource);
+            if (icon != null) {
+                e.onNext(icon);
+            } else {
+                e.onError(new NullPointerException());
+            }
+            e.onComplete();
+        });
+
     }
 }

@@ -9,6 +9,8 @@ import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
 
+import java.util.Objects;
+
 public class ViewBindingAdapter {
 
     @BindingAdapter({"android:imageUrl"})
@@ -17,6 +19,7 @@ public class ViewBindingAdapter {
                 ) {
             imageUrl="http://media.stepstone.com/modules/tracking/resources/images/smartbanner_icon_pnet.png";
         }
+
         Picasso.with(view.getContext()).load(imageUrl).into(view);
 
     }

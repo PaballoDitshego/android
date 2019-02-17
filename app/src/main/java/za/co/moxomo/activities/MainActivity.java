@@ -25,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         injectionComponent = DaggerInjectionComponent.builder().build();
         injectionComponent.inject(this);
 
@@ -83,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
         binding.viewpager.setAdapter(mAdapter);
         binding.navView.setNavigationItemSelectedListener(menuItem -> {
             menuItem.setChecked(true);
+            if(menuItem.getItemId()==R.id.nav_profile){
+                binding.viewpager.arrowScroll(View.FOCUS_RIGHT);
+            }
             // close drawer when item is tapped
             binding.drawerLayout.closeDrawers();
             return true;
@@ -169,27 +175,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
         if (id == android.R.id.home) {
             binding.drawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
-       /* if (id == R.id.action_account) {
-            //starts account activity
-            Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
-        }
-        if (id == R.id.action_notifications) {
-            binding.viewpager.setCurrentItem(1);
-        }*/
-
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
 
 
     public ProgressBar getProgressBar() {
@@ -199,24 +191,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-
         mSearchView.setIconified(false);
         mSearchView.onActionViewCollapsed();
         super.onBackPressed();
-      /*  if (getBackStack().empty()) {
-            super.onBackPressed(); //exits application
-        } else {
-            int previousItem = getBackStack().pop();
-            binding.viewpager.setCurrentItem(previousItem);
-        }*/
-
-        // }
-    }
-
-
-    public ViewPager getPager() {
-        return binding.viewpager;
     }
 
     /*

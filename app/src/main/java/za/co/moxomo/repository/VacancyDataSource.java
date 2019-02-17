@@ -3,26 +3,18 @@ package za.co.moxomo.repository;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import za.co.moxomo.helpers.ApplicationConstants;
 import za.co.moxomo.helpers.Utility;
 import za.co.moxomo.model.Vacancy;
@@ -73,12 +65,15 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
                     pageNumber++;
                     callback.onResult(arrayList, -1, pageNumber);
                 },
-                throwable -> progressLiveStatus.postValue(ApplicationConstants.LOADED));
+                throwable -> {
+                    progressLiveStatus.postValue(ApplicationConstants.LOADED);
+                    throwable.printStackTrace();
+
+                });
     }
 
     @Override
     public void loadBefore(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Vacancy> callback) {
-
     }
 
     @Override
@@ -91,9 +86,10 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
                     JSONObject object = new JSONObject(gson.toJson(result));
                     List<Vacancy> arrayList = Utility.parse(object);
                     callback.onResult(arrayList, params.key + 1);
-
                 },
-                throwable -> progressLiveStatus.postValue(ApplicationConstants.LOADED));
+                throwable -> {
+                    throwable.printStackTrace();
+                });
     }
 
 

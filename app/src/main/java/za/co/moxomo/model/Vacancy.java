@@ -27,6 +27,7 @@ public class Vacancy  extends BaseObservable{
     public String location;
     public String min_qual;
     public String duties;
+    public boolean webViewViewable;
 
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
     public DateTime advertDate;
@@ -141,6 +142,11 @@ public class Vacancy  extends BaseObservable{
     }
 
     @Bindable
+    public void setWebViewViewable(boolean webViewViewable) {
+        this.webViewViewable = webViewViewable;
+    }
+
+    @Bindable
     public void setUrl(String url) {
         this.url = url;
     }
@@ -151,6 +157,9 @@ public class Vacancy  extends BaseObservable{
     }
 
 
+    public boolean isWebViewViewable() {
+        return webViewViewable;
+    }
 
     @Bindable
     public void setAdvertDate(DateTime advertDate) {

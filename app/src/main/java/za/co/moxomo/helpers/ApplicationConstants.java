@@ -17,8 +17,8 @@ public interface ApplicationConstants {
     String ACTION_JOB_ALERT = "job_alert";
     String ACTION_NEWS_ALERT = "news_alert";
 
-    public final static String LOADING = "Loading";
-    public final static String LOADED = "Loaded";
+    String LOADING = "Loading";
+    String LOADED = "Loaded";
 
 
 }

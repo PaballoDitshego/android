@@ -1,21 +1,29 @@
 package za.co.moxomo.gcm;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import za.co.moxomo.R;
+import za.co.moxomo.activities.MainActivity;
 import za.co.moxomo.activities.NotificationActivity;
 import za.co.moxomo.contentproviders.NotificationsContentProvider;
 import za.co.moxomo.helpers.ApplicationConstants;
@@ -23,19 +31,30 @@ import za.co.moxomo.helpers.ApplicationConstants;
 /**
  * Created by Paballo Ditshego on 7/28/15.
  */
-public class GCMListenerService extends GcmListenerService {
+public class GCMListenerService   extends FirebaseMessagingService {
 
+    private static final String TAG = "MyFirebaseMsgService";
 
     @Override
-    public void onMessageReceived(String from, Bundle data) {
+    public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        sendNotification(data);
+
+     //   sendNotification(remoteMessage);
 
     }
 
-    private void sendNotification(Bundle msg) {
+    @Override
+    public void onNewToken(String token) {
+        Log.d(TAG, "Refreshed token: " + token);
 
-        Long row_id = saveToDatabase(msg);
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+        sendRegistrationToServer(token);
+    }
+    private void sendNotification(Map<String,String> msg) {
+
+       /* Long row_id = saveToDatabase(msg);
 
         //store user.id locally
         if (msg.getString("id").equals(null)) {
@@ -73,8 +92,44 @@ public class GCMListenerService extends GcmListenerService {
         mNotifyBuilder.setAutoCancel(true);
         mNotificationManager.notify((int) Calendar.getInstance().getTimeInMillis(), mNotifyBuilder.build());
 
+*/
+
+    }
+    private void sendRegistrationToServer(String token) {
+        // TODO: Implement this method to send token to your app server.
+    }
 
 
+
+    private void sendNotification(String messageBody) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+      /*  String channelId = getString(R.string.default_notification_channel_id);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.ic_notif)
+                      //  .setContentTitle(getString(R.string.fcm_message))
+                        .setContentText(messageBody)
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationManager.notify(0 *//* ID of notification *//*, notificationBuilder.build());*/
     }
 
 

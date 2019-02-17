@@ -6,6 +6,8 @@
 *.ipr
 *.tmp
 *.gz
+fabric.properties
+
 
 /.idea
 .project
