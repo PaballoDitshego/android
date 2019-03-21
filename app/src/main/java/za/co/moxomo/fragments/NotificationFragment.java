@@ -70,10 +70,7 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
-        TextView tv = (TextView) view.findViewById(R.id.notification_text);
-        Typeface tf = FontCache.get("Roboto-Bold.ttf", getActivity());
 
-        tv.setTypeface(tf);
         mListView = (ListView) view.findViewById(R.id.notification_list);
         mListView.setEmptyView(view.findViewById(R.id.notifications_empty));
         view.findViewById(R.id.notification_loading).setVisibility(View.INVISIBLE);

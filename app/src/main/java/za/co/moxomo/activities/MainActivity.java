@@ -9,44 +9,32 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
-import io.fabric.sdk.android.Fabric;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Stack;
 
 import javax.inject.Inject;
 
-import de.greenrobot.event.EventBus;
+import io.fabric.sdk.android.Fabric;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.ViewPagerAdapter;
-import za.co.moxomo.databinding.ActivityMainBinding;
-import za.co.moxomo.events.DetailViewEvent;
-import za.co.moxomo.events.SearchEvent;
-import za.co.moxomo.fragments.DetailPageFragment;
-import za.co.moxomo.fragments.HomePageFragment;
-import za.co.moxomo.helpers.PageTransformer;
-
 import za.co.moxomo.dagger.DaggerInjectionComponent;
 import za.co.moxomo.dagger.InjectionComponent;
-import za.co.moxomo.viewmodel.ViewModelFactory;
+import za.co.moxomo.databinding.ActivityMainBinding;
+import za.co.moxomo.helpers.PageTransformer;
 import za.co.moxomo.viewmodel.MainActivityViewModel;
+import za.co.moxomo.viewmodel.ViewModelFactory;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -66,37 +54,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
+
         injectionComponent = DaggerInjectionComponent.builder().build();
         injectionComponent.inject(this);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_navigation);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
-
-
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+        mProgressBar = findViewById(R.id.progress_spinner);
 
         binding.viewpager.setPageTransformer(false, new PageTransformer(this));
         binding.viewpager.setOffscreenPageLimit(2);
+
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         binding.viewpager.setAdapter(mAdapter);
-        binding.navView.setNavigationItemSelectedListener(menuItem -> {
-            menuItem.setChecked(true);
-            if(menuItem.getItemId()==R.id.nav_profile){
-                binding.viewpager.arrowScroll(View.FOCUS_RIGHT);
-            }
-            // close drawer when item is tapped
-            binding.drawerLayout.closeDrawers();
-            return true;
-        });
+        int[] tabIcons = {
+                R.drawable.ic_action_home,
+                R.drawable.ic_action_notification,
+        };
+
+        binding.tablayout.setupWithViewPager(binding.viewpager);
+
 
         handleIntent(getIntent());
-
-
     }
 
 
@@ -110,6 +93,22 @@ public class MainActivity extends AppCompatActivity {
         mSearchView =
                 (SearchView) search.getActionView();
         mSearchView.setIconified(false);
+
+        mSearchView.setOnQueryTextListener(
+                new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s.length() < 1) {
+                    mainActivityViewModel.getSearchString().setValue(null);
+                }
+                return false;
+            }
+        });
         mSearchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
             public boolean onSuggestionSelect(int position) {
@@ -134,9 +133,15 @@ public class MainActivity extends AppCompatActivity {
             binding.viewpager.setCurrentItem(0);
         });
 
+        mSearchView.setOnCloseListener(() -> {
+            return true; //returning true will stop search view from collapsing
+        });
+
         mSearchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
-        changeSearchViewTextColor(mSearchView);
+
+
+      //  changeSearchViewTextColor(mSearchView);
 
         return true;
     }
@@ -177,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            binding.drawerLayout.openDrawer(GravityCompat.START);
             return true;
         }
         return super.onOptionsItemSelected(item);

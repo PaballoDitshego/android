@@ -5,6 +5,9 @@ import android.text.format.DateUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
@@ -15,12 +18,14 @@ public class ViewBindingAdapter {
 
     @BindingAdapter({"android:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
-        if (imageUrl.isEmpty()
-                ) {
-            imageUrl="http://media.stepstone.com/modules/tracking/resources/images/smartbanner_icon_pnet.png";
+        if (!imageUrl.isEmpty() && imageUrl.endsWith("png.jpeg")) {
+            imageUrl = imageUrl.replace("png.jpeg", "png");
         }
-
-        Picasso.with(view.getContext()).load(imageUrl).into(view);
+        Glide.with(view.getContext())
+                .load(imageUrl)
+                .override(100, 100)
+                .apply(RequestOptions.bitmapTransform(new RoundedCorners(14)))
+                .into(view);
 
     }
 

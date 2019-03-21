@@ -2,6 +2,7 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
+        google()
     }
 
     dependencies {
@@ -9,6 +10,11 @@ buildscript {
     }
 }
 apply plugin: 'com.android.application'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.google-services'
@@ -24,7 +30,7 @@ android {
 
     defaultConfig {
         applicationId "za.co.moxomo"
-        minSdkVersion 20
+        minSdkVersion 22
         targetSdkVersion 22
         versionCode 7
         versionName "3.5.0"
@@ -96,7 +102,18 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
     implementation 'com.crashlytics.sdk.android:answers:1.4.7'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.crashlytics.sdk.android:crashlytics-ndk:2.0.5'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
 
 
+
+
+}
+
+crashlytics {
+    enableNdk true
+    androidNdkOut 'src/main/obj'
+    androidNdkLibsOut 'src/main/libs'
 }

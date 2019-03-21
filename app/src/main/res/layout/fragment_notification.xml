@@ -5,22 +5,12 @@
     android:layout_height="match_parent"
     tools:context="za.co.moxomo.fragments.NotificationFragment">
 
-    <TextView
-        android:id="@+id/notification_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Notifications"
-        android:textSize="17dp"
-        android:textStyle="bold"
-
-        />
 
     <ListView
         android:id="@+id/notification_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/notification_text"
         android:descendantFocusability="blocksDescendants"
         android:divider="@color/list_divider"
         android:dividerHeight="1dp"

@@ -9,7 +9,7 @@
 
     </style>
 
-    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
         <item name="background">@color/action_color</item>
         <item name="logo">@mipmap/ic_launcher</item>
         <item name="displayOptions">useLogo|showHome</item>
@@ -25,6 +25,7 @@
         <item name="submitBackground">@color/background_material_light</item>
         <!-- Close button icon -->
         <item name="closeIcon">@mipmap/ic_cancel</item>
+        <item name="searchHintIcon">@drawable/ic_action_search</item>
         <!-- Search button icon -->
         <item name="android:searchButtonText">@string/search_button_text</item>
 

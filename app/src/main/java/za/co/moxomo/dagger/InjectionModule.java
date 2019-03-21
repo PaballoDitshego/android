@@ -26,7 +26,7 @@ import za.co.moxomo.viewmodel.ViewModelFactory;
 @Module
 public class InjectionModule {
 
-    private static String BASE_URL = "http://35.208.156.206:8080";
+    private static String BASE_URL = "https://www.moxomo.co.za";
 
     @Provides
     @Singleton

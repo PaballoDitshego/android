@@ -30,6 +30,19 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "Home";
+            case 1:
+                return "Notifications";
+                default:
+                return null;
+        }
+   }
+
+
+    @Override
     public int getCount() {
         return NUM;
 

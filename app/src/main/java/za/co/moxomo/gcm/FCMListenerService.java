@@ -31,9 +31,9 @@ import za.co.moxomo.helpers.ApplicationConstants;
 /**
  * Created by Paballo Ditshego on 7/28/15.
  */
-public class GCMListenerService   extends FirebaseMessagingService {
+public class FCMListenerService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyFirebaseMsgService";
+    private static final String TAG = "FCMListenerService";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
