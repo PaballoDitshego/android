@@ -6,4 +6,7 @@
     <dimen name="location">15dip</dimen>
     <dimen name="description">13dip</dimen>
     <dimen name="time">12dip</dimen>
+<!--    <dimen name="standard_55">55dp</dimen>
+    <dimen name="standard_105">105dp</dimen>
+    <dimen name="standard_155">155dp</dimen>-->
 </resources>

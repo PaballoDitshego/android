@@ -13,14 +13,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+
+import com.bumptech.glide.Glide;
 
 import org.joda.time.DateTime;
 
 import java.util.Date;
 
 import za.co.moxomo.R;
-import za.co.moxomo.helpers.FontCache;
 
 /**
  * Created by Paballo Ditshego on 7/31/15.
@@ -43,11 +43,8 @@ public class NotificationsCursorAdapter extends CursorAdapter {
 
         // Find fields to populate in inflated template
         TextView tv_title = (TextView) view.findViewById(R.id.title);
-        tv_title.setTypeface(FontCache.get("Roboto_Thin.ttf", context));
         TextView tv_body = (TextView) view.findViewById(R.id.body);
-        tv_body.setTypeface(FontCache.get("Roboto-Regular.ttf", context));
         TextView tv_timestamp = (TextView) view.findViewById(R.id.timestamp);
-        tv_timestamp.setTypeface(FontCache.get("Roboto-Regular.ttf", context));
         ImageView image = (ImageView) view.findViewById(R.id.thumbnail);
         // Extract properties from cursor
         String image_url = cursor.getString(cursor.getColumnIndexOrThrow("image_url"));
@@ -58,8 +55,7 @@ public class NotificationsCursorAdapter extends CursorAdapter {
             tv_title.setTypeface(Typeface.DEFAULT);
 
         }
-
-        Picasso.with(context).load(image_url).into(image);
+        Glide.with(context).load(image_url).into(image);
         tv_title.setText(title);
         tv_body.setText(body);
         //  DateFormat formatter = android.text.format.DateFormat

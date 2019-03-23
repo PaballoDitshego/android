@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -65,7 +66,7 @@ public class Utility {
             if (description.length() >= 400) {
                 description = description.substring(0, 399);
                 if (description.contains(".")) {
-                    description = description.substring(0, description.lastIndexOf("."));
+                    description = description.substring(0, description.lastIndexOf(".")+1);
                 }
             }
             String title = item.optString("jobTitle");
@@ -77,9 +78,9 @@ public class Utility {
             }
             Vacancy record = new Vacancy();
             record.setId(id);
-            record.setJobTitle(title);
-            record.setDescription(description);
-            record.setLocation(location);
+            record.setJobTitle(title.trim());
+            record.setDescription(StringUtils.normalizeSpace(description.trim()));
+            record.setLocation(location.trim());
             record.setAdvertDate(dateTime);
             record.setImageUrl(imageUrl);
             record.setWebViewViewable(webViewViewable);

@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
-import za.co.moxomo.fragments.DetailPageFragment;
 import za.co.moxomo.fragments.HomePageFragment;
 import za.co.moxomo.fragments.NotificationFragment;
 

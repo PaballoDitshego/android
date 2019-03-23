@@ -30,10 +30,11 @@ android {
 
     defaultConfig {
         applicationId "za.co.moxomo"
-        minSdkVersion 22
+        minSdkVersion 20
         targetSdkVersion 22
         versionCode 7
         versionName "3.5.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -69,20 +70,18 @@ dependencies {
     implementation 'com.android.support:support-media-compat:27.1.1'
     implementation 'com.android.support:support-fragment:27.1.1'
 
-
     //implementation 'com.android.support:support-compat-v7:26.1.0'
     implementation group: 'joda-time', name: 'joda-time', version: '2.9.4'
     implementation group: 'org.joda', name: 'joda-convert', version: '1.8.1'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'org.parceler:parceler-api:1.0.0'
-    implementation 'de.greenrobot:eventbus:2.4.0'
     implementation 'com.squareup.okhttp:okhttp:2.4.0'
     //  implementation 'com.google.android.gms:play-services-gcm:7.3.0'
     implementation "com.google.android.gms:play-services-gcm:15.0.1"
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     implementation 'android.arch.paging:runtime:1.0.1'
+    implementation 'com.android.support:multidex:1.0.3'
 
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -105,9 +104,8 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics-ndk:2.0.5'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
-
-
-
+    implementation 'org.apache.commons:commons-text:1.4'
+    implementation 'com.github.clans:fab:1.6.4'
 
 
 }

@@ -16,11 +16,14 @@ import android.support.customtabs.CustomTabsSession;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import java.util.Objects;
 
@@ -123,15 +126,22 @@ public class HomePageFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final android.support.v7.widget.LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
+        int resId = R.anim.layout_animation_fall_down;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
+        binding.list.setLayoutAnimation(animation);
         binding.list.setLayoutManager(layoutManager);
         binding.list.setItemViewCacheSize(20);
         binding.list.setDrawingCacheEnabled(true);
         binding.list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        binding.list.setLayoutAnimation(animation);
 
         binding.list.setItemAnimator(new DefaultItemAnimator());
+        binding.list.addItemDecoration(new DividerItemDecoration(binding.list.getContext(), DividerItemDecoration.VERTICAL));
+
         vacancyListAdapter = new VacancyListAdapter(item -> {
             openUrlInBrowser(item);
         });
+
         vacancyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount) {

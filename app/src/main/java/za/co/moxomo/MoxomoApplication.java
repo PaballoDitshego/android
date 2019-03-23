@@ -1,8 +1,8 @@
 package za.co.moxomo;
 
 
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 
-public class MoxomoApplication extends Application {
+public class MoxomoApplication extends MultiDexApplication {
 }

@@ -9,20 +9,23 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.github.clans.fab.FloatingActionButton;
 
 import javax.inject.Inject;
 
@@ -32,7 +35,6 @@ import za.co.moxomo.adapters.ViewPagerAdapter;
 import za.co.moxomo.dagger.DaggerInjectionComponent;
 import za.co.moxomo.dagger.InjectionComponent;
 import za.co.moxomo.databinding.ActivityMainBinding;
-import za.co.moxomo.helpers.PageTransformer;
 import za.co.moxomo.viewmodel.MainActivityViewModel;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 
@@ -66,18 +68,21 @@ public class MainActivity extends AppCompatActivity {
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
         mProgressBar = findViewById(R.id.progress_spinner);
 
-        binding.viewpager.setPageTransformer(false, new PageTransformer(this));
         binding.viewpager.setOffscreenPageLimit(2);
 
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         binding.viewpager.setAdapter(mAdapter);
-        int[] tabIcons = {
-                R.drawable.ic_action_home,
-                R.drawable.ic_action_notification,
-        };
+        binding.fabCreateAlert.setOnClickListener(view -> {
 
-        binding.tablayout.setupWithViewPager(binding.viewpager);
+        });
+        binding.fabEditAlerts.setOnClickListener(view->{
 
+        });
+        binding.fab.setOnMenuButtonClickListener(view->{
+            binding.fab.toggle(true);
+        });
+        binding.fab.showMenuButton(true);
+        binding.fab.setClosedOnTouchOutside(true);
 
         handleIntent(getIntent());
     }
@@ -93,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
         mSearchView =
                 (SearchView) search.getActionView();
         mSearchView.setIconified(false);
+        mSearchView.setGravity(Gravity.LEFT);
+        SearchView.SearchAutoComplete searchEditText = mSearchView.findViewById(R.id.search_src_text);
 
         mSearchView.setOnQueryTextListener(
                 new SearchView.OnQueryTextListener() {
@@ -139,10 +146,6 @@ public class MainActivity extends AppCompatActivity {
 
         mSearchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
-
-
-      //  changeSearchViewTextColor(mSearchView);
-
         return true;
     }
 
@@ -188,32 +191,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public ProgressBar getProgressBar() {
-        return mProgressBar;
-    }
-
 
     @Override
     public void onBackPressed() {
         mSearchView.setIconified(false);
         mSearchView.onActionViewCollapsed();
         super.onBackPressed();
-    }
-
-    /*
-         Changes searchview text color to white
-         */
-    private void changeSearchViewTextColor(View view) {
-        if (view != null) {
-            if (view instanceof TextView) {
-                ((TextView) view).setTextColor(Color.WHITE);
-            } else if (view instanceof ViewGroup) {
-                ViewGroup viewGroup = (ViewGroup) view;
-                for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                    changeSearchViewTextColor(viewGroup.getChildAt(i));
-                }
-            }
-        }
     }
 
 }

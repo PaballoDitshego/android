@@ -7,8 +7,15 @@
     <color name="list_row_end_color">#ffffff</color>
     <color name="list_row_hover_start_color">#ebeef0</color>
     <color name="list_row_hover_end_color">#ebeef0</color>
-    <color name="action_color">#29abe2</color>
+    <color name="action_color">#006680</color>
     <color name="detail_view_color">#ffffff</color>
-    <color name="spinner_color">#B0E0E6</color>
+    <color name="spinner_color">#006680</color>
+    <color name="grey">#DDDDDD</color>
+    <color name="light_grey">#EEEEEE</color>
+    <color name="white_transparent">#99FFFFFF</color>
+    <color name="menu_shadowColor">#444</color>
+    <color name="menu_colorNormal">#FFB805</color>
+    <color name="menu_colorPressed">#F2AB00</color>
+    <color name="menu_colorRipple">#D99200</color>
 
 </resources>

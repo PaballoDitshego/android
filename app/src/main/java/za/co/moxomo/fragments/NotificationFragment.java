@@ -24,20 +24,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import de.greenrobot.event.EventBus;
 import za.co.moxomo.R;
 import za.co.moxomo.activities.NotificationActivity;
 import za.co.moxomo.adapters.NotificationsCursorAdapter;
 import za.co.moxomo.contentproviders.NotificationsContentProvider;
-import za.co.moxomo.events.DetailViewEvent;
 import za.co.moxomo.helpers.ApplicationConstants;
-import za.co.moxomo.helpers.FontCache;
 
 
 public class NotificationFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
-    private EventBus bus = EventBus.getDefault();
     private SQLiteDatabase db;
     private NotificationsCursorAdapter notificationsAdapter;
     private ListView mListView;
@@ -100,7 +96,7 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
 
                 switch (type) {
                     case ApplicationConstants.ACTION_JOB_ALERT:
-                        bus.post(new DetailViewEvent(Long.parseLong(action_string)));
+                      //  bus.post(new DetailViewEvent(Long.parseLong(action_string)));
                         break;
                     case ApplicationConstants.ACTION_NEWS_ALERT:
                         Intent intent = new Intent(getActivity(), NotificationActivity.class);

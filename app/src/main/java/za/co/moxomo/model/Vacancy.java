@@ -11,6 +11,8 @@ import org.joda.time.DateTime;
 import org.parceler.Parcel;
 import org.parceler.ParcelPropertyConverter;
 
+import java.util.Objects;
+
 import za.co.moxomo.helpers.JodaDateTimeConverter;
 
 
@@ -49,13 +51,30 @@ public class Vacancy  extends BaseObservable{
     };
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vacancy)) return false;
+        Vacancy vacancy = (Vacancy) o;
+        return Objects.equals(jobTitle, vacancy.jobTitle) &&
+                Objects.equals(description, vacancy.description) &&
+                Objects.equals(location, vacancy.location) &&
+                Objects.equals(advertDate, vacancy.advertDate) &&
+                Objects.equals(imageUrl, vacancy.imageUrl);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(jobTitle, description, location, advertDate, imageUrl);
+    }
+/*   @Override
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
 
         Vacancy article = (Vacancy) obj;
         return article.id.equals(this.id);
-    }
+    }*/
 
     @Bindable
     public String getCompany() {
