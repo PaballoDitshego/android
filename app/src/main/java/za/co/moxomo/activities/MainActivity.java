@@ -9,6 +9,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_navigation);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         binding.viewpager.setAdapter(mAdapter);
+        binding.tablayout.setupWithViewPager(binding.viewpager, true);
+        binding.tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         binding.fabCreateAlert.setOnClickListener(view -> {
 
         });
@@ -100,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
         mSearchView.setIconified(false);
         mSearchView.setGravity(Gravity.LEFT);
         SearchView.SearchAutoComplete searchEditText = mSearchView.findViewById(R.id.search_src_text);
+        searchEditText.setPadding(-80, 2, 0, 2);
+        searchEditText.setPaddingRelative(0, 0, 0, 2);
+
 
         mSearchView.setOnQueryTextListener(
                 new SearchView.OnQueryTextListener() {

@@ -23,6 +23,8 @@
 
         <!-- Background for the actions section (e.g. voice, submit) -->
         <item name="submitBackground">@color/background_material_light</item>
+
+        android:paddingStart="-16dp"
         <!-- Search button icon -->
         <item name="android:searchButtonText">@string/search_button_text</item>
 
