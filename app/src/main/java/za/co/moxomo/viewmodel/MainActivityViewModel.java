@@ -1,16 +1,16 @@
 package za.co.moxomo.viewmodel;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-import android.arch.paging.LivePagedListBuilder;
-import android.arch.paging.PagedList;
 
-import java.util.Stack;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 import io.reactivex.disposables.CompositeDisposable;
 import za.co.moxomo.model.Vacancy;
 import za.co.moxomo.repository.Repository;
@@ -23,6 +23,7 @@ public class MainActivityViewModel extends ViewModel {
     private VacancyClassDatasourceFactory vacancyClassDatasourceFactory;
     private LiveData<PagedList<Vacancy>> vacancies;
     private LiveData<String> progressLoadStatus = new MutableLiveData<>();
+    private LiveData<String> resultSetSize = new MutableLiveData<>();
     private MutableLiveData<String> searchString = new MutableLiveData<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -44,7 +45,8 @@ public class MainActivityViewModel extends ViewModel {
         vacancies = (new LivePagedListBuilder(vacancyClassDatasourceFactory, pagedListConfig))
                 .setFetchExecutor(executor)
                 .build();
-         progressLoadStatus = Transformations.switchMap(vacancyClassDatasourceFactory.getMutableLiveData(), VacancyDataSource::getProgressLiveStatus);
+        progressLoadStatus = Transformations.switchMap(vacancyClassDatasourceFactory.getMutableLiveData(), VacancyDataSource::getProgressLiveStatus);
+        resultSetSize = Transformations.switchMap(vacancyClassDatasourceFactory.getMutableLiveData(), VacancyDataSource::getResultSize);
 
     }
 
@@ -64,6 +66,9 @@ public class MainActivityViewModel extends ViewModel {
         return vacancies;
     }
 
+    public LiveData<String> getResultSetSize() {
+        return resultSetSize;
+    }
 
     @Override
     protected void onCleared() {

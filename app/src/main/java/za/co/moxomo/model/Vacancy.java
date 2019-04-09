@@ -1,11 +1,6 @@
 package za.co.moxomo.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
+
 
 import org.joda.time.DateTime;
 import org.parceler.Parcel;
@@ -13,12 +8,18 @@ import org.parceler.ParcelPropertyConverter;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import za.co.moxomo.helpers.JodaDateTimeConverter;
 
 
 @Parcel
 @Entity(tableName = "vacancies")
-public class Vacancy  extends BaseObservable{
+public class Vacancy  extends BaseObservable {
 
 
     @PrimaryKey

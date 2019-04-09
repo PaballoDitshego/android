@@ -1,24 +1,12 @@
 package za.co.moxomo.fragments;
 
-import android.arch.lifecycle.ViewModelProviders;
+
 import android.content.ComponentName;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.customtabs.CustomTabsClient;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.customtabs.CustomTabsServiceConnection;
-import android.support.customtabs.CustomTabsSession;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +17,20 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsClient;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsServiceConnection;
+import androidx.browser.customtabs.CustomTabsSession;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.VacancyListAdapter;
@@ -124,7 +126,7 @@ public class HomePageFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final android.support.v7.widget.LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
 
         int resId = R.anim.layout_animation_fall_down;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
@@ -151,17 +153,27 @@ public class HomePageFragment extends Fragment {
                 }
             }
         });
+       // binding.swipeRefreshLayout.setEnabled(false);
         mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
         mainActivityViewModel.getProgressLoadStatus().observe(getActivity(), status -> {
             if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING)) {
-
+                binding.swipeRefreshLayout.setRefreshing(true);
                 binding.progress.setVisibility(View.VISIBLE);
             } else if (status.equalsIgnoreCase(ApplicationConstants.LOADED)) {
-                binding.progress.setVisibility(View.GONE);
+                binding.swipeRefreshLayout.setRefreshing(true);
+               binding.progress.setVisibility(View.GONE);
             }
         });
         binding.list.setAdapter(vacancyListAdapter);
-        mainActivityViewModel.getVacancies().observe(getActivity(), vacancyListAdapter::submitList);
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            mainActivityViewModel.getVacancyClassDatasourceFactory().getMutableLiveData().getValue().invalidate();
+        });
+
+
+        mainActivityViewModel.getVacancies().observe(getActivity(), vacancies->{
+            vacancyListAdapter.submitList(vacancies);
+            binding.swipeRefreshLayout.setRefreshing(false);
+        });
         mainActivityViewModel.getSearchString().observe(getActivity(), searchString -> {
             mainActivityViewModel.getVacancyClassDatasourceFactory()
                     .getMutableLiveData()

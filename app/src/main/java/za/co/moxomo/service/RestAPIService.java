@@ -7,6 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import za.co.moxomo.model.AlertDTO;
 import za.co.moxomo.model.UserDTO;
 
 public interface RestAPIService {
@@ -17,5 +18,8 @@ public interface RestAPIService {
                                            @Query("limit") int limit);
     @GET("/users/signup")
     Observable<JsonElement> signup(@Body UserDTO userDTO);
+
+    @POST("/alert/create")
+    Observable<JsonElement> createAlert(@Body AlertDTO alertDTO);
 
 }

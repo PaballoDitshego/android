@@ -3,7 +3,7 @@ package za.co.moxomo.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
-import android.support.v4.widget.CursorAdapter;
+
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 
 import java.util.Date;
 
+import androidx.cursoradapter.widget.CursorAdapter;
 import za.co.moxomo.R;
 
 /**

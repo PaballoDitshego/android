@@ -1,13 +1,13 @@
 package za.co.moxomo.viewmodel;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import za.co.moxomo.repository.Repository;
-import za.co.moxomo.viewmodel.MainActivityViewModel;
+
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 

@@ -1,35 +1,28 @@
 package za.co.moxomo.activities;
 
 import android.app.SearchManager;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.github.clans.fab.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import io.fabric.sdk.android.Fabric;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.ViewPagerAdapter;
@@ -71,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progress_spinner);
 
         binding.viewpager.setOffscreenPageLimit(2);
+
 
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         binding.viewpager.setAdapter(mAdapter);
@@ -138,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 mainActivityViewModel.getSearchString().setValue(!query.isEmpty() ? query : null);
                 mSearchView.setQuery(query, false);
                 mSearchView.clearFocus();
+
                 binding.viewpager.arrowScroll(View.FOCUS_LEFT);
                 return false;
             }

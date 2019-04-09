@@ -1,32 +1,22 @@
 package za.co.moxomo.gcm;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GcmListenerService;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.Calendar;
 import java.util.Map;
 
-import za.co.moxomo.R;
 import za.co.moxomo.activities.MainActivity;
-import za.co.moxomo.activities.NotificationActivity;
 import za.co.moxomo.contentproviders.NotificationsContentProvider;
 import za.co.moxomo.helpers.ApplicationConstants;
+
+;
 
 /**
  * Created by Paballo Ditshego on 7/28/15.

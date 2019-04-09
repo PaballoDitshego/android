@@ -3,6 +3,7 @@ package za.co.moxomo.repository;
 import com.google.gson.JsonElement;
 
 import io.reactivex.Observable;
+import za.co.moxomo.model.AlertDTO;
 import za.co.moxomo.service.RestAPIService;
 
 public class Repository {
@@ -15,9 +16,12 @@ public class Repository {
     }
 
     public Observable<JsonElement> fetchVacancies(String searchString, int pageNumber, int pageSize) {
-        return restAPIService.fetchVacancies(searchString,pageNumber,pageSize);
+        return restAPIService.fetchVacancies(searchString, pageNumber, pageSize);
     }
 
+    public Observable<JsonElement> createAlert(AlertDTO alertDTO) {
+        return restAPIService.createAlert(alertDTO);
+    }
 
     public static void setSearchString(String searchString) {
         SEARCH_STRING = searchString;

@@ -91,6 +91,9 @@ public class Utility {
 
         return arrayList;
     }
+    public static Long getResultSetSize(JSONObject json) throws JSONException {
+        return json.optLong("numberOfResults");
+    }
 
     public static Observable<Bitmap> decodeBitmap(final Context context, final int resource) {
         return Observable.create(e -> {

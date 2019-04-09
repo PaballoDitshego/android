@@ -1,6 +1,5 @@
 package za.co.moxomo.dagger;
 
-import android.arch.lifecycle.ViewModelProvider;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -10,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
+import androidx.lifecycle.ViewModelProvider;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;

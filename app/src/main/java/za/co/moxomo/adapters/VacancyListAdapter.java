@@ -1,12 +1,13 @@
 package za.co.moxomo.adapters;
 
-import android.arch.paging.PagedListAdapter;
-import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 import za.co.moxomo.R;
 import za.co.moxomo.databinding.ListRowBinding;
 import za.co.moxomo.model.Vacancy;

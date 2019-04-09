@@ -1,6 +1,6 @@
 package za.co.moxomo.adapters;
 
-import android.databinding.BindingAdapter;
+
 import android.text.format.DateUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,12 +11,17 @@ import com.bumptech.glide.request.RequestOptions;
 
 import org.joda.time.DateTime;
 
+import androidx.databinding.BindingAdapter;
+
 public class ViewBindingAdapter {
 
     @BindingAdapter({"android:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {
         if (!imageUrl.isEmpty() && imageUrl.endsWith("png.jpeg")) {
             imageUrl = imageUrl.replace("png.jpeg", "png");
+        }
+        if(imageUrl.equals("http://media.stepstone.com/modules/tracking/resources/images/smartbanner_icon_pnet.png")){
+            imageUrl="https://www.pnet.co.za/modules/duplo/resources/images/logo/pnet-logo-facebook.jpg";
         }
         Glide.with(view.getContext())
                 .load(imageUrl)

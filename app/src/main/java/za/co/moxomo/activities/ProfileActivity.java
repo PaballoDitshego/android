@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +28,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 import za.co.moxomo.R;
 import za.co.moxomo.helpers.ApplicationConstants;
 import za.co.moxomo.helpers.Utility;
@@ -58,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         applicationContext = getApplicationContext();
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
 
@@ -66,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+        mProgressBar = findViewById(R.id.progress_spinner);
 
         final String[] titles = getResources().
                 getStringArray(R.array.titles_array);
@@ -95,17 +96,14 @@ public class ProfileActivity extends AppCompatActivity {
             button.setText("Update Profile");
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                names = full_names.getText().toString().trim();
-                email = email_address.getText().toString().trim();
-                location = province.getText().toString().trim();
-                keywords = title_strings.getText().toString().trim();
-                RegisterUser(v);
+        button.setOnClickListener(v -> {
+            names = full_names.getText().toString().trim();
+            email = email_address.getText().toString().trim();
+            location = province.getText().toString().trim();
+            keywords = title_strings.getText().toString().trim();
+            RegisterUser(v);
 
 
-            }
         });
 
 

@@ -1,8 +1,6 @@
 package za.co.moxomo.repository;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PageKeyedDataSource;
-import android.support.annotation.NonNull;
+
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -14,6 +12,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 import io.reactivex.disposables.CompositeDisposable;
 import za.co.moxomo.helpers.ApplicationConstants;
 import za.co.moxomo.helpers.Utility;
@@ -24,12 +25,17 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
     private Repository repository;
     private Gson gson;
     private MutableLiveData<String> progressLiveStatus;
+    private MutableLiveData<String> resultSize;
     private CompositeDisposable compositeDisposable;
     private int pageNumber = 1;
 
 
     public MutableLiveData<String> getProgressLiveStatus() {
         return progressLiveStatus;
+    }
+
+    public MutableLiveData<String> getResultSize() {
+        return resultSize;
     }
 
     public void setSearchString(String searchString) {
@@ -43,6 +49,7 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
         this.repository = repository;
         this.compositeDisposable = compositeDisposable;
         progressLiveStatus = new MutableLiveData<>();
+        resultSize = new MutableLiveData<>();
 
         GsonBuilder builder =
                 new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
@@ -61,6 +68,8 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
                 {
                     progressLiveStatus.postValue(ApplicationConstants.LOADED);
                     JSONObject object = new JSONObject(gson.toJson(result));
+                    long resultSetSize = Utility.getResultSetSize(object);
+                    resultSize.postValue(String.valueOf(resultSetSize));
                     List<Vacancy> arrayList = Utility.parse(object);
                     pageNumber++;
                     callback.onResult(arrayList, -1, pageNumber);
