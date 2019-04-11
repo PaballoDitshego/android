@@ -27,7 +27,7 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
     private MutableLiveData<String> progressLiveStatus;
     private MutableLiveData<String> resultSize;
     private CompositeDisposable compositeDisposable;
-    private int pageNumber = 1;
+
 
 
     public MutableLiveData<String> getProgressLiveStatus() {
@@ -42,6 +42,10 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
         Repository.setSearchString(searchString);
         invalidate();
 
+    }
+
+    public void pullToRefresh(){
+        invalidate();
     }
 
 
@@ -60,7 +64,7 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, Vacancy> callback) {
 
-        repository.fetchVacancies(Repository.SEARCH_STRING, pageNumber, params.requestedLoadSize).doOnSubscribe(disposable -> {
+        repository.fetchVacancies(Repository.SEARCH_STRING, 1, params.requestedLoadSize).doOnSubscribe(disposable -> {
             compositeDisposable.add(disposable);
             progressLiveStatus.postValue(ApplicationConstants.LOADING);
 
@@ -71,8 +75,7 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
                     long resultSetSize = Utility.getResultSetSize(object);
                     resultSize.postValue(String.valueOf(resultSetSize));
                     List<Vacancy> arrayList = Utility.parse(object);
-                    pageNumber++;
-                    callback.onResult(arrayList, -1, pageNumber);
+                    callback.onResult(arrayList, -1, 2);
                 },
                 throwable -> {
                     progressLiveStatus.postValue(ApplicationConstants.LOADED);

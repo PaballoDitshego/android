@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 import io.fabric.sdk.android.Fabric;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.ViewPagerAdapter;
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     ViewModelFactory viewModelFactory;
 
     private ViewPagerAdapter mAdapter;
-    private ProgressBar mProgressBar;
     private SearchView mSearchView;
     private MainActivityViewModel mainActivityViewModel;
     private ActivityMainBinding binding;
@@ -61,26 +61,44 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
-        mProgressBar = findViewById(R.id.progress_spinner);
 
         binding.viewpager.setOffscreenPageLimit(2);
-
-
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         binding.viewpager.setAdapter(mAdapter);
+        binding.viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position != 0) {
+                    binding.fab.setVisibility(View.INVISIBLE);
+                } else {
+                    binding.fab.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
         binding.tablayout.setupWithViewPager(binding.viewpager, true);
         binding.tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         binding.fabCreateAlert.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AlertActivity.class);
+            startActivity(intent);
 
         });
-        binding.fabEditAlerts.setOnClickListener(view->{
+        binding.fabEditAlerts.setOnClickListener(view -> {
 
         });
-        binding.fab.setOnMenuButtonClickListener(view->{
+        binding.fab.setOnMenuButtonClickListener(view -> {
             binding.fab.toggle(true);
         });
         binding.fab.showMenuButton(true);
         binding.fab.setClosedOnTouchOutside(true);
+
 
         handleIntent(getIntent());
     }
@@ -100,23 +118,21 @@ public class MainActivity extends AppCompatActivity {
         SearchView.SearchAutoComplete searchEditText = mSearchView.findViewById(R.id.search_src_text);
         searchEditText.setPadding(-80, 2, 0, 2);
         searchEditText.setPaddingRelative(0, 0, 0, 2);
-
-
         mSearchView.setOnQueryTextListener(
                 new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        return false;
+                    }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if (s.length() < 1) {
-                    mainActivityViewModel.getSearchString().setValue(null);
-                }
-                return false;
-            }
-        });
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        if (s.length() < 1) {
+                            mainActivityViewModel.getSearchString().setValue(null);
+                        }
+                        return false;
+                    }
+                });
         mSearchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
             public boolean onSuggestionSelect(int position) {
@@ -191,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @Override

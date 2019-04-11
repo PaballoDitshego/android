@@ -37,7 +37,7 @@ public class MainActivityViewModel extends ViewModel {
         PagedList.Config pagedListConfig =
                 new PagedList.Config.Builder()
                         .setEnablePlaceholders(false)
-                        .setInitialLoadSizeHint(5)
+                        .setInitialLoadSizeHint(15)
                         .setPageSize(5).build();
 
 

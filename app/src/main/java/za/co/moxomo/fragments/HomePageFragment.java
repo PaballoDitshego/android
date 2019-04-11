@@ -44,7 +44,7 @@ import za.co.moxomo.viewmodel.MainActivityViewModel;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 
 
-public class HomePageFragment extends Fragment {
+public class HomePageFragment extends Fragment  {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -101,7 +101,6 @@ public class HomePageFragment extends Fragment {
                 .setCloseButtonIcon(actionBack)
                 .setShowTitle(true)
                 .build();
-
     }
 
     @Override
@@ -114,7 +113,6 @@ public class HomePageFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -153,20 +151,18 @@ public class HomePageFragment extends Fragment {
                 }
             }
         });
-       // binding.swipeRefreshLayout.setEnabled(false);
+        //binding.swipeRefreshLayout.setEnabled(false);
         mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
         mainActivityViewModel.getProgressLoadStatus().observe(getActivity(), status -> {
             if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING)) {
                 binding.swipeRefreshLayout.setRefreshing(true);
-                binding.progress.setVisibility(View.VISIBLE);
             } else if (status.equalsIgnoreCase(ApplicationConstants.LOADED)) {
                 binding.swipeRefreshLayout.setRefreshing(true);
-               binding.progress.setVisibility(View.GONE);
             }
         });
         binding.list.setAdapter(vacancyListAdapter);
         binding.swipeRefreshLayout.setOnRefreshListener(() -> {
-            mainActivityViewModel.getVacancyClassDatasourceFactory().getMutableLiveData().getValue().invalidate();
+            mainActivityViewModel.getVacancyClassDatasourceFactory().getMutableLiveData().getValue().pullToRefresh();
         });
 
 
