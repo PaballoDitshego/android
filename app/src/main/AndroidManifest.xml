@@ -66,8 +66,8 @@
         <provider
             android:name=".contentproviders.NotificationsContentProvider"
             android:authorities="za.co.moxomo.Notifications"></provider>
-
-
+        <provider android:name=".contentproviders.RecentSearchSuggestionProvider"
+            android:authorities="za.co.moxomo.contentproviders.RecentSearchSuggestionProvider" />
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".MainActivity" />

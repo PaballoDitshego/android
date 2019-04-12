@@ -131,8 +131,6 @@ public class HomePageFragment extends Fragment  {
         binding.list.setLayoutAnimation(animation);
         binding.list.setLayoutManager(layoutManager);
         binding.list.setItemViewCacheSize(20);
-        binding.list.setDrawingCacheEnabled(true);
-        binding.list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         binding.list.setLayoutAnimation(animation);
 
         binding.list.setItemAnimator(new DefaultItemAnimator());

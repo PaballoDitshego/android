@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setClosedOnTouchOutside(true);
 
 
+
+
         handleIntent(getIntent());
     }
 

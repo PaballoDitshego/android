@@ -43,11 +43,13 @@ public class AlertActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_alert );
 
         NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle("Create Alert");
+        toolbar.setTitle(getString(R.string.str_create_alert));
     }
 
     @Override
@@ -64,7 +66,6 @@ public class AlertActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;

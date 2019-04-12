@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import za.co.moxomo.activities.AlertActivity;
 import za.co.moxomo.activities.MainActivity;
+import za.co.moxomo.fragments.AlertFragment;
 import za.co.moxomo.fragments.HomePageFragment;
 import za.co.moxomo.fragments.NotificationFragment;
 
@@ -17,4 +18,5 @@ public interface InjectionComponent {
     void inject(HomePageFragment homePageFragment);
     void inject (NotificationFragment notificationFragment);
     void inject(AlertActivity alertActivity);
+    void inject (AlertFragment alertFragment);
 }

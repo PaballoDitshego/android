@@ -1,7 +1,15 @@
 package za.co.moxomo.model;
 
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
 public class AlertDTO {
     private String alertId;
     private String[] province;
