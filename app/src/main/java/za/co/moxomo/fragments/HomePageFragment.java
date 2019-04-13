@@ -7,12 +7,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-
+import android.widget.Toast;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -85,7 +86,6 @@ public class HomePageFragment extends Fragment  {
                 mClient.warmup(0L);
                 mCustomTabsSession = mClient.newSession(null);
             }
-
             @Override
             public void onServiceDisconnected(ComponentName name) {
                 mClient = null;
@@ -125,7 +125,6 @@ public class HomePageFragment extends Fragment  {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-
         int resId = R.anim.layout_animation_fall_down;
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
         binding.list.setLayoutAnimation(animation);
@@ -174,8 +173,11 @@ public class HomePageFragment extends Fragment  {
                     .getValue()
                     .setSearchString(searchString);
         });
-
-
+        mainActivityViewModel.getResultSetSize().observe(getActivity(), results ->{
+            Toast toast=  Toast.makeText(getContext(),results + " Vacancies",Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.TOP, 0, 350);
+            toast.show();
+        });
     }
 
     @Override
@@ -190,7 +192,6 @@ public class HomePageFragment extends Fragment  {
 
     private void openUrlInBrowser(Vacancy vacancy) {
         customTabsIntent.launchUrl(getContext(), Uri.parse(vacancy.getUrl()));
-
     }
 
     private void decodeBitmap(final int resource) {

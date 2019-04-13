@@ -99,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.showMenuButton(true);
         binding.fab.setClosedOnTouchOutside(true);
 
-
-
-
         handleIntent(getIntent());
     }
 
