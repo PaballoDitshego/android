@@ -15,4 +15,9 @@
             app:destination="@id/placeholder" />
     </fragment>
     <fragment android:id="@+id/placeholder" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="za.co.moxomo.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>
