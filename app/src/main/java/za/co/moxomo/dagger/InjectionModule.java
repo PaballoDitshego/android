@@ -88,8 +88,8 @@ public class InjectionModule {
 
     @Provides
     @Singleton
-    public ViewModelProvider.Factory getViewModelFactory(Repository repository) {
-        return new ViewModelFactory(repository);
+    public ViewModelProvider.Factory getViewModelFactory(Repository repository, Gson gson) {
+        return new ViewModelFactory(repository, gson);
     }
 
 

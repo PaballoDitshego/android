@@ -3,25 +3,29 @@ package za.co.moxomo.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
-@Getter
-@Setter
+@ToString
+@EqualsAndHashCode
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AlertDTO {
+
     private String alertId;
-    private String[] province;
-    private String[] town;
-    private String[] tags;
-    private String message;
+    private String location;
+    private String tags;
     private String sms;
     private String push;
     private String title;
     private String mobileNumber;
     private String gcmToken;
+
+
+
 
 }

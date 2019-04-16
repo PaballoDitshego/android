@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-<FrameLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.AlertFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp">
-
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -67,6 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:checked="true"
+                android:textOn="ON"
+                android:textOff="OFF"
                 android:gravity="left"
                 android:hint="Push Notification"
                 android:paddingLeft="12dp"
@@ -79,6 +71,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:checked="true"
+                android:textOn="ON"
+                android:textOff="OFF"
                 android:gravity="left"
                 android:hint="SMS Notification"
                 android:paddingLeft="12dp"
@@ -93,6 +87,8 @@
                 android:checked="false"
                 android:enabled="false"
                 android:gravity="left"
+                android:textOn="ON"
+                android:textOff="OFF"
                 android:hint="Whatsapp"
                 android:paddingLeft="12dp"
                 android:paddingTop="2dp"
@@ -107,7 +103,5 @@
                 android:text="Create Alert"
                 android:textStyle="bold" />
         </LinearLayout>
-    </ScrollView>
 
-</FrameLayout>
 </layout>

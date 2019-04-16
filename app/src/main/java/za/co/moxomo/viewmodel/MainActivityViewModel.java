@@ -48,6 +48,7 @@ public class MainActivityViewModel extends ViewModel {
         progressLoadStatus = Transformations.switchMap(vacancyClassDatasourceFactory.getMutableLiveData(), VacancyDataSource::getProgressLiveStatus);
         resultSetSize = Transformations.switchMap(vacancyClassDatasourceFactory.getMutableLiveData(), VacancyDataSource::getResultSize);
 
+
     }
 
     public VacancyClassDatasourceFactory getVacancyClassDatasourceFactory() {

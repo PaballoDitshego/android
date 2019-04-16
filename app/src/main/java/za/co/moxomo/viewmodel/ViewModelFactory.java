@@ -1,6 +1,8 @@
 package za.co.moxomo.viewmodel;
 
 
+import com.google.gson.Gson;
+
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
@@ -13,10 +15,13 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
 
 
     private Repository repository;
+    private Gson gson;
+
 
     @Inject
-    public ViewModelFactory(Repository repository) {
+    public ViewModelFactory(Repository repository, Gson gson) {
         this.repository =repository;
+        this.gson=gson;
     }
 
     @NonNull
@@ -24,6 +29,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MainActivityViewModel.class)) {
             return (T) new MainActivityViewModel(repository);
+        }
+        if (modelClass.isAssignableFrom(AlertActivityViewModel.class)) {
+            return (T) new AlertActivityViewModel(repository, gson);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
 

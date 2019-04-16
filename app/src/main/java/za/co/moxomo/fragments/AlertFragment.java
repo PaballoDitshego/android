@@ -2,7 +2,6 @@ package za.co.moxomo.fragments;
 
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +18,8 @@ import za.co.moxomo.R;
 import za.co.moxomo.dagger.DaggerInjectionComponent;
 import za.co.moxomo.dagger.InjectionComponent;
 import za.co.moxomo.databinding.FragmentAlertBinding;
-import za.co.moxomo.viewmodel.MainActivityViewModel;
-import za.co.moxomo.viewmodel.ProfileActivityViewModel;
+import za.co.moxomo.model.AlertDTO;
+import za.co.moxomo.viewmodel.AlertActivityViewModel;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 
 
@@ -33,7 +32,7 @@ public class AlertFragment extends Fragment {
 
     private FragmentAlertBinding binding;
     private InjectionComponent injectionComponent;
-    private ProfileActivityViewModel profileActivityViewModel;
+    private AlertActivityViewModel alertActivityViewModel;
 
     public AlertFragment() {
     }
@@ -51,14 +50,39 @@ public class AlertFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_alert);
-        profileActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(ProfileActivityViewModel.class);
-        NavController navController = Navigation.findNavController(binding.getRoot());
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alert, container, false);
+        alertActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(AlertActivityViewModel.class);
+        NavController navController = Navigation.findNavController(getActivity(), R.id.navHostFragment);
+        binding.registerBtn.setOnClickListener(view -> {
+            //  navController.navigate(R.);
+
+        });
+
+        return binding.getRoot();
+
+    }
+
+    private void createAlert() {
+        AlertDTO.AlertDTOBuilder alertDTOBuilder = AlertDTO.builder();
+        if (null != binding.jobTitle.getText() || binding.jobTitle.getText().length() > 0) {
+            alertDTOBuilder.tags(binding.jobTitle.getText().toString());
+        }
+        if (null != binding.company.getText() || binding.company.getText().length() > 0) {
+            alertDTOBuilder.tags(binding.company.getText().toString());
+        }
+        if (null != binding.location.getText() || binding.location.getText().length() > 0) {
+            alertDTOBuilder.tags(binding.location.getText().toString());
+        }
+        if (null != binding.mobileNumer.getText() || binding.mobileNumer.getText().length() > 0) {
+            alertDTOBuilder.tags(binding.mobileNumer.getText().toString());
+        }
+        alertDTOBuilder.sms(binding.push.getText()
+                .toString())
+                .sms(binding.sms.getText().toString());
+        alertActivityViewModel.createAlert(alertDTOBuilder.build());
+        alertActivityViewModel.getAlertId().observe();
 
 
-        // Inflate the layout for this fragment
-
-        return binding.getRoot() ;
 
     }
 
