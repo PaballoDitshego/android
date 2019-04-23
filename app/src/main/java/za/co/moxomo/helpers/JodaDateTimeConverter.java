@@ -4,6 +4,8 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.parceler.ParcelConverter;
 
+import androidx.room.TypeConverter;
+
 /**
  * Created by Paballo Ditshego on 5/22/15.
  */
@@ -29,5 +31,15 @@ public class JodaDateTimeConverter implements ParcelConverter<DateTime> {
             result = new DateTime(parcel.readLong());
         }
         return result;
+    }
+
+    @TypeConverter
+    public static DateTime toDate(Long timestamp) {
+        return timestamp == null ? null : new DateTime(timestamp);
+    }
+
+    @TypeConverter
+    public static Long toTimestamp(DateTime date) {
+        return date == null ? null : date.getMillis();
     }
 }

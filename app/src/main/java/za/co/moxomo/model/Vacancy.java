@@ -14,6 +14,7 @@ import androidx.databinding.Bindable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 import za.co.moxomo.helpers.JodaDateTimeConverter;
 
 
@@ -33,8 +34,10 @@ public class Vacancy  extends BaseObservable {
     public boolean webViewViewable;
 
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
+    @TypeConverters(JodaDateTimeConverter.class)
     public DateTime advertDate;
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
+    @TypeConverters(JodaDateTimeConverter.class)
     public DateTime closingDate;
     public String url;
     public String imageUrl;

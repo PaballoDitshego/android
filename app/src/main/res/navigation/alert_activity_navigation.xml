@@ -3,21 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/alert_activity_navigation"
-    app:startDestination="@id/alertFragment">
+    app:startDestination="@id/createAlertFragment">
 
     <fragment
-        android:id="@+id/alertFragment"
-        android:name="za.co.moxomo.fragments.AlertFragment"
+        android:id="@+id/createAlertFragment"
+        android:name="za.co.moxomo.fragments.CreateAlertFragment"
         android:label="Create Alert"
-        tools:layout="@layout/fragment_alert" >
-        <action
-            android:id="@+id/action_alertFragment_to_placeholder"
-            app:destination="@id/placeholder" />
-    </fragment>
-    <fragment android:id="@+id/placeholder" />
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="za.co.moxomo.activities.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+        tools:layout="@layout/fragment_create_alert" />
+    <fragment
+        android:id="@+id/viewAlertsFragment"
+        android:name="za.co.moxomo.fragments.ViewAlertsFragment"
+        android:label="fragment_view_alerts"
+        tools:layout="@layout/fragment_view_alerts" />
 </navigation>

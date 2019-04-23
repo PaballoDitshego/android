@@ -15,13 +15,11 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
 
 
     private Repository repository;
-    private Gson gson;
 
 
     @Inject
-    public ViewModelFactory(Repository repository, Gson gson) {
+    public ViewModelFactory(Repository repository) {
         this.repository =repository;
-        this.gson=gson;
     }
 
     @NonNull
@@ -31,7 +29,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new MainActivityViewModel(repository);
         }
         if (modelClass.isAssignableFrom(AlertActivityViewModel.class)) {
-            return (T) new AlertActivityViewModel(repository, gson);
+            return (T) new AlertActivityViewModel(repository);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
 

@@ -1,45 +1,65 @@
 package za.co.moxomo.fragments;
 
-import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentUris;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Typeface;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.browser.customtabs.CustomTabsClient;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsServiceConnection;
+import androidx.browser.customtabs.CustomTabsSession;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
-import za.co.moxomo.activities.NotificationActivity;
-import za.co.moxomo.adapters.NotificationsCursorAdapter;
+import za.co.moxomo.adapters.NotificationsListAdapter;
 import za.co.moxomo.contentproviders.NotificationsContentProvider;
-import za.co.moxomo.helpers.ApplicationConstants;
+import za.co.moxomo.dagger.DaggerInjectionComponent;
+import za.co.moxomo.dagger.InjectionComponent;
+import za.co.moxomo.databinding.FragmentNotificationBinding;
+import za.co.moxomo.model.Notification;
+import za.co.moxomo.viewmodel.MainActivityViewModel;
+import za.co.moxomo.viewmodel.ViewModelFactory;
 
 
-public class NotificationFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class NotificationFragment extends Fragment {
+
+    public static final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
+    private FragmentNotificationBinding binding;
+    private NotificationsListAdapter notificationListAdapter;
+    private MainActivityViewModel mainActivityViewModel;
+    private InjectionComponent injectionComponent;
+    private CustomTabsClient mClient;
+    private CustomTabsSession mCustomTabsSession;
+    private CustomTabsServiceConnection mCustomTabsServiceConnection;
+    private CustomTabsIntent customTabsIntent;
+    private Bitmap actionBack;
 
 
-    private SQLiteDatabase db;
-    private NotificationsCursorAdapter notificationsAdapter;
-    private ListView mListView;
-    private CursorLoader cursorLoader;
-    private LoaderManager loadermanager;
+    @Inject
+    ViewModelFactory viewModelFactory;
 
 
     public NotificationFragment() {
@@ -56,8 +76,28 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
+        mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
+            @Override
+            public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
+                mClient = customTabsClient;
+                mClient.warmup(0L);
+                mCustomTabsSession = mClient.newSession(null);
+            }
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                mClient = null;
+            }
+        };
 
-        loadermanager = getLoaderManager();
+        CustomTabsClient.bindCustomTabsService(getContext(), CUSTOM_TAB_PACKAGE_NAME, mCustomTabsServiceConnection);
+        customTabsIntent = new CustomTabsIntent.Builder(mCustomTabsSession)
+                .setToolbarColor(ContextCompat.getColor(getContext(), R.color.action_color))
+                .addDefaultShareMenuItem()
+                .enableUrlBarHiding()
+                .setCloseButtonIcon(actionBack)
+                .setShowTitle(true)
+                .build();
 
 
     }
@@ -65,66 +105,61 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_notification, container, false);
 
-        mListView = (ListView) view.findViewById(R.id.notification_list);
-        mListView.setEmptyView(view.findViewById(R.id.notifications_empty));
-        view.findViewById(R.id.notification_loading).setVisibility(View.INVISIBLE);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notification, container, false);
+        return binding.getRoot();
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        int resId = R.anim.layout_animation_fall_down;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), resId);
 
-        notificationsAdapter = new NotificationsCursorAdapter(getActivity(),
-                null,
-                0);
-        mListView.setAdapter(notificationsAdapter);
-        loadermanager.initLoader(1, null, this);
+        binding.notificationsList.setLayoutAnimation(animation);
+        binding.notificationsList.setLayoutManager(layoutManager);
+        binding.notificationsList.setItemViewCacheSize(20);
+        binding.notificationsList.setLayoutAnimation(animation);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> adapter, View view,
-                                    int position, long arg) {
+        binding.notificationsList.setItemAnimator(new DefaultItemAnimator());
+        binding.notificationsList.addItemDecoration(new DividerItemDecoration(binding.notificationsList.getContext(), DividerItemDecoration.VERTICAL));
 
-                Cursor cursor = getActivity().getContentResolver().query(
-                        Uri.withAppendedPath(NotificationsContentProvider.CONTENT_URI,
-                                String.valueOf(arg)), null, null, null, null);
+        notificationListAdapter = new NotificationsListAdapter(item -> {
+            openUrlInBrowser(item);
+        });
 
-
-                cursor.moveToPosition(position);
-                String type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
-                String action_string = cursor.getString(cursor.getColumnIndexOrThrow("action_string"));
-                cursor.close();
-
-                TextView title = (TextView) view.findViewById(R.id.title);
-                title.setTypeface(Typeface.DEFAULT);
-
-                switch (type) {
-                    case ApplicationConstants.ACTION_JOB_ALERT:
-                      //  bus.post(new DetailViewEvent(Long.parseLong(action_string)));
-                        break;
-                    case ApplicationConstants.ACTION_NEWS_ALERT:
-                        Intent intent = new Intent(getActivity(), NotificationActivity.class);
-                        intent.putExtra("url", action_string);
-                        getActivity().startActivity(intent);
-
-                        break;
-                    default:
-                        break;
+        notificationListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                super.onItemRangeChanged(positionStart, itemCount);
+                if (positionStart == 0) {
+                    layoutManager.scrollToPosition(0);
                 }
+            }
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                checkEmpty();
+            }
 
-
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                checkEmpty();
+            }
+            void checkEmpty() {
+                binding.notificationsEmpty.setVisibility(notificationListAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
             }
         });
 
-        registerForContextMenu(mListView);
+        mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
+        binding.notificationsList.setAdapter(notificationListAdapter);
+        mainActivityViewModel.getNotifications().observe(getActivity(), notifications -> {
+            notificationListAdapter.submitList(notifications);
 
-        return view;
+        });
     }
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-
-    }
 
     @Override
     public void onDetach() {
@@ -133,18 +168,9 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        cursorLoader = new CursorLoader(getActivity(),
-                Uri.parse("content://za.co.moxomo.Notifications/notifications"),
-                null, null, null, null);
-        return cursorLoader;
-
-    }
-
-    @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
-        if (v.getId() == R.id.notification_list) {
+        if (v.getId() == R.id.notifications_list) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             menu.setHeaderTitle("Notifications");
             String[] menuItems = getResources().getStringArray(R.array.context_menu_items);
@@ -156,31 +182,20 @@ public class NotificationFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Uri deleteUri = ContentUris.withAppendedId(NotificationsContentProvider.CONTENT_URI, info.id);
         getActivity().getContentResolver().delete(deleteUri, "_id=" + info.id, null);
-        Toast.makeText(getActivity(), "Item Deleted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Item Deleted", Toast.LENGTH_SHORT).show()
+;
 
         return true;
     }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (notificationsAdapter != null && data != null)
-            notificationsAdapter.swapCursor(data); //swap the new cursor in.
-        else
-            Log.v("", "OnLoadFinished: notificationsAdapter is null");
 
+    private void openUrlInBrowser(Notification notification) {
+        customTabsIntent.launchUrl(getContext(), Uri.parse(notification.getUrl()));
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        if (notificationsAdapter != null)
-            notificationsAdapter.swapCursor(null);
-        else
-            Log.v("", "OnLoadFinished: notificationsAdapter is null");
-    }
 
 
 }

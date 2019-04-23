@@ -14,9 +14,7 @@ import java.util.HashMap;
 
 import za.co.moxomo.databasehelpers.SearchSuggestionDatabaseHelper;
 
-/**
- * Created by Paballo Ditshego on 7/17/15.
- */
+
 public class SearchSuggestionProvider extends ContentProvider {
 
     private static final String PROVIDER_NAME = "za.co.moxomo.contentproviders.SEARCH";

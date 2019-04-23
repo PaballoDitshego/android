@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="java.lang.String" />
+        <import type="android.text.format.DateUtils"/>
+
+        <variable
+            name="notification"
+            type="za.co.moxomo.model.Notification" />
+    </data>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <!-- Thumbnail Image -->
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:imageUrl="@{notification.imageUrl}"
+            android:layout_marginRight="8dp"
+            android:clickable="false"
+            android:focusable="false" />
+
+        <!-- heading -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/thumbnail"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:clickable="false"
+            android:text="@{notification.title}"
+            android:focusable="false"
+            android:textSize="@dimen/title"
+            android:textStyle="bold" />
+
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/body"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginTop="5dp"
+            android:text="@{notification.description}"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:clickable="false"
+            android:focusable="false"
+            android:textColor="@color/description"
+            android:textSize="@dimen/description" />
+
+        <TextView
+            android:id="@+id/timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/body"
+            android:advertDate="@{notification.timestamp}"
+            android:clickable="false"
+            android:focusable="false"
+            android:paddingTop="5dp"
+            android:textColor="@color/time"
+            android:textSize="@dimen/time" />
+
+
+    </RelativeLayout>
+</layout>

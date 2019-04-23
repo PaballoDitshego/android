@@ -1,6 +1,8 @@
 package za.co.moxomo.dagger;
 
 
+import android.content.Context;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,14 +22,20 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import za.co.moxomo.repository.MoxomoDB;
 import za.co.moxomo.repository.Repository;
-import za.co.moxomo.service.RestAPIService;
+import za.co.moxomo.service.RestApiService;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 
 @Module
 public class InjectionModule {
 
     private static String BASE_URL = "https://www.moxomo.co.za";
+    private final Context context;
+
+    public InjectionModule(Context context){
+        this.context=context;
+    }
 
     @Provides
     @Singleton
@@ -76,21 +85,39 @@ public class InjectionModule {
 
     @Provides
     @Singleton
-    public RestAPIService getRestApi(Retrofit retrofit) {
-        return retrofit.create(RestAPIService.class);
+    public RestApiService getRestApi(Retrofit retrofit) {
+        return retrofit.create(RestApiService.class);
     }
 
     @Provides
     @Singleton
-    public Repository getRepository(RestAPIService restAPIService) {
-        return new Repository(restAPIService);
+    public Repository getRepository(RestApiService restAPIService, MoxomoDB moxomoDB) {
+        return new Repository(restAPIService, moxomoDB);
+    }
+
+
+    @Provides
+    @Singleton
+    public ViewModelProvider.Factory getViewModelFactory(Repository repository) {
+        return new ViewModelFactory(repository);
     }
 
     @Provides
     @Singleton
-    public ViewModelProvider.Factory getViewModelFactory(Repository repository, Gson gson) {
-        return new ViewModelFactory(repository, gson);
+    public MoxomoDB getMoxomoDB(Context context) {
+       return Room.databaseBuilder(context,
+                            MoxomoDB.class, "Moxomo Database")
+                            .fallbackToDestructiveMigration()
+                            .build();
     }
+
+    @Provides
+    public Context context() {
+        return context;
+    }
+
+
+
 
 
 }

@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
+import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.VacancyListAdapter;
 import za.co.moxomo.dagger.DaggerInjectionComponent;
@@ -58,7 +59,6 @@ public class HomePageFragment extends Fragment  {
     private FragmentHomepageBinding binding;
     private VacancyListAdapter vacancyListAdapter;
     private MainActivityViewModel mainActivityViewModel;
-    private InjectionComponent injectionComponent;
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsServiceConnection mCustomTabsServiceConnection;
@@ -76,9 +76,8 @@ public class HomePageFragment extends Fragment  {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        injectionComponent = DaggerInjectionComponent.builder().build();
-        injectionComponent.inject(this);
 
+        MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
         mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
             @Override
             public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
@@ -148,7 +147,7 @@ public class HomePageFragment extends Fragment  {
                 }
             }
         });
-        //binding.swipeRefreshLayout.setEnabled(false);
+
         mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
         mainActivityViewModel.getProgressLoadStatus().observe(getActivity(), status -> {
             if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING)) {
@@ -158,6 +157,7 @@ public class HomePageFragment extends Fragment  {
             }
         });
         binding.list.setAdapter(vacancyListAdapter);
+
         binding.swipeRefreshLayout.setOnRefreshListener(() -> {
             mainActivityViewModel.getVacancyClassDatasourceFactory().getMutableLiveData().getValue().pullToRefresh();
         });

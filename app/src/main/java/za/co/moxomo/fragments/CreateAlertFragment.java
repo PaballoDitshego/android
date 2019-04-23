@@ -2,11 +2,11 @@ package za.co.moxomo.fragments;
 
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
@@ -18,38 +18,37 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import io.reactivex.disposables.CompositeDisposable;
+import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
-import za.co.moxomo.dagger.DaggerInjectionComponent;
-import za.co.moxomo.dagger.InjectionComponent;
-import za.co.moxomo.databinding.FragmentAlertBinding;
-import za.co.moxomo.model.AlertDTO;
-import za.co.moxomo.service.ApiResponse;
+import za.co.moxomo.databinding.FragmentCreateAlertBinding;
+import za.co.moxomo.model.Alert;
+import za.co.moxomo.model.ApiResponse;
 import za.co.moxomo.service.Status;
 import za.co.moxomo.viewmodel.AlertActivityViewModel;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 
 
-public class AlertFragment extends Fragment {
+public class CreateAlertFragment extends Fragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
     @Inject
     CompositeDisposable compositeDisposable;
+    @Inject
+    Gson gson;
 
-    private FragmentAlertBinding binding;
-    private InjectionComponent injectionComponent;
+    private FragmentCreateAlertBinding binding;
     private AlertActivityViewModel alertActivityViewModel;
     private NavController navController;
 
-    public AlertFragment() {
+    public CreateAlertFragment() {
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        injectionComponent = DaggerInjectionComponent.builder().build();
-        injectionComponent.inject(this);
+        MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
 
     }
 
@@ -57,7 +56,7 @@ public class AlertFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_alert, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_alert, container, false);
         return binding.getRoot();
 
     }
@@ -67,8 +66,7 @@ public class AlertFragment extends Fragment {
         alertActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(AlertActivityViewModel.class);
         navController = Navigation.findNavController(getActivity(), R.id.navHostFragment);
         binding.registerBtn.setOnClickListener(btn -> {
-            navController.navigate(R.id.mainActivity);
-            // createAlert();
+          //  createAlert();
         });
         alertActivityViewModel.getAlertCreationResponse().observe(getActivity(), result -> {
             processAlerCreationResponse(result);
@@ -77,7 +75,7 @@ public class AlertFragment extends Fragment {
 
 
     private void createAlert() {
-        AlertDTO.AlertDTOBuilder alertDTOBuilder = AlertDTO.builder();
+        Alert.AlertBuilder alertDTOBuilder = Alert.builder();
         if (null != binding.jobTitle.getText() || binding.jobTitle.getText().length() > 0) {
             alertDTOBuilder.tags(binding.jobTitle.getText().toString());
         }
@@ -87,19 +85,20 @@ public class AlertFragment extends Fragment {
         if (null != binding.location.getText() || binding.location.getText().length() > 0) {
             alertDTOBuilder.tags(binding.location.getText().toString());
         }
-        if (null != binding.mobileNumer.getText() || binding.mobileNumer.getText().length() > 0) {
-            alertDTOBuilder.tags(binding.mobileNumer.getText().toString());
+        if (null != binding.mobileNumber.getText() || binding.mobileNumber.getText().length() > 0) {
+            alertDTOBuilder.tags(binding.mobileNumber.getText().toString());
         }
         alertDTOBuilder.sms(binding.push.getText()
                 .toString())
                 .sms(binding.sms.getText().toString());
         alertActivityViewModel.createAlert(alertDTOBuilder.build());
 
+
     }
 
     private void processAlerCreationResponse(ApiResponse apiResponse) {
         if (apiResponse.status.equals(Status.SUCCESS)) {
-            navController.navigate(R.id.mainActivity);
+           Alert alert = gson.fromJson(apiResponse.data, Alert.class);
         }
 
     }

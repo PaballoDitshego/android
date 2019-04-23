@@ -15,9 +15,6 @@ import java.util.HashMap;
 
 import za.co.moxomo.databasehelpers.NotificationDatabaseHelper;
 
-/**
- * Created by Paballo Ditshego on 8/24/15.
- */
 public class NotificationsContentProvider extends ContentProvider {
     static final String PROVIDER_NAME = "za.co.moxomo.Notifications";
     static final String URL = "content://" + PROVIDER_NAME + "/notifications";

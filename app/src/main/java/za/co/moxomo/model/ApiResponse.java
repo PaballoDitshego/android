@@ -1,9 +1,10 @@
-package za.co.moxomo.service;
+package za.co.moxomo.model;
 
 import com.google.gson.JsonElement;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import za.co.moxomo.service.Status;
 
 import static za.co.moxomo.service.Status.ERROR;
 import static za.co.moxomo.service.Status.SUCCESS;

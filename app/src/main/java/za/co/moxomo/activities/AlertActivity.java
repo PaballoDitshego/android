@@ -21,7 +21,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
+import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
+import za.co.moxomo.FragmentEnum;
+import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.databinding.ActivityAlertBinding;
 import za.co.moxomo.dagger.DaggerInjectionComponent;
@@ -38,18 +42,32 @@ public class AlertActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        injectionComponent = DaggerInjectionComponent.builder().build();
-        injectionComponent.inject(this);
+        MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_alert );
-
-        NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle(getString(R.string.str_create_alert));
+
+
+        NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
+
+        NavInflater navInflater = navController.getNavInflater();
+        NavGraph graph = navInflater.inflate(R.navigation.alert_activity_navigation);
+
+
+
+
+        if (getIntent().hasExtra(FragmentEnum.CREATE_ALERT.name())) {
+            graph.setStartDestination(FragmentEnum.CREATE_ALERT.getFragmentId());
+        } else {
+            graph.setStartDestination(FragmentEnum.VIEW_ALERT.getFragmentId());
+        }
+        //navController.setGraph(graph, bundle)
+        navController.setGraph(graph);
+
+
     }
 
     @Override

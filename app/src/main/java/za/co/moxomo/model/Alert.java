@@ -1,21 +1,25 @@
 package za.co.moxomo.model;
 
 
+import androidx.databinding.BaseObservable;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@ToString
-@EqualsAndHashCode
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class AlertDTO {
 
+@Entity( tableName = "alert")
+@Data
+@EqualsAndHashCode(callSuper=false)
+@Builder
+public class Alert  extends BaseObservable {
+    @PrimaryKey(autoGenerate = true)
+    private int _id;
     private String alertId;
     private String location;
     private String tags;

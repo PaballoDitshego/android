@@ -25,6 +25,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import io.fabric.sdk.android.Fabric;
+import za.co.moxomo.FragmentEnum;
+import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.ViewPagerAdapter;
 import za.co.moxomo.dagger.DaggerInjectionComponent;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private SearchView mSearchView;
     private MainActivityViewModel mainActivityViewModel;
     private ActivityMainBinding binding;
-    private InjectionComponent injectionComponent;
+
 
 
     @Override
@@ -51,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
 
-        injectionComponent = DaggerInjectionComponent.builder().build();
-        injectionComponent.inject(this);
+       // injectionComponent = DaggerInjectionComponent.builder().build();
+       // injectionComponent.inject(this);
+        MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_navigation);
@@ -87,10 +90,15 @@ public class MainActivity extends AppCompatActivity {
         binding.tablayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         binding.fabCreateAlert.setOnClickListener(view -> {
             Intent intent = new Intent(this, AlertActivity.class);
+            intent.putExtra(FragmentEnum.CREATE_ALERT.name(), FragmentEnum.CREATE_ALERT.getFragmentId());
             startActivity(intent);
 
         });
         binding.fabEditAlerts.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AlertActivity.class);
+            intent.putExtra(FragmentEnum.VIEW_ALERT.name(), FragmentEnum.VIEW_ALERT.getFragmentId());
+            startActivity(intent);
+
 
         });
         binding.fab.setOnMenuButtonClickListener(view -> {
