@@ -12,6 +12,7 @@ import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 import io.reactivex.disposables.CompositeDisposable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import za.co.moxomo.model.Notification;
 import za.co.moxomo.model.Vacancy;
 import za.co.moxomo.repository.NotificationClassDatasourceFactory;
@@ -20,6 +21,7 @@ import za.co.moxomo.repository.VacancyClassDatasourceFactory;
 import za.co.moxomo.repository.VacancyDataSource;
 
 @Getter
+@NoArgsConstructor
 public class MainActivityViewModel extends ViewModel {
 
     private Executor executor;

@@ -710,6 +710,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_browser">BrowserActivity</string>
     <string name="str_create_alert">Create Alert</string>
+    <string name="fragment_title">Title</string>
+    <string name="no_alerts">No alerts.</string>
 
 
 </resources>

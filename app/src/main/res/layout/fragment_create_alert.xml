@@ -111,22 +111,6 @@
                     android:textOn="ON"
                     android:layout_margin="@dimen/activity_horizontal_margin"/>
 
-                <Switch
-                    android:id="@+id/whatsapp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:checked="false"
-                    android:enabled="false"
-                    android:gravity="left"
-                    android:hint="Whatsapp"
-                    android:paddingLeft="12dp"
-                    android:paddingTop="2dp"
-                    android:paddingRight="12dp"
-                    android:textOff="OFF"
-                    android:textOn="ON"
-                    android:layout_margin="@dimen/activity_horizontal_margin"/>
-
 
                 <Button
                     android:id="@+id/register_btn"

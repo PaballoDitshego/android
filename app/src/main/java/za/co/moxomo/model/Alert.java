@@ -1,7 +1,9 @@
 package za.co.moxomo.model;
 
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,18 @@ public class Alert  extends BaseObservable {
     private String title;
     private String mobileNumber;
     private String gcmToken;
+
+    public static DiffUtil.ItemCallback<Alert> DIFF_CALLBACK = new DiffUtil.ItemCallback<Alert>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Alert oldItem, @NonNull Alert newItem) {
+            return oldItem.alertId.equals(newItem.alertId);
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Alert oldItem, @NonNull Alert newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
 
 
 

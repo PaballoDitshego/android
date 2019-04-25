@@ -2,10 +2,15 @@ package za.co.moxomo.fragments;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
@@ -92,6 +97,9 @@ public class CreateAlertFragment extends Fragment {
                 .toString())
                 .sms(binding.sms.getText().toString());
         alertActivityViewModel.createAlert(alertDTOBuilder.build());
+
+
+
 
 
     }

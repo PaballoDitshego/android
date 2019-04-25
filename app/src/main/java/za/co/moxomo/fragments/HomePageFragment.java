@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,7 @@ public class HomePageFragment extends Fragment  {
 
 
     public static final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
+    private static final String TAG = HomePageFragment.class.getSimpleName();
 
     private FragmentHomepageBinding binding;
     private VacancyListAdapter vacancyListAdapter;
@@ -130,13 +132,10 @@ public class HomePageFragment extends Fragment  {
         binding.list.setLayoutManager(layoutManager);
         binding.list.setItemViewCacheSize(20);
         binding.list.setLayoutAnimation(animation);
-
         binding.list.setItemAnimator(new DefaultItemAnimator());
-        binding.list.addItemDecoration(new DividerItemDecoration(binding.list.getContext(), DividerItemDecoration.VERTICAL));
 
-        vacancyListAdapter = new VacancyListAdapter(item -> {
-            openUrlInBrowser(item);
-        });
+        vacancyListAdapter = new VacancyListAdapter(item ->
+            openUrlInBrowser(item));
 
         vacancyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
@@ -147,25 +146,18 @@ public class HomePageFragment extends Fragment  {
                 }
             }
         });
-
-        mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
-        mainActivityViewModel.getProgressLoadStatus().observe(getActivity(), status -> {
-            if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING)) {
-                binding.swipeRefreshLayout.setRefreshing(true);
-            } else if (status.equalsIgnoreCase(ApplicationConstants.LOADED)) {
-                binding.swipeRefreshLayout.setRefreshing(true);
-            }
-        });
         binding.list.setAdapter(vacancyListAdapter);
-
+        mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
         binding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            binding.swipeRefreshLayout.setRefreshing(true);
             mainActivityViewModel.getVacancyClassDatasourceFactory().getMutableLiveData().getValue().pullToRefresh();
         });
-
 
         mainActivityViewModel.getVacancies().observe(getActivity(), vacancies->{
             vacancyListAdapter.submitList(vacancies);
             binding.swipeRefreshLayout.setRefreshing(false);
+            binding.list.addItemDecoration(new DividerItemDecoration(binding.list.getContext(), DividerItemDecoration.VERTICAL));
+
         });
         mainActivityViewModel.getSearchString().observe(getActivity(), searchString -> {
             mainActivityViewModel.getVacancyClassDatasourceFactory()
@@ -173,11 +165,21 @@ public class HomePageFragment extends Fragment  {
                     .getValue()
                     .setSearchString(searchString);
         });
+
+        mainActivityViewModel.getProgressLoadStatus().observe(getActivity(), status -> {
+            vacancyListAdapter.setNetworkState(status);
+            if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING)) {
+            } else if (status.equalsIgnoreCase(ApplicationConstants.LOADED)) {
+                binding.swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         mainActivityViewModel.getResultSetSize().observe(getActivity(), results ->{
             Toast toast=  Toast.makeText(getContext(),results + " Vacancies",Toast.LENGTH_LONG);
             toast.setGravity(Gravity.TOP, 0, 350);
             toast.show();
         });
+
     }
 
     @Override

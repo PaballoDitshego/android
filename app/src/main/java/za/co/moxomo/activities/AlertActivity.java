@@ -1,26 +1,19 @@
 package za.co.moxomo.activities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
@@ -28,15 +21,11 @@ import za.co.moxomo.FragmentEnum;
 import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.databinding.ActivityAlertBinding;
-import za.co.moxomo.dagger.DaggerInjectionComponent;
-import za.co.moxomo.dagger.InjectionComponent;
-import za.co.moxomo.helpers.ApplicationConstants;
 
 
 public class AlertActivity extends AppCompatActivity {
 
     private ActivityAlertBinding binding;
-    private InjectionComponent injectionComponent;
 
 
     @Override
@@ -48,21 +37,32 @@ public class AlertActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitle(getString(R.string.str_create_alert));
 
 
         NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
-
         NavInflater navInflater = navController.getNavInflater();
         NavGraph graph = navInflater.inflate(R.navigation.alert_activity_navigation);
+        navController.addOnNavigatedListener((controller, destination) -> {
+            switch (destination.getId()){
+                case R.id.createAlertFragment:
+                    toolbar.setTitle(FragmentEnum.CREATE_ALERT.getTitle());
+                    break;
+                case R.id.viewAlertsFragment:
+                    toolbar.setTitle(FragmentEnum.VIEW_ALERT.getTitle());
+                    break;
 
+                default:
+                    toolbar.setTitle(FragmentEnum.VIEW_ALERT.getTitle());
 
-
+            }
+        });
 
         if (getIntent().hasExtra(FragmentEnum.CREATE_ALERT.name())) {
             graph.setStartDestination(FragmentEnum.CREATE_ALERT.getFragmentId());
+            toolbar.setTitle(getIntent().getStringExtra(getString(R.string.fragment_title)));
         } else {
             graph.setStartDestination(FragmentEnum.VIEW_ALERT.getFragmentId());
+            toolbar.setTitle(getIntent().getStringExtra(getString(R.string.fragment_title)));
         }
         //navController.setGraph(graph, bundle)
         navController.setGraph(graph);

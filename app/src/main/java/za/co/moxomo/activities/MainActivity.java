@@ -6,17 +6,24 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -41,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     ViewModelFactory viewModelFactory;
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private ViewPagerAdapter mAdapter;
     private SearchView mSearchView;
     private MainActivityViewModel mainActivityViewModel;
@@ -81,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                     binding.fab.setVisibility(View.VISIBLE);
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
             }
@@ -91,12 +98,14 @@ public class MainActivity extends AppCompatActivity {
         binding.fabCreateAlert.setOnClickListener(view -> {
             Intent intent = new Intent(this, AlertActivity.class);
             intent.putExtra(FragmentEnum.CREATE_ALERT.name(), FragmentEnum.CREATE_ALERT.getFragmentId());
+            intent.putExtra(getString(R.string.fragment_title), FragmentEnum.CREATE_ALERT.getTitle());
             startActivity(intent);
 
         });
         binding.fabEditAlerts.setOnClickListener(view -> {
             Intent intent = new Intent(this, AlertActivity.class);
             intent.putExtra(FragmentEnum.VIEW_ALERT.name(), FragmentEnum.VIEW_ALERT.getFragmentId());
+            intent.putExtra(getString(R.string.fragment_title), FragmentEnum.VIEW_ALERT.getTitle());
             startActivity(intent);
 
 
@@ -106,8 +115,26 @@ public class MainActivity extends AppCompatActivity {
         });
         binding.fab.showMenuButton(true);
         binding.fab.setClosedOnTouchOutside(true);
-
         handleIntent(getIntent());
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                      //  String msg = getString(R.string.msg_token_fmt, token);
+                        Log.i(TAG,"push token"+ token);
+                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 

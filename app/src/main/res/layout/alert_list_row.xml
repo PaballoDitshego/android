@@ -7,8 +7,8 @@
         <import type="android.text.format.DateUtils"/>
 
         <variable
-            name="notification"
-            type="za.co.moxomo.model.Notification" />
+            name="alert"
+            type="za.co.moxomo.model.Alert" />
     </data>
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -21,7 +21,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentLeft="true"
-            android:imageUrl="@{notification.imageUrl}"
+            android:imageUrl="@{alert.location}"
             android:layout_marginRight="8dp"
             android:clickable="false"
             android:focusable="false" />
@@ -34,7 +34,7 @@
             android:layout_alignTop="@+id/thumbnail"
             android:layout_toRightOf="@+id/thumbnail"
             android:clickable="false"
-            android:text="@{notification.title}"
+            android:text="@{alert.mobileNumber}"
             android:focusable="false"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_marginTop="5dp"
-            android:text="@{notification.description}"
+            android:text="@{alert.mobileNumber}"
             android:layout_toRightOf="@+id/thumbnail"
             android:clickable="false"
             android:focusable="false"
@@ -61,12 +61,13 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/body"
-            android:advertDate="@{notification.timestamp}"
             android:clickable="false"
             android:focusable="false"
             android:paddingTop="5dp"
             android:textColor="@color/time"
             android:textSize="@dimen/time" />
+
+        <!--android:advertDate="@{alert.mobileNumber}"-->
 
 
     </RelativeLayout>

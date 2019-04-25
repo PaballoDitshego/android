@@ -1,7 +1,7 @@
 package za.co.moxomo.adapters;
 
-;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -10,29 +10,66 @@ import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import za.co.moxomo.R;
 import za.co.moxomo.databinding.ListRowBinding;
+import za.co.moxomo.databinding.ProgressRowBinding;
+import za.co.moxomo.helpers.ApplicationConstants;
 import za.co.moxomo.model.Vacancy;
 
-public class VacancyListAdapter extends PagedListAdapter<Vacancy, VacancyListAdapter.ViewHolder> {
+public class VacancyListAdapter extends PagedListAdapter<Vacancy, RecyclerView.ViewHolder> {
 
     private OnItemClickListener onItemClickListener;
-
+    private String progressLoadStatus;
 
     public VacancyListAdapter(OnItemClickListener onItemClickListener) {
         super(Vacancy.DIFF_CALLBACK);
         this.onItemClickListener = onItemClickListener;
     }
 
+    private boolean isHasExtraRow() {
+        return null != progressLoadStatus && !progressLoadStatus.equalsIgnoreCase(ApplicationConstants.LOADED);
+    }
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ListRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.list_row, parent, false);
-        return new ViewHolder(binding, onItemClickListener);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == R.layout.list_row) {
+            ListRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                    R.layout.list_row, parent, false);
+            return new VacancyViewHolder(binding, onItemClickListener);
+        } else {
+            ProgressRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                    R.layout.progress_row, parent, false);
+            return new ProgressViewHolder(binding, onItemClickListener);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-       holder.binding.setVacancy(getItem(position));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        switch (getItemViewType(position)) {
+            case R.layout.list_row:
+                VacancyViewHolder vacancyViewHolder = (VacancyViewHolder) holder;
+                vacancyViewHolder.getBinding().setVacancy(getItem(position));
+                break;
+            case R.layout.progress_row:
+                ProgressViewHolder progressViewHolder = (ProgressViewHolder) holder;
+                progressViewHolder.getProgressRowBinding()
+                        .progressBar.setVisibility((null != progressLoadStatus &&
+                        progressLoadStatus.equals(ApplicationConstants.LOADING)
+                        ? View.VISIBLE : View.INVISIBLE));
+        }
+
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isHasExtraRow() && position == getItemCount() - 1) {
+            return R.layout.progress_row;
+        } else {
+            return R.layout.list_row;
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return super.getItemCount() + (isHasExtraRow() ? 1 : 0);
     }
 
     @Override
@@ -40,15 +77,19 @@ public class VacancyListAdapter extends PagedListAdapter<Vacancy, VacancyListAda
         return super.getItemId(position);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        private ListRowBinding binding;
-        ViewHolder(ListRowBinding binding, OnItemClickListener itemClickListener) {
-            super(binding.getRoot());
-            this.binding = binding;
-            binding.getRoot().setOnClickListener(view -> {
-                itemClickListener.onItemClick(binding.getVacancy());
-            });
+    public void setNetworkState(String progressLoadStatus) {
+        String previousLoadStatus = this.progressLoadStatus;
+        boolean hadExtraRow = isHasExtraRow();
+        this.progressLoadStatus = progressLoadStatus;
+        boolean hasExtraRow = isHasExtraRow();
+        if (hadExtraRow != hasExtraRow) {
+            if (hadExtraRow) {
+                notifyItemRemoved(super.getItemCount());
+            } else {
+                notifyItemInserted(super.getItemCount());
+            }
+        } else if (hasExtraRow && previousLoadStatus != progressLoadStatus) {
+            notifyItemChanged(getItemCount() - 1);
         }
     }
 
@@ -56,4 +97,4 @@ public class VacancyListAdapter extends PagedListAdapter<Vacancy, VacancyListAda
         void onItemClick(Vacancy item);
     }
 
-    }
+}

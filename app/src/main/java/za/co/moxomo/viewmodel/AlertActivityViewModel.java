@@ -2,28 +2,22 @@ package za.co.moxomo.viewmodel;
 
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
-import androidx.paging.LivePagedListBuilder;
-import androidx.paging.PagedList;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import za.co.moxomo.helpers.ApplicationConstants;
 import za.co.moxomo.model.Alert;
-import za.co.moxomo.model.Vacancy;
-import za.co.moxomo.repository.AlertClassDatasourceFactory;
-import za.co.moxomo.repository.Repository;
 import za.co.moxomo.model.ApiResponse;
-import za.co.moxomo.repository.VacancyClassDatasourceFactory;
-import za.co.moxomo.repository.VacancyDataSource;
+import za.co.moxomo.repository.Repository;
+
 
 @Getter
+@NoArgsConstructor
 public class AlertActivityViewModel extends ViewModel {
 
     private Repository repository;
@@ -50,7 +44,7 @@ public class AlertActivityViewModel extends ViewModel {
                     progressLiveStatus.setValue(ApplicationConstants.LOADED);
                     alertCreationResponse.setValue(ApiResponse.success(result));
                 }
-                , throwable -> {
+            , throwable -> {
                     progressLiveStatus.setValue(ApplicationConstants.LOADED);
                     alertCreationResponse.setValue(ApiResponse.error(throwable));
                 });

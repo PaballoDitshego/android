@@ -50,13 +50,11 @@ public class NotificationFragment extends Fragment {
     private FragmentNotificationBinding binding;
     private NotificationsListAdapter notificationListAdapter;
     private MainActivityViewModel mainActivityViewModel;
-    private InjectionComponent injectionComponent;
     private CustomTabsClient mClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsServiceConnection mCustomTabsServiceConnection;
     private CustomTabsIntent customTabsIntent;
     private Bitmap actionBack;
-
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -185,8 +183,7 @@ public class NotificationFragment extends Fragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Uri deleteUri = ContentUris.withAppendedId(NotificationsContentProvider.CONTENT_URI, info.id);
         getActivity().getContentResolver().delete(deleteUri, "_id=" + info.id, null);
-        Toast.makeText(getActivity(), "Item Deleted", Toast.LENGTH_SHORT).show()
-;
+        Toast.makeText(getActivity(), "Item Deleted", Toast.LENGTH_SHORT).show();
 
         return true;
     }

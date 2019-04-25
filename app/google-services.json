@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1066631986619",
+    "firebase_url": "https://moxomo-f514c.firebaseio.com",
+    "project_id": "moxomo-f514c",
+    "storage_bucket": "moxomo-f514c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066631986619:android:26ffd3c28b4c7605",
+        "android_client_info": {
+          "package_name": "za.co.moxomo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1066631986619-ukp6ht700i94f8h738r4gh7iqe2nrird.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "za.co.moxomo",
+            "certificate_hash": "92eedb960243b6dbbe478c10e7283a7e2084cc76"
+          }
+        },
+        {
+          "client_id": "1066631986619-6j1vj7evvqapevmqrgnotmuiqkh2tcm4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd7ljU2R90dMITYuukzVyzV7r9SdqOygM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1066631986619-6j1vj7evvqapevmqrgnotmuiqkh2tcm4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
