@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
+import androidx.room.RoomDatabase;
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
@@ -33,17 +34,15 @@ public class InjectionModule {
     private static String BASE_URL = "https://www.moxomo.co.za";
     private final Context context;
 
-    public InjectionModule(Context context){
-        this.context=context;
+    public InjectionModule(Context context) {
+        this.context = context;
     }
 
     @Provides
     @Singleton
     public CompositeDisposable getCompositeDisposable() {
         return new CompositeDisposable();
-
     }
-
 
     @Provides
     @Singleton
@@ -56,7 +55,6 @@ public class InjectionModule {
     @Provides
     @Singleton
     public OkHttpClient provideOkHttpClient() {
-
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.NONE);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
@@ -95,7 +93,6 @@ public class InjectionModule {
         return new Repository(restAPIService, moxomoDB);
     }
 
-
     @Provides
     @Singleton
     public ViewModelProvider.Factory getViewModelFactory(Repository repository) {
@@ -105,19 +102,16 @@ public class InjectionModule {
     @Provides
     @Singleton
     public MoxomoDB getMoxomoDB(Context context) {
-       return Room.databaseBuilder(context,
-                            MoxomoDB.class, "Moxomo Database")
-                            .fallbackToDestructiveMigration()
-                            .build();
+        return Room.databaseBuilder(context,
+                MoxomoDB.class, "Moxomo Database")
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
     @Provides
     public Context context() {
         return context;
     }
-
-
-
 
 
 }

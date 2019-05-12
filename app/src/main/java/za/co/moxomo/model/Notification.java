@@ -12,10 +12,13 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import za.co.moxomo.helpers.JodaDateTimeConverter;
 
 @Entity( tableName = "notification")
-//@Data
+@Data
+@EqualsAndHashCode(callSuper=false)
 public class Notification  extends BaseObservable {
     @PrimaryKey(autoGenerate = true)
     private int _id;

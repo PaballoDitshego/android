@@ -1,18 +1,19 @@
 package za.co.moxomo.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,9 +37,8 @@ import za.co.moxomo.FragmentEnum;
 import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.ViewPagerAdapter;
-import za.co.moxomo.dagger.DaggerInjectionComponent;
-import za.co.moxomo.dagger.InjectionComponent;
 import za.co.moxomo.databinding.ActivityMainBinding;
+import za.co.moxomo.helpers.Utility;
 import za.co.moxomo.viewmodel.MainActivityViewModel;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 
@@ -55,18 +55,17 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
 
-       // injectionComponent = DaggerInjectionComponent.builder().build();
-       // injectionComponent.inject(this);
         MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
+        Utility.changeStatusBarColor(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_navigation);
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -89,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     binding.fab.setVisibility(View.VISIBLE);
                 }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
             }
@@ -125,18 +125,15 @@ public class MainActivity extends AppCompatActivity {
                             Log.w(TAG, "getInstanceId failed", task.getException());
                             return;
                         }
-
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
+                        Utility.storeFcmTokenInSharedPref(getApplicationContext(), token);
+                        mainActivityViewModel.sendFCMToken(token, Utility.getFcmTokenInSharedPref(getApplicationContext()));
 
-                        // Log and toast
-                      //  String msg = getString(R.string.msg_token_fmt, token);
-                        Log.i(TAG,"push token"+ token);
-                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
+        createNotificationChannel();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -232,11 +229,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Utility.changeStatusBarColor(this);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
+            binding.viewpager.setCurrentItem(0, true);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -250,5 +254,22 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Moxomo";
+            String description = "Alerts";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("ALERTS", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+
+    }
 }
 

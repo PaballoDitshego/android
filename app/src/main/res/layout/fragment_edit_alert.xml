@@ -1,0 +1,126 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="java.lang.String" />
+        <import type="android.text.format.DateUtils"/>
+
+        <variable
+            name="alert"
+            type="za.co.moxomo.model.Alert" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/title_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                android:layout_margin="@dimen/activity_horizontal_margin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/keyword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Job Title, Company, Skill"
+                    android:maxLines="1"
+                    android:text="@{alert.keyword}"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_horizontal_margin">
+                <AutoCompleteTextView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionHint="Location"
+                    android:hint="Location(Optional)"
+                    android:text="@{alert.location}"
+                    android:maxLines="1"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mobile_number_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                android:layout_margin="@dimen/activity_horizontal_margin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mobile_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mobile Number(Optional)"
+                    android:text="@{alert.mobileNumber}"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Switch
+                android:id="@+id/push"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@{alert.push}"
+                android:gravity="left"
+                android:hint="Push Notification"
+                android:paddingTop="2dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textOff="OFF"
+                android:textOn="ON"
+                android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+            <Switch
+                android:id="@+id/sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:checked="@{alert.push}"
+                android:gravity="left"
+                android:hint="SMS Notification"
+                android:paddingLeft="12dp"
+                android:paddingTop="2dp"
+                android:paddingRight="12dp"
+                android:textOff="OFF"
+                android:textOn="ON"
+                android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+        </LinearLayout>
+
+        <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/linear_layout"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:focusable="false"
+            android:indeterminate="false"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</layout>

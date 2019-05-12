@@ -6,7 +6,7 @@ import za.co.moxomo.dagger.DaggerInjectionComponent;
 import za.co.moxomo.dagger.InjectionComponent;
 import za.co.moxomo.dagger.InjectionModule;
 
-public class MoxomoApplication extends MultiDexApplication  {
+public class MoxomoApplication extends MultiDexApplication {
    private  static MoxomoApplication moxomoApplication;
    private InjectionComponent injectionComponent;
 
@@ -14,7 +14,8 @@ public class MoxomoApplication extends MultiDexApplication  {
     public void onCreate() {
         super.onCreate();
         moxomoApplication = this;
-        injectionComponent = DaggerInjectionComponent.builder()
+
+       injectionComponent = DaggerInjectionComponent.builder()
                 .injectionModule(new InjectionModule(getApplicationContext())).build();
     }
 
@@ -25,4 +26,6 @@ public class MoxomoApplication extends MultiDexApplication  {
     public InjectionComponent injectionComponent(){
         return injectionComponent;
     }
+
+
 }

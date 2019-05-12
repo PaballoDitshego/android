@@ -19,7 +19,17 @@ public interface RestApiService {
     @GET("/users/signup")
     Observable<JsonElement> signup(@Body UserDTO userDTO);
 
-    @POST("/alert/create")
+    @POST("/alerts/create")
     Observable<JsonElement> createAlert(@Body Alert alert);
+
+    @POST("/alerts/update")
+    Observable<JsonElement> updateAlert(@Body Alert alert);
+
+    @POST("/alerts/fcmtoken")
+    Observable<JsonElement> sendToken(@Query("newToken") String newToken,
+                                  @Query("oldToken") String oldToken);
+
+    @GET("/locations")
+    Observable<JsonElement> getLocationSuggestions(@Query("location") String location);
 
 }

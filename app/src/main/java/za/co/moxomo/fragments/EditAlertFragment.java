@@ -2,9 +2,13 @@ package za.co.moxomo.fragments;
 
 
 import android.os.Bundle;
-import android.os.Handler;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,19 +23,13 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import io.reactivex.disposables.CompositeDisposable;
 import za.co.moxomo.FragmentEnum;
 import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
-import za.co.moxomo.adapters.AutoSuggestAdapter;
-import za.co.moxomo.databinding.FragmentCreateAlertBinding;
+import za.co.moxomo.databinding.FragmentEditAlertBinding;
 import za.co.moxomo.helpers.ApplicationConstants;
 import za.co.moxomo.helpers.Utility;
 import za.co.moxomo.model.Alert;
@@ -40,28 +38,19 @@ import za.co.moxomo.service.Status;
 import za.co.moxomo.viewmodel.AlertActivityViewModel;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 
+public class EditAlertFragment extends Fragment {
 
-public class CreateAlertFragment extends Fragment {
-
-    private static final String TAG = CreateAlertFragment.class.getSimpleName();
-
+    private static final String TAG = EditAlertFragment.class.getSimpleName();
     @Inject
     ViewModelFactory viewModelFactory;
-    @Inject
-    CompositeDisposable compositeDisposable;
 
-
-    private FragmentCreateAlertBinding binding;
-    private AlertActivityViewModel alertActivityViewModel;
     private NavController navController;
-
-    private static final int TRIGGER_AUTO_COMPLETE = 100;
-    private static final long AUTO_COMPLETE_DELAY = 300;
-    private Handler handler;
-    private AutoSuggestAdapter autoSuggestAdapter;
+    private FragmentEditAlertBinding binding;
 
 
-    public CreateAlertFragment() {
+    private AlertActivityViewModel alertActivityViewModel;
+
+    public EditAlertFragment() {
     }
 
 
@@ -69,44 +58,40 @@ public class CreateAlertFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_alert, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_alert, container, false);
         return binding.getRoot();
-
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         alertActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(AlertActivityViewModel.class);
         navController = Navigation.findNavController(getActivity(), R.id.navHostFragment);
 
-        autoSuggestAdapter = new AutoSuggestAdapter(getActivity(),
-                android.R.layout.simple_dropdown_item_1line);
-
-        alertActivityViewModel.getProgressLiveStatus().observe(getViewLifecycleOwner(), status -> {
-            if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING)) {
+        alertActivityViewModel.getProgressLiveStatus().observe(getViewLifecycleOwner(), status->{
+            if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING )) {
                 binding.progress.setVisibility(View.VISIBLE);
             } else if (status.equalsIgnoreCase(ApplicationConstants.LOADED)) {
                 binding.progress.setVisibility(View.INVISIBLE);
             }
         });
 
-        alertActivityViewModel.getAlertServiceResponse().observe(getActivity(), result -> {
-            processAlertCreationResponse(result);
-        });
+        alertActivityViewModel.getAlertObjectHolder().observe(getActivity(), alert -> {
+            binding.setAlert(alert);
 
-        alertActivityViewModel.getLocationSuggestions().observe(getActivity(), result->{
-            autoSuggestAdapter.setData(result);
-            autoSuggestAdapter.notifyDataSetChanged();
+        });
+        alertActivityViewModel.getAlertServiceResponse().observe(getActivity(), result -> {
+            processAlertUpdateResponse(result);
         });
         setHasOptionsMenu(true);
         initBinding();
-
     }
 
     @Override
@@ -118,49 +103,42 @@ public class CreateAlertFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_create_fragment) {
             Utility.hideKeyboard(getActivity());
-            createAlert();
+            updateAlert();
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    private void createAlert() {
-        Alert.AlertBuilder alertBuilder = Alert.builder();
-        if (binding.keyword.getText().length() > 0) {
-            alertBuilder.keyword(binding.keyword.getText().toString());
+    private void updateAlert() {
+        Alert.AlertBuilder alertDTOBuilder = Alert.builder();
+        if (null != binding.keyword.getText() || binding.keyword.getText().length() > 0) {
+            alertDTOBuilder.keyword(binding.keyword.getText().toString());
         }
-
-        if (binding.location.getText().length() > 0) {
-            alertBuilder.location(binding.location.getText().toString());
+        if (null != binding.location.getText() || binding.location.getText().length() > 0) {
+            alertDTOBuilder.location(binding.location.getText().toString());
         }
-        if (binding.location.getText().length() == 0) {
-            alertBuilder.location(getString(R.string.default_location));
+        if (null != binding.mobileNumber.getText() || binding.mobileNumber.getText().length() > 0) {
+            alertDTOBuilder.mobileNumber(binding.mobileNumber.getText().toString());
         }
-        if (binding.mobileNumber.getText().length() > 0) {
-            alertBuilder.mobileNumber(binding.mobileNumber.getText().toString());
-        }
-        alertBuilder.push(binding.push.isChecked());
-        alertBuilder.sms(binding.sms.isChecked());
-        alertBuilder.gcmToken(Utility.getFcmTokenInSharedPref(getContext()));
 
         if (validateInput()) {
             Utility.storeMobileNumberInSharedPref(getContext(),binding.mobileNumber.toString());
-            alertActivityViewModel.createAlert(alertBuilder.build());
+            alertActivityViewModel.updateAlert(alertDTOBuilder.build());
         }
 
     }
 
-    private void processAlertCreationResponse(ApiResponse apiResponse) {
-
+    private void processAlertUpdateResponse(ApiResponse apiResponse) {
         if (null != apiResponse.status && apiResponse.status.equals(Status.SUCCESS)) {
-            Snackbar.make(binding.getRoot(), "Alert created.", Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(binding.getRoot(), "Alert Updated.", Snackbar.LENGTH_INDEFINITE)
                     .setAction("OK", v -> navController.navigate(FragmentEnum.VIEW_ALERT.getFragmentId())).show();
-        } else {
-            final Snackbar snackbar = Snackbar.make(binding.getRoot(), "Error creating alert, try again later.", Snackbar.LENGTH_INDEFINITE);
+        }else {
+
+            final Snackbar snackbar = Snackbar.make(binding.getRoot(), "Error updating alert, try again later.", Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("OK", v -> snackbar.dismiss());
             snackbar.show();
         }
-        alertActivityViewModel.getAlertServiceResponse().setValue(null);
+            alertActivityViewModel.getAlertServiceResponse().setValue(null);
     }
 
     private boolean validateInput() {
@@ -180,61 +158,20 @@ public class CreateAlertFragment extends Fragment {
     }
 
     private void initBinding() {
-
-        Alert alert = new Alert();
-        alert.setMobileNumber(Utility.getMobileNumberInSharedPref(getContext()));
-        binding.setAlert(alert);
-
         binding.keyword.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 binding.titleInputLayout.setError(null);
             }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        binding.location.setAdapter(autoSuggestAdapter);
-        binding.location.setThreshold(2);
-        binding.location.setOnItemClickListener((parent, view, position, id) -> {
-            binding.location.setText(autoSuggestAdapter.getObject(position));
-        });
-
-        binding.location.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int
-                    count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                handler.removeMessages(TRIGGER_AUTO_COMPLETE);
-                handler.sendEmptyMessageDelayed(TRIGGER_AUTO_COMPLETE,
-                        AUTO_COMPLETE_DELAY);
-            }
 
             @Override
             public void afterTextChanged(Editable s) {
 
             }
         });
-
-
-        handler = new Handler(msg -> {
-            if (msg.what == TRIGGER_AUTO_COMPLETE) {
-                if (!TextUtils.isEmpty(binding.location.getText())) {
-                    alertActivityViewModel.getLocationSuggestion(binding.location.getText().toString());
-                }
-            }
-            return false;
-        });
-
         binding.mobileNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -262,5 +199,6 @@ public class CreateAlertFragment extends Fragment {
             }
         });
     }
+
 
 }

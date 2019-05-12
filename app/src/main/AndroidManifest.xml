@@ -34,7 +34,7 @@
         </receiver>
 
         <service
-            android:name=".gcm.FCMListenerService"
+            android:name=".fcm.FCMListenerService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -63,9 +63,7 @@
         <provider
             android:name=".contentproviders.SearchSuggestionProvider"
             android:authorities="za.co.moxomo.contentproviders.SearchSuggestionProvider"></provider>
-        <provider
-            android:name=".contentproviders.NotificationsContentProvider"
-            android:authorities="za.co.moxomo.Notifications"></provider>
+
         <provider android:name=".contentproviders.RecentSearchSuggestionProvider"
             android:authorities="za.co.moxomo.contentproviders.RecentSearchSuggestionProvider" />
         <meta-data
@@ -78,23 +76,13 @@
         <activity
             android:name=".activities.AlertActivity"
             android:label="@string/title_activity_profile"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
 
-
-        <activity
-            android:name=".activities.NotificationActivity"
-            android:label="@string/title_activity_browser"
-            android:launchMode="singleInstance"
-            android:parentActivityName=".activities.MainActivity">
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
-        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="164508610a6871e28533a5aae25e1538dc727fc6" />

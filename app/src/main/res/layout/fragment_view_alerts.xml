@@ -29,7 +29,7 @@
             android:clickable="false"
             android:focusable="false"
             android:text="@string/no_alerts"
-            android:visibility="visible" />
+            android:visibility="gone" />
         </RelativeLayout>
 
         <com.github.clans.fab.FloatingActionMenu

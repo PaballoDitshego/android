@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="java.lang.String" />
+        <import type="android.text.format.DateUtils"/>
+
+        <variable
+            name="alert"
+            type="za.co.moxomo.model.Alert" />
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.cardview.widget.CardView
-            style="@style/RootCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <LinearLayout
+                android:id="@+id/linear_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/title_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:errorEnabled="true"
                     android:layout_margin="@dimen/activity_horizontal_margin">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/jobTitle"
+                        android:id="@+id/keyword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Job Title(Optional)"
+                        android:hint="Job Title, Company, Skill"
                         android:maxLines="1"
                         android:paddingLeft="12dp"
                         android:paddingRight="12dp"
@@ -35,28 +44,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/activity_horizontal_margin">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/company"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Company(Optional)"
-                    android:maxLines="1"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:singleLine="true" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/activity_horizontal_margin">
                 <AutoCompleteTextView
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:completionHint="Location"
                     android:hint="Location(Optional)"
                     android:maxLines="1"
                     android:paddingLeft="12dp"
@@ -65,15 +56,18 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/mobile_number_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:errorEnabled="true"
                     android:layout_margin="@dimen/activity_horizontal_margin">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mobile_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Phone Number(Optional)"
+                    android:hint="Mobile Number(Optional)"
+                    android:text="@{alert.mobileNumber}"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:paddingLeft="12dp"
@@ -111,35 +105,19 @@
                     android:textOn="ON"
                     android:layout_margin="@dimen/activity_horizontal_margin"/>
 
-
-                <Button
-                    android:id="@+id/register_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/white"
-                    android:background="@color/action_color"
-                    android:paddingLeft="12dp"
-                    android:paddingTop="2dp"
-                    android:paddingRight="12dp"
-                    android:text="Create Alert"
-                    android:textStyle="bold" />
-
-
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
 
         <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_below="@id/linear_layout"
             android:layout_centerVertical="true"
             android:clickable="false"
             android:focusable="false"
             android:indeterminate="false"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
     </RelativeLayout>
 

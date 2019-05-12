@@ -5,11 +5,15 @@
         <import type="android.view.View" />
         <import type="java.lang.String" />
         <import type="android.text.format.DateUtils"/>
-
         <variable
             name="alert"
             type="za.co.moxomo.model.Alert" />
+
     </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -21,7 +25,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentLeft="true"
-            android:imageUrl="@{alert.location}"
+            android:src="@drawable/baseline_alarm_on_black_18dp"
             android:layout_marginRight="8dp"
             android:clickable="false"
             android:focusable="false" />
@@ -34,7 +38,7 @@
             android:layout_alignTop="@+id/thumbnail"
             android:layout_toRightOf="@+id/thumbnail"
             android:clickable="false"
-            android:text="@{alert.mobileNumber}"
+            android:text="@{alert.keyword}"
             android:focusable="false"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
@@ -42,12 +46,12 @@
 
         <!-- Description -->
         <TextView
-            android:id="@+id/body"
+            android:id="@+id/location"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_marginTop="5dp"
-            android:text="@{alert.mobileNumber}"
+            android:text="@{alert.location}"
             android:layout_toRightOf="@+id/thumbnail"
             android:clickable="false"
             android:focusable="false"
@@ -60,15 +64,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/thumbnail"
             android:layout_below="@id/body"
+            android:advertDate="@{alert.timestamp}"
             android:clickable="false"
             android:focusable="false"
-            android:paddingTop="5dp"
+            android:paddingTop="10dp"
             android:textColor="@color/time"
             android:textSize="@dimen/time" />
-
-        <!--android:advertDate="@{alert.mobileNumber}"-->
-
-
     </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

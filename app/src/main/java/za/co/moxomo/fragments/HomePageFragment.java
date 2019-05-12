@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
+
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -37,8 +37,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.VacancyListAdapter;
-import za.co.moxomo.dagger.DaggerInjectionComponent;
-import za.co.moxomo.dagger.InjectionComponent;
 import za.co.moxomo.databinding.FragmentHomepageBinding;
 import za.co.moxomo.helpers.ApplicationConstants;
 import za.co.moxomo.helpers.Utility;
@@ -47,7 +45,7 @@ import za.co.moxomo.viewmodel.MainActivityViewModel;
 import za.co.moxomo.viewmodel.ViewModelFactory;
 
 
-public class HomePageFragment extends Fragment  {
+public class HomePageFragment extends Fragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -67,7 +65,6 @@ public class HomePageFragment extends Fragment  {
     private CustomTabsIntent customTabsIntent;
     private Bitmap actionBack;
 
-
     public HomePageFragment() {
     }
 
@@ -79,7 +76,7 @@ public class HomePageFragment extends Fragment  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
+       MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
         mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
             @Override
             public void onCustomTabsServiceConnected(ComponentName componentName, CustomTabsClient customTabsClient) {
@@ -134,6 +131,7 @@ public class HomePageFragment extends Fragment  {
         binding.list.setLayoutAnimation(animation);
         binding.list.setItemAnimator(new DefaultItemAnimator());
 
+
         vacancyListAdapter = new VacancyListAdapter(item ->
             openUrlInBrowser(item));
 
@@ -141,43 +139,52 @@ public class HomePageFragment extends Fragment  {
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount) {
                 super.onItemRangeChanged(positionStart, itemCount);
+                Log.d(TAG, "position: " +positionStart);
                 if (positionStart == 0) {
                     layoutManager.scrollToPosition(0);
                 }
+                else{
+                    layoutManager.scrollToPosition(positionStart+3);
+                }
             }
+
         });
         binding.list.setAdapter(vacancyListAdapter);
         mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
+
         binding.swipeRefreshLayout.setOnRefreshListener(() -> {
             binding.swipeRefreshLayout.setRefreshing(true);
             mainActivityViewModel.getVacancyClassDatasourceFactory().getMutableLiveData().getValue().pullToRefresh();
         });
 
         mainActivityViewModel.getVacancies().observe(getActivity(), vacancies->{
-            vacancyListAdapter.submitList(vacancies);
             binding.swipeRefreshLayout.setRefreshing(false);
+            vacancyListAdapter.submitList(vacancies);
             binding.list.addItemDecoration(new DividerItemDecoration(binding.list.getContext(), DividerItemDecoration.VERTICAL));
 
-        });
+        });;
         mainActivityViewModel.getSearchString().observe(getActivity(), searchString -> {
+            binding.swipeRefreshLayout.setRefreshing(true);
             mainActivityViewModel.getVacancyClassDatasourceFactory()
                     .getMutableLiveData()
                     .getValue()
                     .setSearchString(searchString);
+
         });
 
         mainActivityViewModel.getProgressLoadStatus().observe(getActivity(), status -> {
             vacancyListAdapter.setNetworkState(status);
-            if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING)) {
+            if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING )) {
+
             } else if (status.equalsIgnoreCase(ApplicationConstants.LOADED)) {
                 binding.swipeRefreshLayout.setRefreshing(false);
             }
         });
 
         mainActivityViewModel.getResultSetSize().observe(getActivity(), results ->{
-            Toast toast=  Toast.makeText(getContext(),results + " Vacancies",Toast.LENGTH_LONG);
+          /*  Toast toast=  Toast.makeText(getContext(),results + " Vacancies",Toast.LENGTH_LONG);
             toast.setGravity(Gravity.TOP, 0, 350);
-            toast.show();
+            toast.show();*/
         });
 
     }
@@ -187,10 +194,6 @@ public class HomePageFragment extends Fragment  {
         super.onAttach(context);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
     private void openUrlInBrowser(Vacancy vacancy) {
         customTabsIntent.launchUrl(getContext(), Uri.parse(vacancy.getUrl()));

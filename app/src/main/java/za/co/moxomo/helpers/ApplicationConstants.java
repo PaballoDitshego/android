@@ -5,11 +5,10 @@ package za.co.moxomo.helpers;
  */
 public interface ApplicationConstants {
 
-    String APP_SERVER_URL = "https://moxomoapp.appspot.com/_ah/api/userendpoint/v1/user";
 
     // Google Project Number
     String GOOGLE_PROJECT_ID = "535804675912";
-    String TITLE_KEY = "title";
+    String TITLE_KEY = "keyword";
     String TYPE = "type";
     String ACTION_STRING = "action_string";
     String BODY = "body";

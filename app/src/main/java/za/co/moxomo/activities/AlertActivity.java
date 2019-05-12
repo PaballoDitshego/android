@@ -1,19 +1,16 @@
 package za.co.moxomo.activities;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
@@ -21,6 +18,7 @@ import za.co.moxomo.FragmentEnum;
 import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.databinding.ActivityAlertBinding;
+import za.co.moxomo.helpers.Utility;
 
 
 public class AlertActivity extends AppCompatActivity {
@@ -37,11 +35,11 @@ public class AlertActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        Utility.changeStatusBarColor(this);
 
         NavController navController = Navigation.findNavController(this, R.id.navHostFragment);
         NavInflater navInflater = navController.getNavInflater();
-        NavGraph graph = navInflater.inflate(R.navigation.alert_activity_navigation);
+        NavGraph graph = navInflater.inflate(R  .navigation.alert_activity_navigation);
         navController.addOnNavigatedListener((controller, destination) -> {
             switch (destination.getId()){
                 case R.id.createAlertFragment:
@@ -50,7 +48,9 @@ public class AlertActivity extends AppCompatActivity {
                 case R.id.viewAlertsFragment:
                     toolbar.setTitle(FragmentEnum.VIEW_ALERT.getTitle());
                     break;
-
+                case R.id.editAlertFragment:
+                    toolbar.setTitle(FragmentEnum.EDIT_ALERT.getTitle());
+                    break;
                 default:
                     toolbar.setTitle(FragmentEnum.VIEW_ALERT.getTitle());
 
@@ -70,7 +70,7 @@ public class AlertActivity extends AppCompatActivity {
 
     }
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_account, menu);
@@ -93,35 +93,25 @@ public class AlertActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
-
-
-    private void storeRegIdinSharedPref(Context context, String regId,
-                                        String emailID, String fullNames, String area, String keywords) {
-
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("sentTokenToServer", false).apply();
-        SharedPreferences prefs = getSharedPreferences("UserDetails",
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-      /*  editor.putString(REG_ID, regId);
-        editor.putString(EMAIL_ID, emailID);
-        editor.putString(FULL_NAME, fullNames);
-        editor.putString(PROVINCE, area);
-        editor.putString(KEYWORDS, keywords);
-        editor.putBoolean(PUSH_STATE, true);*/
-
-        editor.commit();
-       //// storeRegIdinServer();
+    @Override
+    public void onBackPressed() {
+        Utility.hideKeyboard(this);
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
 
     }
-
-
 
     @Override
     protected void onResume() {
         super.onResume();
+        Utility.changeStatusBarColor(this);
       //  checkPlayServices();
     }
 }

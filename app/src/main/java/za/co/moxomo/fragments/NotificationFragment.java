@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,12 +33,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import dagger.android.support.DaggerFragment;
 import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.NotificationsListAdapter;
 import za.co.moxomo.contentproviders.NotificationsContentProvider;
-import za.co.moxomo.dagger.DaggerInjectionComponent;
-import za.co.moxomo.dagger.InjectionComponent;
 import za.co.moxomo.databinding.FragmentNotificationBinding;
 import za.co.moxomo.model.Notification;
 import za.co.moxomo.viewmodel.MainActivityViewModel;
@@ -46,6 +46,7 @@ import za.co.moxomo.viewmodel.ViewModelFactory;
 
 public class NotificationFragment extends Fragment {
 
+    private static final String TAG = NotificationFragment.class.getSimpleName();
     public static final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
     private FragmentNotificationBinding binding;
     private NotificationsListAdapter notificationListAdapter;
@@ -54,16 +55,13 @@ public class NotificationFragment extends Fragment {
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsServiceConnection mCustomTabsServiceConnection;
     private CustomTabsIntent customTabsIntent;
-    private Bitmap actionBack;
 
     @Inject
     ViewModelFactory viewModelFactory;
 
-
     public NotificationFragment() {
         // Required empty public constructor
     }
-
 
     public static NotificationFragment newInstance() {
         NotificationFragment fragment = new NotificationFragment();
@@ -93,7 +91,6 @@ public class NotificationFragment extends Fragment {
                 .setToolbarColor(ContextCompat.getColor(getContext(), R.color.action_color))
                 .addDefaultShareMenuItem()
                 .enableUrlBarHiding()
-                .setCloseButtonIcon(actionBack)
                 .setShowTitle(true)
                 .build();
 
@@ -128,11 +125,18 @@ public class NotificationFragment extends Fragment {
 
         notificationListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
+            public void onChanged() {
+                super.onChanged();
+                checkEmpty();
+            }
+            @Override
             public void onItemRangeChanged(int positionStart, int itemCount) {
                 super.onItemRangeChanged(positionStart, itemCount);
+                checkEmpty();
                 if (positionStart == 0) {
                     layoutManager.scrollToPosition(0);
                 }
+
             }
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
@@ -152,6 +156,7 @@ public class NotificationFragment extends Fragment {
 
         mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
         binding.notificationsList.setAdapter(notificationListAdapter);
+        Log.d(TAG, "notifications is null"+ (null == mainActivityViewModel.getNotifications()));
         mainActivityViewModel.getNotifications().observe(getActivity(), notifications -> {
             notificationListAdapter.submitList(notifications);
 
@@ -183,7 +188,6 @@ public class NotificationFragment extends Fragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Uri deleteUri = ContentUris.withAppendedId(NotificationsContentProvider.CONTENT_URI, info.id);
         getActivity().getContentResolver().delete(deleteUri, "_id=" + info.id, null);
-        Toast.makeText(getActivity(), "Item Deleted", Toast.LENGTH_SHORT).show();
 
         return true;
     }

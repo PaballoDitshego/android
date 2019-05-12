@@ -19,7 +19,7 @@ import za.co.moxomo.helpers.JodaDateTimeConverter;
 
 
 @Parcel
-@Entity(tableName = "vacancies")
+@Entity(tableName = "vacancy")
 public class Vacancy  extends BaseObservable {
 
 
@@ -68,17 +68,8 @@ public class Vacancy  extends BaseObservable {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(jobTitle, description, location, advertDate, imageUrl);
     }
-/*   @Override
-    public boolean equals(Object obj) {
-        if (obj == this)
-            return true;
-
-        Vacancy article = (Vacancy) obj;
-        return article.id.equals(this.id);
-    }*/
 
     @Bindable
     public String getCompany() {

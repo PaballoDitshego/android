@@ -1,7 +1,10 @@
-package za.co.moxomo.gcm;
+package za.co.moxomo.fcm;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,13 +13,19 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Calendar;
 import java.util.Map;
 
+import javax.inject.Inject;
+
+import androidx.core.app.NotificationCompat;
+import za.co.moxomo.MoxomoApplication;
+import za.co.moxomo.R;
 import za.co.moxomo.activities.MainActivity;
 import za.co.moxomo.contentproviders.NotificationsContentProvider;
 import za.co.moxomo.helpers.ApplicationConstants;
+import za.co.moxomo.repository.Repository;
 
-;
 
 /**
  * Created by Paballo Ditshego on 7/28/15.
@@ -25,13 +34,23 @@ public class FCMListenerService extends FirebaseMessagingService {
 
     private static final String TAG = "FCMListenerService";
 
+    @Inject
+    Repository repository;
+
+
+    @Override
+    public void onCreate(){
+        MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
+    }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+      Log.d(TAG,"remote messge "+ remoteMessage.getData().toString());
 
        // remoteMessage.
 
 
-     //   sendNotification(remoteMessage);
+       sendNotification(remoteMessage.getData());
 
     }
 
@@ -56,22 +75,23 @@ public class FCMListenerService extends FirebaseMessagingService {
             editor.putString("id", msg.getString("id"));
             editor.commit();
 
-        }
+        }*/
 
 
-        Intent resultIntent = new Intent(this, NotificationActivity.class);
-        resultIntent.putExtra("row_id", row_id);
+        Intent resultIntent = new Intent(this, MainActivity.class);
+      //  resultIntent.putExtra("row_id", row_id);
         resultIntent.putExtra("notification", "");
 
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
-                resultIntent, PendingIntent.FLAG_ONE_SHOT);
+                resultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this)
-                .setContentTitle(msg.getString("title"))
-                .setContentText(msg.getString("body"))
+        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this, "ALERTS")
+                .setContentTitle("jjjjj")
+                .setContentText("hhhhhh")
+                .setChannelId("ALERTS")
                 .setSmallIcon(R.drawable.ic_notif)
                 .setContentIntent(resultPendingIntent);
 
@@ -82,9 +102,10 @@ public class FCMListenerService extends FirebaseMessagingService {
 
         mNotifyBuilder.setDefaults(defaults);
         mNotifyBuilder.setAutoCancel(true);
+        Log.d(TAG, "notifying "+mNotifyBuilder.toString());
         mNotificationManager.notify((int) Calendar.getInstance().getTimeInMillis(), mNotifyBuilder.build());
 
-*/
+
 
     }
     private void sendRegistrationToServer(String token) {
@@ -116,7 +137,7 @@ public class FCMListenerService extends FirebaseMessagingService {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
+                    "Channel human readable keyword",
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
@@ -134,7 +155,7 @@ public class FCMListenerService extends FirebaseMessagingService {
 
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("title", msg.getString(ApplicationConstants.TITLE_KEY));
+        contentValues.put("keyword", msg.getString(ApplicationConstants.TITLE_KEY));
         contentValues.put("body", msg.getString(ApplicationConstants.BODY));
         contentValues.put("action_string", msg.getString(ApplicationConstants.ACTION_STRING));
         contentValues.put("type", msg.getString(ApplicationConstants.TYPE));

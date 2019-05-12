@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/alert_activity_navigation">
+    android:id="@+id/alert_activity_navigation"
+    app:startDestination="@id/editAlertFragment">
     <!--app:startDestination="@id/createAlertFragment">-->
 
     <fragment
@@ -15,4 +16,9 @@
         android:name="za.co.moxomo.fragments.ViewAlertsFragment"
         android:label="fragment_view_alerts"
         tools:layout="@layout/fragment_view_alerts" />
+    <fragment
+        android:id="@+id/editAlertFragment"
+        android:name="za.co.moxomo.fragments.EditAlertFragment"
+        android:label="fragment_edit_alert"
+        tools:layout="@layout/fragment_edit_alert" />
 </navigation>

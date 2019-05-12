@@ -4,9 +4,18 @@ package za.co.moxomo.helpers;
  * Created by Paballo Ditshego on 7/29/15.
  */
 
+import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.os.Build;
+import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -18,10 +27,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.core.content.ContextCompat;
 import io.reactivex.Observable;
+import za.co.moxomo.R;
 import za.co.moxomo.model.Vacancy;
 
 /**
@@ -32,16 +44,24 @@ public class Utility {
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private final static String phoneNumberRegex = "^((?:\\+27|27))(6|7|8)(\\d{8})$";
     private static Pattern pattern;
     private static Matcher matcher;
 
-    /**
-     * Validate Email with regular expression
-     *
-     * @param email
-     * @return true for Valid Email and false for Invalid Email
-     */
-    public static boolean validate(String email) {
+
+    public static boolean validateMsisdn(String msisdn) throws RuntimeException {
+        Objects.requireNonNull(msisdn);
+        return msisdn.trim().matches(phoneNumberRegex);
+
+    }
+
+    public static void changeStatusBarColor(Activity activity ){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.action_color));
+        }
+    }
+    public static boolean validateEmail(String email) {
+
         pattern = Pattern.compile(EMAIL_PATTERN);
         matcher = pattern.matcher(email);
         return matcher.matches();
@@ -66,7 +86,7 @@ public class Utility {
             if (description.length() >= 400) {
                 description = description.substring(0, 399);
                 if (description.contains(".")) {
-                    description = description.substring(0, description.lastIndexOf(".")+1);
+                    description = description.substring(0, description.lastIndexOf(".") + 1);
                 }
             }
             String title = item.optString("jobTitle");
@@ -91,6 +111,7 @@ public class Utility {
 
         return arrayList;
     }
+
     public static Long getResultSetSize(JSONObject json) throws JSONException {
         return json.optLong("numberOfResults");
     }
@@ -107,4 +128,40 @@ public class Utility {
         });
 
     }
+
+    public static void storeFcmTokenInSharedPref(Context context, String token) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                .putString(context.getString(R.string.pref_fcm_key), token).apply();
+    }
+
+    public static void storeMobileNumberInSharedPref(Context context, String sms) {
+        if(null == getMobileNumberInSharedPref(context) || !sms.equals(getMobileNumberInSharedPref(context))) {
+            PreferenceManager.getDefaultSharedPreferences(context).edit()
+                    .putString(context.getString(R.string.pref_mobile_key), sms).apply();
+        }
+    }
+
+    public static String getMobileNumberInSharedPref(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_mobile_key), null);
+    }
+
+
+    public static String getFcmTokenInSharedPref(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_fcm_key), null);
+    }
+
+
+
+    public static void hideKeyboard(Context ctx) {
+        InputMethodManager inputManager = (InputMethodManager) ctx
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View v = ((Activity) ctx).getCurrentFocus();
+        if (v == null)
+            return;
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
 }

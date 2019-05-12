@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+import lombok.Getter;
 import za.co.moxomo.R;
 import za.co.moxomo.databinding.AlertListRowBinding;
 import za.co.moxomo.model.Alert;
@@ -41,7 +42,8 @@ public class AlertListAdapter extends PagedListAdapter<Alert, AlertListAdapter.V
         return super.getItemId(position);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    @Getter
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private AlertListRowBinding binding;
         ViewHolder(AlertListRowBinding binding, OnItemClickListener itemClickListener) {
@@ -50,6 +52,7 @@ public class AlertListAdapter extends PagedListAdapter<Alert, AlertListAdapter.V
             binding.getRoot().setOnClickListener(view -> {
                 itemClickListener.onItemClick(binding.getAlert());
             });
+
         }
     }
 

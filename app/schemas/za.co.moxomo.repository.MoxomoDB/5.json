@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "57fb2148937eff1009fe5c6f584eed5e",
+    "version": 5,
+    "identityHash": "febb2e269bbf5db05347b1dfc419d328",
     "entities": [
       {
         "tableName": "notification",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "alert",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `alertId` TEXT, `location` TEXT, `sms` TEXT, `push` TEXT, `title` TEXT, `mobileNumber` TEXT, `gcmToken` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `alertId` TEXT, `location` TEXT, `sms` INTEGER NOT NULL, `push` INTEGER NOT NULL, `title` TEXT, `mobileNumber` TEXT, `gcmToken` TEXT, `timestamp` INTEGER)",
         "fields": [
           {
             "fieldPath": "_id",
@@ -85,14 +85,14 @@
           {
             "fieldPath": "sms",
             "columnName": "sms",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "push",
             "columnName": "push",
-            "affinity": "TEXT",
-            "notNull": false
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "title",
@@ -111,6 +111,12 @@
             "columnName": "gcmToken",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "timestamp",
+            "columnName": "timestamp",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -125,7 +131,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"57fb2148937eff1009fe5c6f584eed5e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"febb2e269bbf5db05347b1dfc419d328\")"
     ]
   }
 }

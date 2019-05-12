@@ -4,12 +4,12 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import za.co.moxomo.dao.AlertDao;
 import za.co.moxomo.dao.NotificationDao;
+import za.co.moxomo.model.Alert;
 import za.co.moxomo.model.Notification;
-import za.co.moxomo.model.Vacancy;
 
-@Database(entities = {Notification.class}, version =1)
+@Database(entities = {Notification.class, Alert.class}, version =8 )
 public abstract class MoxomoDB extends RoomDatabase {
-   public abstract NotificationDao notificationDao();
-  //  public abstract AlertDao alertDao();
+    public abstract NotificationDao notificationDao();
+    public abstract AlertDao alertDao();
 
 }
