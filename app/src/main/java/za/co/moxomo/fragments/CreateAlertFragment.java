@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,20 +51,16 @@ public class CreateAlertFragment extends Fragment {
     @Inject
     CompositeDisposable compositeDisposable;
 
-
     private FragmentCreateAlertBinding binding;
     private AlertActivityViewModel alertActivityViewModel;
     private NavController navController;
-
     private static final int TRIGGER_AUTO_COMPLETE = 100;
     private static final long AUTO_COMPLETE_DELAY = 300;
     private Handler handler;
     private AutoSuggestAdapter autoSuggestAdapter;
 
-
     public CreateAlertFragment() {
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,17 +71,14 @@ public class CreateAlertFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_alert, container, false);
         return binding.getRoot();
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         alertActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(AlertActivityViewModel.class);
         navController = Navigation.findNavController(getActivity(), R.id.navHostFragment);
-
         autoSuggestAdapter = new AutoSuggestAdapter(getActivity(),
                 android.R.layout.simple_dropdown_item_1line);
 
@@ -141,11 +135,15 @@ public class CreateAlertFragment extends Fragment {
         }
         alertBuilder.push(binding.push.isChecked());
         alertBuilder.sms(binding.sms.isChecked());
-        alertBuilder.gcmToken(Utility.getFcmTokenInSharedPref(getContext()));
+        String gcmToken = Utility.getFcmTokenInSharedPref(getContext());
+
+        alertBuilder.gcmToken(gcmToken);
 
         if (validateInput()) {
-            Utility.storeMobileNumberInSharedPref(getContext(),binding.mobileNumber.toString());
-            alertActivityViewModel.createAlert(alertBuilder.build());
+            Utility.storeMobileNumberInSharedPref(getContext(),binding.mobileNumber.getText().toString());
+            Log.d(TAG,"alert {} " +alertBuilder.build().toString());
+            Alert alert = alertBuilder.build();
+            alertActivityViewModel.createAlert(alert);
         }
 
     }
@@ -184,18 +182,15 @@ public class CreateAlertFragment extends Fragment {
         Alert alert = new Alert();
         alert.setMobileNumber(Utility.getMobileNumberInSharedPref(getContext()));
         binding.setAlert(alert);
-
         binding.keyword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 binding.titleInputLayout.setError(null);
             }
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
         binding.location.setAdapter(autoSuggestAdapter);
@@ -207,9 +202,7 @@ public class CreateAlertFragment extends Fragment {
         binding.location.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int
-                    count, int after) {
-
-            }
+                    count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
@@ -218,14 +211,11 @@ public class CreateAlertFragment extends Fragment {
                 handler.sendEmptyMessageDelayed(TRIGGER_AUTO_COMPLETE,
                         AUTO_COMPLETE_DELAY);
             }
-
             @Override
             public void afterTextChanged(Editable s) {
 
             }
         });
-
-
         handler = new Handler(msg -> {
             if (msg.what == TRIGGER_AUTO_COMPLETE) {
                 if (!TextUtils.isEmpty(binding.location.getText())) {
@@ -237,18 +227,13 @@ public class CreateAlertFragment extends Fragment {
 
         binding.mobileNumber.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 binding.mobileNumberInputLayout.setError(null);
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
         binding.sms.setOnCheckedChangeListener((buttonView, isChecked) -> {
