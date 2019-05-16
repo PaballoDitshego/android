@@ -12,12 +12,17 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import za.co.moxomo.helpers.JodaDateTimeConverter;
 
 @Entity( tableName = "notification")
 @Data
+@Builder
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 public class Notification  extends BaseObservable {
     @PrimaryKey(autoGenerate = true)
@@ -27,6 +32,7 @@ public class Notification  extends BaseObservable {
     private String description;
     private String imageUrl;
     private String url;
+    private String type;
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
     @TypeConverters(JodaDateTimeConverter.class)
     public DateTime timestamp;

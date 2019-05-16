@@ -33,7 +33,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import io.fabric.sdk.android.Fabric;
-import za.co.moxomo.FragmentEnum;
+import za.co.moxomo.enums.FragmentEnum;
 import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.ViewPagerAdapter;
@@ -127,9 +127,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-                        Utility.storeFcmTokenInSharedPref(getApplicationContext(), token);
                         mainActivityViewModel.sendFCMToken(token, Utility.getFcmTokenInSharedPref(getApplicationContext()));
-
+                        Utility.storeFcmTokenInSharedPref(getApplicationContext(), token);
                     }
                 });
         createNotificationChannel();

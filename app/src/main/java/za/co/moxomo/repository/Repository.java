@@ -56,6 +56,10 @@ public class Repository {
         return moxomoDB.notificationDao().getAllNotifications();
     }
 
+    public void insertNotification(Notification notification){
+        moxomoDB.notificationDao().insertNotification(notification);
+    }
+
     public void deleteAlert(Alert alert) {
         moxomoDB.alertDao().delete(alert);
     }

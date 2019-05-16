@@ -1,6 +1,7 @@
-package za.co.moxomo;
+package za.co.moxomo.enums;
 
 import lombok.Getter;
+import za.co.moxomo.R;
 
 @Getter
 public enum FragmentEnum {

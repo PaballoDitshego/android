@@ -13,6 +13,8 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.joda.time.DateTime;
+
 import java.util.Calendar;
 import java.util.Map;
 
@@ -24,6 +26,7 @@ import za.co.moxomo.R;
 import za.co.moxomo.activities.MainActivity;
 import za.co.moxomo.contentproviders.NotificationsContentProvider;
 import za.co.moxomo.helpers.ApplicationConstants;
+import za.co.moxomo.helpers.Utility;
 import za.co.moxomo.repository.Repository;
 
 
@@ -37,19 +40,14 @@ public class FCMListenerService extends FirebaseMessagingService {
     @Inject
     Repository repository;
 
-
     @Override
-    public void onCreate(){
+    public void onCreate() {
         MoxomoApplication.moxomoApplication().injectionComponent().inject(this);
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
       Log.d(TAG,"remote messge "+ remoteMessage.getData().toString());
-
-       // remoteMessage.
-
-
        sendNotification(remoteMessage.getData());
 
     }
@@ -58,28 +56,25 @@ public class FCMListenerService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         Log.e(TAG, "Refreshed token: " + token);
 
+        Utility.storeFcmTokenInSharedPref(getApplicationContext(), token);
+
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
        // sendRegistrationToServer(token);
     }
     private void sendNotification(Map<String,String> msg) {
-
-       /* Long row_id = saveToDatabase(msg);
-
-        //store user.id locally
-        if (msg.getString("id").equals(null)) {
-            SharedPreferences prefs = getSharedPreferences("UserDetails",
-                    Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("id", msg.getString("id"));
-            editor.commit();
-
-        }*/
-
+        za.co.moxomo.model.Notification notification = za.co.moxomo.model.Notification.builder()
+                .id(msg.get("id"))
+                .description(msg.get("description"))
+                .url(msg.get("url"))
+                .imageUrl(msg.get("imageUrl"))
+                .timestamp(DateTime.now())
+                .type(msg.get("alert_type"))
+                .build();
+        repository.insertNotification(notification);
 
         Intent resultIntent = new Intent(this, MainActivity.class);
-      //  resultIntent.putExtra("row_id", row_id);
         resultIntent.putExtra("notification", "");
 
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
@@ -89,13 +84,11 @@ public class FCMListenerService extends FirebaseMessagingService {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this, "ALERTS")
-                .setContentTitle("jjjjj")
-                .setContentText("hhhhhh")
+                .setContentTitle(msg.get("title"))
+                .setContentText(msg.get("description"))
                 .setChannelId("ALERTS")
                 .setSmallIcon(R.drawable.ic_notif)
                 .setContentIntent(resultPendingIntent);
-
-
         int defaults = 0;
         defaults = defaults | Notification.DEFAULT_LIGHTS;
         defaults = defaults | Notification.DEFAULT_SOUND;
@@ -108,66 +101,6 @@ public class FCMListenerService extends FirebaseMessagingService {
 
 
     }
-    private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
-    }
 
 
-
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-      /*  String channelId = getString(R.string.default_notification_channel_id);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_notif)
-                      //  .setContentTitle(getString(R.string.fcm_message))
-                        .setContentText(messageBody)
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable keyword",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        notificationManager.notify(0 *//* ID of notification *//*, notificationBuilder.build());*/
-    }
-
-
-    /*
-      Save notification data
-
-      returns Long row id/_id
-     */
-    private Long saveToDatabase(Bundle msg) {
-
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("keyword", msg.getString(ApplicationConstants.TITLE_KEY));
-        contentValues.put("body", msg.getString(ApplicationConstants.BODY));
-        contentValues.put("action_string", msg.getString(ApplicationConstants.ACTION_STRING));
-        contentValues.put("type", msg.getString(ApplicationConstants.TYPE));
-        contentValues.put("status", "unread");
-        contentValues.put("image_url", msg.getString(ApplicationConstants.IMAGE_URL));
-        Uri uri = getContentResolver().insert(
-                NotificationsContentProvider.CONTENT_URI,   // the user dictionary content URI
-                contentValues);
-
-
-        return Long.parseLong(uri.getPathSegments().get(1));
-
-
-    }
 }

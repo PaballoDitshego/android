@@ -28,7 +28,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import io.reactivex.disposables.CompositeDisposable;
-import za.co.moxomo.FragmentEnum;
+import za.co.moxomo.enums.FragmentEnum;
 import za.co.moxomo.MoxomoApplication;
 import za.co.moxomo.R;
 import za.co.moxomo.adapters.AutoSuggestAdapter;
