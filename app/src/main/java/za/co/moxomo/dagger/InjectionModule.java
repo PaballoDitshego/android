@@ -48,11 +48,12 @@ public class InjectionModule {
     @Singleton
     public Gson provideGson() {
         GsonBuilder builder =
-                new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
+                new GsonBuilder();
+                   //     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         return builder.setLenient().create();
     }
 
-    @Provides
+    @Provi
     @Singleton
     public OkHttpClient provideOkHttpClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
