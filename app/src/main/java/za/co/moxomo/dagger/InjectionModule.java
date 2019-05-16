@@ -53,7 +53,7 @@ public class InjectionModule {
         return builder.setLenient().create();
     }
 
-    @Provi
+    @Provides
     @Singleton
     public OkHttpClient provideOkHttpClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
