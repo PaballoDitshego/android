@@ -8,3 +8,4 @@
 /.idea/*
 *.log
 *.zip
+/app/release/*

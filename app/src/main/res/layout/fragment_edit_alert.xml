@@ -8,12 +8,17 @@
 
         <variable
             name="alert"
-            type="za.co.moxomo.model.Alert" />
+            type="za.co.moxomo.v2.model.Alert" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/edit_alert_cardview"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/linear_layout"
             android:layout_width="match_parent"
@@ -27,7 +32,7 @@
                 app:errorEnabled="true"
                 android:layout_margin="@dimen/activity_horizontal_margin">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/keyword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -108,13 +113,15 @@
                 android:layout_margin="@dimen/activity_horizontal_margin"/>
 
         </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/linear_layout"
+            android:layout_below="@id/edit_alert_cardview"
             android:layout_centerVertical="true"
             android:clickable="false"
             android:focusable="false"

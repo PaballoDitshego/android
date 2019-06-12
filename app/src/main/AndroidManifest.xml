@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="za.co.moxomo" >
+    package="za.co.moxomo.v2" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <permission
         android:name="za.co.moxomo.permission.C2D_MESSAGE"
@@ -60,12 +61,6 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <provider
-            android:name=".contentproviders.SearchSuggestionProvider"
-            android:authorities="za.co.moxomo.contentproviders.SearchSuggestionProvider"></provider>
-
-        <provider android:name=".contentproviders.RecentSearchSuggestionProvider"
-            android:authorities="za.co.moxomo.contentproviders.RecentSearchSuggestionProvider" />
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".MainActivity" />

@@ -687,6 +687,8 @@
     <string name="default_location">National</string>
     <string name="pref_mobile_key">mobileNumber</string>
     <string name="pref_fcm_key">fcmToken</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
 
 
 </resources>

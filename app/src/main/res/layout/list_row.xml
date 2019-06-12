@@ -8,7 +8,7 @@
 
         <variable
             name="vacancy"
-            type="za.co.moxomo.model.Vacancy" />
+            type="za.co.moxomo.v2.model.Vacancy" />
     </data>
 
     <RelativeLayout

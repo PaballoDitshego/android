@@ -7,7 +7,7 @@
         <import type="android.text.format.DateUtils"/>
         <variable
             name="alert"
-            type="za.co.moxomo.model.Alert" />
+            type="za.co.moxomo.v2.model.Alert" />
 
     </data>
     <androidx.cardview.widget.CardView
@@ -65,7 +65,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/thumbnail"
-            android:layout_below="@id/body"
+            android:layout_below="@id/location"
             android:advertDate="@{alert.timestamp}"
             android:clickable="false"
             android:focusable="false"
