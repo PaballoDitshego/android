@@ -40,6 +40,7 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
+
 import io.fabric.sdk.android.Fabric;
 import za.co.moxomo.v2.MoxomoApplication;
 import za.co.moxomo.v2.R;
@@ -184,7 +185,8 @@ public class MainActivity extends AppCompatActivity {
         mSearchView.setIconified(false);
         mSearchView.setGravity(Gravity.LEFT);
         SearchView.SearchAutoComplete searchEditText = mSearchView.findViewById(R.id.search_src_text);
-        String [] columNames = { SearchManager.SUGGEST_COLUMN_TEXT_1 }; int [] viewIds = { android.R.id.text1 };
+        String[] columNames = {SearchManager.SUGGEST_COLUMN_TEXT_1};
+        int[] viewIds = {android.R.id.text1};
         cursorAdapter = new SimpleCursorAdapter(this,
                 R.layout.searchview_layout, null, columNames, viewIds, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         searchEditText.setPadding(-80, 2, 0, 2);
@@ -200,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onQueryTextSubmit(String s) {
                         return false;
                     }
+
                     @Override
                     public boolean onQueryTextChange(String s) {
                         if (s.length() < 2) {
@@ -245,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mSearchView.setOnCloseListener(() -> {
-
+            binding.viewpager.setCurrentItem(0);
             mSearchView.clearFocus();
             return true; //returning true will stop search view from collapsing
         });
@@ -277,10 +280,10 @@ public class MainActivity extends AppCompatActivity {
             query = intent.getStringExtra(SearchManager.QUERY);
             mainActivityViewModel.getSearchString().setValue(!query.isEmpty() ? query : null);
             binding.viewpager.arrowScroll(View.FOCUS_LEFT);
+            binding.viewpager.setCurrentItem(0);
 
-        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            Uri detailUri = intent.getData();
-            query = detailUri.getLastPathSegment();
+        }else if(intent.getAction().equals(getString(R.string.PUSH_NOTIFICATION))){
+            binding.viewpager.setCurrentItem(1);
         }
 
     }
@@ -288,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if(cursorAdapter != null) {
+        if (cursorAdapter != null) {
             handleSuggestions(Collections.emptyList());
         }
         Utility.changeStatusBarColor(this);
@@ -309,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(cursorAdapter !=null) {
+        if (cursorAdapter != null) {
             handleSuggestions(Collections.emptyList());
         }
         mSearchView.setIconified(false);
@@ -364,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void handleSuggestions(List<String> suggestions){
+    private void handleSuggestions(List<String> suggestions) {
         Cursor cursor = createCursorFromResult(suggestions);
         cursorAdapter.changeCursor(cursor);
     }

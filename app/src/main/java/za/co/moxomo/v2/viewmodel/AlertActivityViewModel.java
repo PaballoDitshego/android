@@ -174,5 +174,7 @@ public class AlertActivityViewModel extends ViewModel {
         compositeDisposable.clear();
     }
 
-
+    public MutableLiveData<String> getProgressLiveStatus() {
+        return progressLiveStatus;
+    }
 }

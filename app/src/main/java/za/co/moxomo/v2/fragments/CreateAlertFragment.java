@@ -154,7 +154,7 @@ public class CreateAlertFragment extends Fragment {
     private void processAlertCreationResponse(ApiResponse apiResponse) {
         if (null != apiResponse.status && apiResponse.status.equals(Status.SUCCESS)) {
             Snackbar.make(binding.getRoot(), "Alert created.", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("OK", v -> navController.navigate(FragmentEnum.VIEW_ALERT.getFragmentId())).show();
+                    .setAction("OK", v -> navController.navigate(FragmentEnum.VIEW_ALERT.getFragmentId()));
 
         } else {
             final Snackbar snackbar = Snackbar.make(binding.getRoot(), "Error creating alert, try again later.", Snackbar.LENGTH_INDEFINITE);

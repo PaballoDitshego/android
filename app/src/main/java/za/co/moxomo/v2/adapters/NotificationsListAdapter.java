@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import lombok.Getter;
 import za.co.moxomo.v2.R;
 import za.co.moxomo.v2.databinding.NotificationsListRowBinding;
 import za.co.moxomo.v2.model.Notification;
@@ -45,7 +47,8 @@ public class NotificationsListAdapter extends PagedListAdapter<Notification, Not
         return super.getItemId(position);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    @Getter
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private NotificationsListRowBinding binding;
         ViewHolder(NotificationsListRowBinding binding, NotificationsListAdapter.OnItemClickListener itemClickListener) {

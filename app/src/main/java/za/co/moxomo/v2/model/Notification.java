@@ -33,6 +33,7 @@ public class Notification  extends BaseObservable {
     private String url;
     private String location;
     private String type;
+    private String alertTitle;
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
     @TypeConverters(JodaDateTimeConverter.class)
     public DateTime timestamp;

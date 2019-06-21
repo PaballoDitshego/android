@@ -689,6 +689,7 @@
     <string name="pref_fcm_key">fcmToken</string>
     <string name="close">Close</string>
     <string name="open">Open</string>
+    <string name="PUSH_NOTIFICATION">notification</string>
 
 
 </resources>

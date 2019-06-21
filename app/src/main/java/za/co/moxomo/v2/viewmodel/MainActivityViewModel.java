@@ -54,6 +54,9 @@ public class MainActivityViewModel extends ViewModel {
         initializePaging();
     }
 
+    public static void deleteNotification(Notification notification) {
+    }
+
     private void initializePaging() {
         PagedList.Config pagedListConfig =
                 new PagedList.Config.Builder()

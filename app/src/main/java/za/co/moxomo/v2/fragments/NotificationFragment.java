@@ -30,13 +30,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import za.co.moxomo.v2.MoxomoApplication;
 import za.co.moxomo.v2.R;
+import za.co.moxomo.v2.adapters.AlertListAdapter;
 import za.co.moxomo.v2.adapters.NotificationsListAdapter;
 import za.co.moxomo.v2.contentproviders.NotificationsContentProvider;
 import za.co.moxomo.v2.databinding.FragmentNotificationBinding;
+import za.co.moxomo.v2.helpers.SwipeToDeleteCallback;
+import za.co.moxomo.v2.model.Alert;
 import za.co.moxomo.v2.model.Notification;
 import za.co.moxomo.v2.viewmodel.MainActivityViewModel;
 import za.co.moxomo.v2.viewmodel.ViewModelFactory;
@@ -165,6 +169,7 @@ public class NotificationFragment extends Fragment {
             notificationListAdapter.submitList(notifications);
 
         });
+        enableSwipeToDelete();
     }
 
 
@@ -199,6 +204,20 @@ public class NotificationFragment extends Fragment {
         customTabsIntent.intent.putExtra(Intent.EXTRA_REFERRER,
                 Uri.parse(Intent.URI_ANDROID_APP_SCHEME + "//" + getContext().getPackageName()));
         customTabsIntent.launchUrl(getContext(), Uri.parse(notification.getUrl()));
+    }
+
+
+    private void enableSwipeToDelete() {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                NotificationsListAdapter.ViewHolder alertListViewHolder = (NotificationsListAdapter.ViewHolder) viewHolder;
+                Notification notification = alertListViewHolder.getBinding().getNotification();
+                MainActivityViewModel.deleteNotification(notification);
+            }
+        };
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(binding.notificationsList);
     }
 
 

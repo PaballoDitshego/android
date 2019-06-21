@@ -61,16 +61,20 @@ public class FCMListenerService extends FirebaseMessagingService {
                 .title(msg.get("title"))
                 .location(msg.get("location"))
                 .imageUrl(msg.get("imageUrl"))
+                .alertTitle(msg.get("alertTitle"))
                 .timestamp(DateTime.now())
                 .type(msg.get("alert_type"))
                 .build();
         repository.insertNotification(notification);
 
         Intent resultIntent = new Intent(this, MainActivity.class);
-        resultIntent.putExtra("notification", "");
+
+        resultIntent.addCategory("notification");
+
 
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0,
                 resultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(this, "ALERTS")
