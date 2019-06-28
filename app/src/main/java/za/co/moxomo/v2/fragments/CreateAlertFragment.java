@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import io.reactivex.disposables.CompositeDisposable;
 import za.co.moxomo.v2.enums.FragmentEnum;
 import za.co.moxomo.v2.MoxomoApplication;
@@ -153,15 +154,12 @@ public class CreateAlertFragment extends Fragment {
 
     private void processAlertCreationResponse(ApiResponse apiResponse) {
         if (null != apiResponse.status && apiResponse.status.equals(Status.SUCCESS)) {
-            Snackbar.make(binding.getRoot(), "Alert created.", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("OK", v -> navController.navigate(FragmentEnum.VIEW_ALERT.getFragmentId()));
-
+            navController.navigate(FragmentEnum.VIEW_ALERT.getFragmentId());
         } else {
             final Snackbar snackbar = Snackbar.make(binding.getRoot(), "Error creating alert, try again later.", Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("OK", v -> snackbar.dismiss());
             snackbar.show();
         }
-
     }
 
     private boolean validateInput() {
@@ -188,7 +186,6 @@ public class CreateAlertFragment extends Fragment {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 binding.titleInputLayout.setError(null);
@@ -196,7 +193,6 @@ public class CreateAlertFragment extends Fragment {
                 keywordsHandler.sendEmptyMessageDelayed(TRIGGER_AUTO_COMPLETE,
                         AUTO_COMPLETE_DELAY);
             }
-
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -210,7 +206,6 @@ public class CreateAlertFragment extends Fragment {
 
         binding.location.setAdapter(locationsSuggestAdapter);
         binding.location.setThreshold(2);
-
 
 
         binding.location.setOnItemClickListener((parent, view, position, id) -> {

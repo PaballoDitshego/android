@@ -1,11 +1,5 @@
 package za.co.moxomo.v2.model;
 
-import org.joda.time.DateTime;
-import org.parceler.Parcel;
-import org.parceler.ParcelPropertyConverter;
-
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -13,12 +7,19 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import org.joda.time.DateTime;
+import org.parceler.Parcel;
+import org.parceler.ParcelPropertyConverter;
+
+import java.util.Objects;
+
 import za.co.moxomo.v2.helpers.JodaDateTimeConverter;
 
 
 @Parcel
-@Entity(tableName = "vacancy")
-public class Vacancy  extends BaseObservable {
+@Entity(tableName = "savedvacancy")
+public class SavedVacancy extends BaseObservable {
 
 
     @PrimaryKey
@@ -42,14 +43,14 @@ public class Vacancy  extends BaseObservable {
     public String url;
     public String imageUrl;
 
-    public static DiffUtil.ItemCallback<Vacancy> DIFF_CALLBACK = new DiffUtil.ItemCallback<Vacancy>() {
+    public static DiffUtil.ItemCallback<SavedVacancy> DIFF_CALLBACK = new DiffUtil.ItemCallback<SavedVacancy>() {
         @Override
-        public boolean areItemsTheSame(@NonNull Vacancy oldItem, @NonNull Vacancy newItem) {
+        public boolean areItemsTheSame(@NonNull SavedVacancy oldItem, @NonNull SavedVacancy newItem) {
             return oldItem.id.equals(newItem.id);
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Vacancy oldItem, @NonNull Vacancy newItem) {
+        public boolean areContentsTheSame(@NonNull SavedVacancy oldItem, @NonNull SavedVacancy newItem) {
             return oldItem.equals(newItem);
         }
     };
@@ -57,8 +58,8 @@ public class Vacancy  extends BaseObservable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Vacancy)) return false;
-        Vacancy vacancy = (Vacancy) o;
+        if (!(o instanceof SavedVacancy)) return false;
+        SavedVacancy vacancy = (SavedVacancy) o;
         return Objects.equals(jobTitle, vacancy.jobTitle) &&
                 Objects.equals(description, vacancy.description) &&
                 Objects.equals(location, vacancy.location) &&

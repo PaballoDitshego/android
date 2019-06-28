@@ -15,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import za.co.moxomo.v2.model.Alert;
 import za.co.moxomo.v2.model.Notification;
+import za.co.moxomo.v2.model.Vacancy;
 import za.co.moxomo.v2.service.RestApiService;
 
 public class Repository {
@@ -64,6 +65,10 @@ public class Repository {
 
     public DataSource.Factory<Integer, Notification> fetchNotifications() {
         return moxomoDB.notificationDao().getAllNotifications();
+    }
+
+    public DataSource.Factory<Integer, Vacancy> fetchDBVacancies() {
+        return moxomoDB.vacancyDao().getAllVacancies();
     }
 
     public void insertNotification(Notification notification) {

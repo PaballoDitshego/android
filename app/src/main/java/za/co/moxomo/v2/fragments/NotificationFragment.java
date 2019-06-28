@@ -61,9 +61,7 @@ public class NotificationFragment extends Fragment {
     @Inject
     ViewModelFactory viewModelFactory;
 
-    public NotificationFragment() {
-        // Required empty public constructor
-    }
+    public NotificationFragment() { }
 
     public static NotificationFragment newInstance() {
         NotificationFragment fragment = new NotificationFragment();
@@ -97,7 +95,6 @@ public class NotificationFragment extends Fragment {
                 .setShowTitle(true)
                 .build();
 
-
     }
 
     @Override
@@ -122,7 +119,6 @@ public class NotificationFragment extends Fragment {
 
         binding.notificationsList.setItemAnimator(new DefaultItemAnimator());
         binding.notificationsList.addItemDecoration(new DividerItemDecoration(binding.notificationsList.getContext(), DividerItemDecoration.VERTICAL));
-
         notificationListAdapter = new NotificationsListAdapter(item -> {
             openUrlInBrowser(item);
         });
@@ -133,7 +129,6 @@ public class NotificationFragment extends Fragment {
                 super.onChanged();
                 checkEmpty();
             }
-
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount) {
                 super.onItemRangeChanged(positionStart, itemCount);
@@ -141,9 +136,7 @@ public class NotificationFragment extends Fragment {
                 if (positionStart == 0) {
                     layoutManager.scrollToPosition(0);
                 }
-
             }
-
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
@@ -167,9 +160,7 @@ public class NotificationFragment extends Fragment {
         mainActivityViewModel.getNotifications().observe(getActivity(), notifications -> {
             Log.d(TAG, "notifications " + notifications.toString());
             notificationListAdapter.submitList(notifications);
-
         });
-        enableSwipeToDelete();
     }
 
 

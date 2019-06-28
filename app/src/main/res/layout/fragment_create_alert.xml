@@ -4,7 +4,6 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="java.lang.String" />
         <import type="android.text.format.DateUtils"/>
 
         <variable

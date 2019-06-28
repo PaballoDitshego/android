@@ -54,6 +54,7 @@ public class NotificationsListAdapter extends PagedListAdapter<Notification, Not
         ViewHolder(NotificationsListRowBinding binding, NotificationsListAdapter.OnItemClickListener itemClickListener) {
             super(binding.getRoot());
             this.binding = binding;
+
             binding.getRoot().setOnClickListener(view -> {
                itemClickListener.onItemClick(binding.getNotification());
             });

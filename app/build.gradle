@@ -86,7 +86,8 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.0.0'
     implementation 'com.squareup.okhttp:okhttp:2.4.0'
     //  implementation 'com.google.android.gms:play-services-gcm:7.3.0'
-    implementation "com.google.android.gms:play-services-gcm:16.1.0"
+    implementation "com.google.android.gms:play-services-gcm:17.0.0"
+    implementation "com.google.android.gms:play-services-location:17.0.0"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-rc01'
     implementation 'androidx.room:room-runtime:2.0.0-rc01'
     // https://mvnrepository.com/artifact/android.arch.persistence.room/rxjava2

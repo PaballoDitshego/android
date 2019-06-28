@@ -40,7 +40,7 @@ public class Utility {
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private final static String phoneNumberRegex = "^((?:\\+27|27))(6|7|8)(\\d{8})$";
+    private final static String phoneNumberRegex = "^((?:\\+27|27|0))(6|7|8)(\\d{8})$";
     private static Pattern pattern;
     private static Matcher matcher;
 

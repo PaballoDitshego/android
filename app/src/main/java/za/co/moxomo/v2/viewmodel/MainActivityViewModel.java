@@ -13,6 +13,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -37,11 +38,13 @@ public class MainActivityViewModel extends ViewModel {
     private VacancyClassDatasourceFactory vacancyClassDatasourceFactory;
     private LiveData<PagedList<Vacancy>> vacancies;
     private LiveData<PagedList<Notification>> notifications;
+    private LiveData<PagedList<Vacancy>> pagedDBVacancies;
     private LiveData<String> progressLoadStatus = new MutableLiveData<>();
     private LiveData<String> resultSetSize = new MutableLiveData<>();
     private MutableLiveData<String> searchString = new MutableLiveData<>();
     private MutableLiveData<List<String>> keywordSuggestions = new MutableLiveData<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private MediatorLiveData liveDataMerger = new MediatorLiveData();
     private Gson gson;
     private Repository repository;
 
@@ -68,6 +71,9 @@ public class MainActivityViewModel extends ViewModel {
                 .setFetchExecutor(executor)
                 .build();
         notifications = (new LivePagedListBuilder(repository.fetchNotifications(), pagedListConfig))
+                .setFetchExecutor(executor)
+                .build();
+        pagedDBVacancies = (new LivePagedListBuilder(repository.fetchDBVacancies(), pagedListConfig))
                 .setFetchExecutor(executor)
                 .build();
 
@@ -113,6 +119,17 @@ public class MainActivityViewModel extends ViewModel {
         super.onCleared();
         compositeDisposable.clear();
     }
+
+    private PagedList.BoundaryCallback<Vacancy> boundaryCallback = new PagedList.BoundaryCallback<Vacancy>() {
+        @Override
+        public void onZeroItemsLoaded() {
+            super.onZeroItemsLoaded();
+            liveDataMerger.addSource(pagedDBVacancies, value -> {
+                liveDataMerger.setValue(value);
+                liveDataMerger.removeSource(pagedDBVacancies);
+            });
+        }
+    };
 
 
 }

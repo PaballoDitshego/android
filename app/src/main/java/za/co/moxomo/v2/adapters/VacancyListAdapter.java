@@ -94,7 +94,7 @@ public class VacancyListAdapter extends PagedListAdapter<Vacancy, RecyclerView.V
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Vacancy item);
+        void onItemClick(Vacancy item, View view);
     }
 
 }

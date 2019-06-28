@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
 
 import java.util.Objects;
 
@@ -132,9 +133,16 @@ public class HomePageFragment extends Fragment {
         binding.list.setItemAnimator(new DefaultItemAnimator());
 
 
-        vacancyListAdapter = new VacancyListAdapter(item ->
-                openUrlInBrowser(item));
+        vacancyListAdapter = new VacancyListAdapter((item,clickedView) ->{
+            switch (clickedView.getId()){
+                case R.id.favourite_btn:
+                    item.setLiked(true);
+                    break;
+                default:
+                    openUrlInBrowser(item);
 
+             }
+        });
         vacancyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount) {
@@ -159,7 +167,6 @@ public class HomePageFragment extends Fragment {
         mainActivityViewModel.getVacancies().observe(getActivity(), vacancies -> {
             binding.swipeRefreshLayout.setRefreshing(false);
             vacancyListAdapter.submitList(vacancies);
-            binding.list.addItemDecoration(new DividerItemDecoration(binding.list.getContext(), DividerItemDecoration.VERTICAL));
 
         });
         ;
@@ -171,7 +178,6 @@ public class HomePageFragment extends Fragment {
                     .setSearchString(searchString);
 
         });
-
         mainActivityViewModel.getProgressLoadStatus().observe(getActivity(), status -> {
             vacancyListAdapter.setNetworkState(status);
             if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING)) {
@@ -184,7 +190,6 @@ public class HomePageFragment extends Fragment {
         mainActivityViewModel.getResultSetSize().observe(getActivity(), results -> {
 
         });
-
     }
 
     @Override

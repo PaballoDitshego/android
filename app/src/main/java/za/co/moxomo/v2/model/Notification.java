@@ -131,4 +131,13 @@ public class Notification  extends BaseObservable {
     public DateTime getTimestamp() {
         return timestamp;
     }
+
+    @Bindable
+    public String getAlertTitle() {
+        return alertTitle;
+    }
+
+    public void setAlertTitle(String alertTitle) {
+        this.alertTitle = alertTitle;
+    }
 }
