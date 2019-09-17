@@ -27,7 +27,7 @@
         <!-- Background for the actions section (e.g. voice, submit) -->
         <item name="submitBackground">@color/background_material_light</item>
 
-        android:paddingStart="-16dp"
+
         <!-- Search button icon -->
         <item name="android:searchButtonText">@string/search_button_text</item>
 
@@ -76,6 +76,7 @@
         <item name="android:typeface">serif</item>
         <item name="android:textSize">17sp</item>
         <item name="android:layout_marginLeft">-10dp</item>
+        <item name="android:background">#FFF</item>
 
     </style>
 

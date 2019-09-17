@@ -16,14 +16,19 @@ import za.co.moxomo.v2.model.Vacancy;
 @Dao
 public interface VacancyDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertVacancy(Vacancy... vacancies);
 
-    @Query("SELECT * FROM Vacancy order by advertDate desc")
+    @Query("SELECT * FROM Vacancy")
     DataSource.Factory<Integer, Vacancy> getAllVacancies();
+
+    @Query("SELECT * FROM Vacancy")
+    List<Vacancy> getAllDBVacancies();
 
     @Query("SELECT id FROM Vacancy")
     List<String> getVacancyIds();
+
+
 
     @Delete
     void delete(Vacancy vacancy);

@@ -69,6 +69,7 @@ public class FCMListenerService extends FirebaseMessagingService {
 
         Intent resultIntent = new Intent(this, MainActivity.class);
         resultIntent.addCategory("notification");
+        resultIntent.setAction("NOTIFICATION");
 
       //  resultIntent.putExtra("notification", "");
 

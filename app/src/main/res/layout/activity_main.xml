@@ -16,9 +16,72 @@
             android:id="@+id/appbarlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/spinner_color"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            android:fitsSystemWindows="true"
             android:orientation="vertical">
-            <include layout="@layout/app_bar" />
+
+
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/cToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:contentScrim="@color/spinner_color"
+                android:background="@color/spinner_color"
+                app:expandedTitleMarginStart="48dp"
+                app:expandedTitleMarginEnd="64dp">
+
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:orientation="vertical">
+
+                       <include layout="@layout/app_bar"/>
+                      <FrameLayout
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content">
+                          <AutoCompleteTextView
+                              android:id="@+id/geolocation"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                              android:textColor="@color/white"
+                              android:layout_marginLeft="25dp"
+                              android:layout_marginRight="5dp"
+                              android:backgroundTint="#80ffffff"
+                              android:focusable="true"
+                              android:focusableInTouchMode="true"
+                              android:singleLine="true"
+                              android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                              android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                              android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                              android:drawablePadding="5dp"
+                              android:popupBackground="@color/white"
+                              android:drawableLeft="@drawable/ic_place_black_24dp"
+                              android:hint="City or Town"/>
+
+                          <Button
+                              android:id="@+id/clearText"
+                              android:layout_width="24dp"
+                              android:layout_height="24dp"
+                              android:layout_marginRight="15dp"
+                              android:layout_gravity="right|bottom"
+                              android:layout_marginBottom="10dp"
+                              android:background="@drawable/ic_clear_black_24dp" />
+
+                          />
+
+                      </FrameLayout>
+
+
+                   </LinearLayout>
+
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tablayout"
@@ -82,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_alert_white_24dp"
-                app:fab_label="Create Alert"
+                app:fab_label="Create Alarm"
                 app:fab_colorNormal="@color/menu_colorNormal"
                 app:fab_colorRipple="@color/menu_colorRipple"
                 app:fab_colorPressed="@color/menu_colorPressed"
@@ -93,7 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_list_white_24dp"
-                app:fab_label="View Alerts"
+                app:fab_label="View Alarms"
                 app:fab_colorNormal="@color/menu_colorNormal"
                 app:fab_colorRipple="@color/menu_colorRipple"
                 app:fab_colorPressed="@color/menu_colorPressed"

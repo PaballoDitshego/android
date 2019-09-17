@@ -13,6 +13,7 @@ import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
 import za.co.moxomo.v2.model.Alert;
 import za.co.moxomo.v2.model.Notification;
 import za.co.moxomo.v2.model.Vacancy;
@@ -21,6 +22,9 @@ import za.co.moxomo.v2.service.RestApiService;
 public class Repository {
 
     public static String SEARCH_STRING = null;
+    public static double LATITUDE = 0.0;
+    public static double LONGITUDE =0.0;
+    public static int PAGE_NUMBER=1;
     private RestApiService restAPIService;
     private MoxomoDB moxomoDB;
 
@@ -28,11 +32,16 @@ public class Repository {
     public Repository(RestApiService restAPIService, MoxomoDB moxomoDB) {
         this.restAPIService = restAPIService;
         this.moxomoDB = moxomoDB;
+
     }
 
 
-    public Observable<JsonElement> fetchVacancies(String searchString, int pageNumber, int pageSize) {
-        return restAPIService.fetchVacancies(searchString, pageNumber, pageSize);
+    public Observable<JsonElement> fetchVacancies(String searchString,double latitude, double longitude, int pageNumber, int pageSize) {
+        return restAPIService.fetchVacancies(searchString, latitude, longitude, pageNumber, pageSize);
+    }
+
+    public Call<JsonElement> fetchSearchResults(String searchString, int pageNumber, int pageSize) {
+        return restAPIService.fetchSearchResults(searchString, LATITUDE, LONGITUDE, pageNumber,pageSize);
     }
 
     public Observable<JsonElement> createAlert(Alert alert) {
@@ -67,12 +76,21 @@ public class Repository {
         return moxomoDB.notificationDao().getAllNotifications();
     }
 
-    public DataSource.Factory<Integer, Vacancy> fetchDBVacancies() {
+    public List<Vacancy> fetchDBVacancies() {
+        return moxomoDB.vacancyDao().getAllDBVacancies();
+    }
+
+    public DataSource.Factory<Integer, Vacancy> fetchVacancies() {
         return moxomoDB.vacancyDao().getAllVacancies();
     }
 
+
     public void insertNotification(Notification notification) {
         moxomoDB.notificationDao().insertNotification(notification);
+    }
+
+    public void insertVacancy(Vacancy... vacancy) {
+        moxomoDB.vacancyDao().insertVacancy(vacancy);
     }
 
     public void deleteAlert(Alert alert) {
@@ -95,5 +113,9 @@ public class Repository {
 
     public static void setSearchString(String searchString) {
         SEARCH_STRING = searchString;
+    }
+
+    public static void setPageNumber(int pageNumber){
+        PAGE_NUMBER=pageNumber;
     }
 }

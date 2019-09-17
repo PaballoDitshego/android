@@ -13,16 +13,26 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import za.co.moxomo.v2.helpers.JodaDateTimeConverter;
 
 
 @Parcel
 @Entity(tableName = "vacancy")
-public class Vacancy  extends BaseObservable {
+@Data
+@EqualsAndHashCode(callSuper=false)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class  Vacancy  extends BaseObservable {
 
-
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate=true)
+    public int _id;
     public String id;
     public String jobTitle;
     public String description;
@@ -32,6 +42,7 @@ public class Vacancy  extends BaseObservable {
     public String duties;
     public boolean liked;
     public boolean webViewViewable;
+    private String distance;
 
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
     @TypeConverters(JodaDateTimeConverter.class)
@@ -45,7 +56,7 @@ public class Vacancy  extends BaseObservable {
     public static DiffUtil.ItemCallback<Vacancy> DIFF_CALLBACK = new DiffUtil.ItemCallback<Vacancy>() {
         @Override
         public boolean areItemsTheSame(@NonNull Vacancy oldItem, @NonNull Vacancy newItem) {
-            return oldItem.id.equals(newItem.id);
+            return oldItem._id == newItem._id;
         }
 
         @Override
@@ -62,14 +73,9 @@ public class Vacancy  extends BaseObservable {
         return Objects.equals(jobTitle, vacancy.jobTitle) &&
                 Objects.equals(description, vacancy.description) &&
                 Objects.equals(location, vacancy.location) &&
-                Objects.equals(advertDate, vacancy.advertDate) &&
                 Objects.equals(imageUrl, vacancy.imageUrl);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(jobTitle, description, location, advertDate, imageUrl);
-    }
 
     @Bindable
     public String getCompany() {
@@ -164,6 +170,14 @@ public class Vacancy  extends BaseObservable {
         return liked;
     }
 
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
     @Bindable
     public void setUrl(String url) {
         this.url = url;
@@ -203,5 +217,15 @@ public class Vacancy  extends BaseObservable {
     @Bindable
     public void setLiked(boolean liked) {
         this.liked = liked;
+    }
+
+    @Bindable
+    public String getDistance() {
+        return distance;
+    }
+
+    @Bindable
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 }

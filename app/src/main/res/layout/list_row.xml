@@ -10,9 +10,6 @@
             type="za.co.moxomo.v2.model.Vacancy" />
     </data>
 
-
-
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
@@ -80,20 +77,6 @@
             android:text="@={vacancy.description}"
             android:textSize="@dimen/description" />
 
-        <!-- time -->
-     <!--   <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/description"
-            android:clickable="false"
-            android:focusable="false"
-            android:textColor="@color/time"
-            android:advertDate="@{vacancy.advertDate}"
-            android:layout_marginTop="10dp"
-            android:textSize="@dimen/time" />-->
     </RelativeLayout>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -116,17 +99,47 @@
                 android:layout_marginLeft="95dp"
                 android:textSize="@dimen/time" />
 
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:textColor="@color/time"
+                    android:text="@{vacancy.distance}"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="@dimen/time" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+
                 <ImageView
                     android:id="@+id/favourite_btn"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
-                    android:src="@{vacancy.liked ?@drawable/ic_favorite_selected_24dp:@drawable/ic_favorite_unselected_24dp}"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="110dp"
                     android:clickable="true"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:src="@{vacancy.liked ?@drawable/ic_favorite_selected_24dp:@drawable/ic_favorite_unselected_24dp}"
+                    android:visibility="gone" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"/>
 
 
             </LinearLayout>

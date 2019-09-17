@@ -17,6 +17,7 @@
     <color name="menu_colorNormal">#FFB805</color>
     <color name="menu_colorPressed">#F2AB00</color>
     <color name="menu_colorRipple">#D99200</color>
+    <color name="new_item">#5bc0de</color>
     <color name="white">#fff</color>
 
 </resources>

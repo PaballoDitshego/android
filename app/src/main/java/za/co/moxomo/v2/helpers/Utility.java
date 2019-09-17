@@ -96,6 +96,7 @@ public class Utility {
             record.setImageUrl(imageUrl);
             record.setWebViewViewable(webViewViewable);
             record.setUrl(url);
+            record.setDistance(item.optString("distance"));
 
             arrayList.add(record);
         }

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
@@ -33,6 +34,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.paginate.Paginate;
+
 import io.reactivex.disposables.CompositeDisposable;
 import za.co.moxomo.v2.MoxomoApplication;
 import za.co.moxomo.v2.R;
@@ -64,6 +68,7 @@ public class HomePageFragment extends Fragment {
     private CustomTabsServiceConnection mCustomTabsServiceConnection;
     private CustomTabsIntent customTabsIntent;
     private Bitmap actionBack;
+    private boolean isRefresh= false;
 
     public HomePageFragment() {
     }
@@ -133,29 +138,33 @@ public class HomePageFragment extends Fragment {
         binding.list.setItemAnimator(new DefaultItemAnimator());
 
 
-        vacancyListAdapter = new VacancyListAdapter((item,clickedView) ->{
-            switch (clickedView.getId()){
+        vacancyListAdapter = new VacancyListAdapter((item, clickedView) -> {
+            switch (clickedView.getId()) {
                 case R.id.favourite_btn:
-                    item.setLiked(true);
+                     item.setLiked(true);
+
                     break;
                 default:
                     openUrlInBrowser(item);
 
-             }
+            }
         });
-        vacancyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+      /*  vacancyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeChanged(int positionStart, int itemCount) {
                 super.onItemRangeChanged(positionStart, itemCount);
                 Log.d(TAG, "position: " + positionStart);
                 if (positionStart == 0) {
+                    binding.list.smoothScrollToPosition(0);
                     layoutManager.scrollToPosition(0);
                 } else {
-                    layoutManager.scrollToPosition(positionStart + 3);
+                    binding.list.smoothScrollToPosition(0);
+                    //layoutManager.scrollToPosition(positionStart + 3);
                 }
             }
 
-        });
+        });*/
+
         binding.list.setAdapter(vacancyListAdapter);
         mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
 
@@ -167,15 +176,17 @@ public class HomePageFragment extends Fragment {
         mainActivityViewModel.getVacancies().observe(getActivity(), vacancies -> {
             binding.swipeRefreshLayout.setRefreshing(false);
             vacancyListAdapter.submitList(vacancies);
-
         });
-        ;
+
         mainActivityViewModel.getSearchString().observe(getActivity(), searchString -> {
             binding.swipeRefreshLayout.setRefreshing(true);
             mainActivityViewModel.getVacancyClassDatasourceFactory()
                     .getMutableLiveData()
                     .getValue()
                     .setSearchString(searchString);
+                    isRefresh =true;
+
+
 
         });
         mainActivityViewModel.getProgressLoadStatus().observe(getActivity(), status -> {
@@ -183,7 +194,13 @@ public class HomePageFragment extends Fragment {
             if (Objects.requireNonNull(status).equalsIgnoreCase(ApplicationConstants.LOADING)) {
 
             } else if (status.equalsIgnoreCase(ApplicationConstants.LOADED)) {
+
                 binding.swipeRefreshLayout.setRefreshing(false);
+                if(isRefresh) {
+                    scrollToTop();
+                  //a  binding.list.smoothScrollToPosition(0);
+                }
+                isRefresh =false;
             }
         });
 
@@ -217,5 +234,16 @@ public class HomePageFragment extends Fragment {
 
 
     }
+
+    private void scrollToTop(){
+        binding.list.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                binding.list.scrollToPosition(0);
+                binding.list.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+    }
+
 }
 

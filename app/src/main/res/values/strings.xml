@@ -669,7 +669,7 @@
     </string-array>
 
 
-    <string name="search_hint">title,company,skill</string>
+    <string name="search_hint">Job Title or Keyword</string>
     <string name="search_button_text">Search</string>
     <string name="title_activity_profile">Profile</string>
     <string name="job_title_instruction">Please enter positions you would like us to notify you of.</string>

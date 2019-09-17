@@ -8,17 +8,9 @@
     android:layout_height="wrap_content"
     android:background="@color/action_color"
     app:layout_scrollFlags="scroll|enterAlways"
+    app:layout_collapseMode="pin"
     android:minHeight="?attr/actionBarSize">
 
-    <ProgressBar
-
-        android:id="@+id/progress_spinner"
-        style="@android:style/Widget.ProgressBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:indeterminate="true"
-        android:visibility="gone" />
 
 
 </androidx.appcompat.widget.Toolbar>

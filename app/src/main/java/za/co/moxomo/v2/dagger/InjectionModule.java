@@ -29,7 +29,7 @@ import za.co.moxomo.v2.viewmodel.ViewModelFactory;
 @Module
 public class InjectionModule {
 
-    private static String BASE_URL = "https://www.moxomo.co.za";
+    private static String BASE_URL = "https://moxomo.co.za";
     private final Context context;
 
     public InjectionModule(Context context) {

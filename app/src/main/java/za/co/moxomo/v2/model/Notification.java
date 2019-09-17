@@ -44,7 +44,7 @@ public class Notification  extends BaseObservable {
     public static DiffUtil.ItemCallback<Notification> DIFF_CALLBACK = new DiffUtil.ItemCallback<Notification>() {
         @Override
         public boolean areItemsTheSame(@NonNull Notification oldItem, @NonNull Notification newItem) {
-            return oldItem.id.equals(newItem.id);
+            return oldItem.id==newItem.id;
         }
 
         @Override

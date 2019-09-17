@@ -22,8 +22,8 @@ import za.co.moxomo.v2.helpers.JodaDateTimeConverter;
 public class SavedVacancy extends BaseObservable {
 
 
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    public int _id;
     public String id;
     public String jobTitle;
     public String description;
@@ -204,5 +204,13 @@ public class SavedVacancy extends BaseObservable {
     @Bindable
     public void setLiked(boolean liked) {
         this.liked = liked;
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
     }
 }

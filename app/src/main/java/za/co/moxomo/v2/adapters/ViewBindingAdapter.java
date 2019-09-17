@@ -24,6 +24,13 @@ public class ViewBindingAdapter {
             if (imageUrl.equals("http://media.stepstone.com/modules/tracking/resources/images/smartbanner_icon_pnet.png")) {
                 imageUrl = "https://www.pnet.co.za/modules/duplo/resources/images/logo/pnet-logo-facebook.jpg";
             }
+            if(imageUrl.contains("careers24")){
+                if(imageUrl.contains("http://")){
+                    imageUrl = imageUrl.replace("http", "https");
+                }else{
+                  imageUrl = "https://".concat(imageUrl);
+                }
+            }
             Glide.with(view.getContext())
                     .load(imageUrl)
                     .override(100, 100)

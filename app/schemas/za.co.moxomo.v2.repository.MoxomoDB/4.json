@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 3,
-    "identityHash": "7dac392678d32e89e939a917387aa04d",
+    "version": 4,
+    "identityHash": "f8811623f2e83c4af0afc13328fb532f",
     "entities": [
       {
         "tableName": "notification",
@@ -246,13 +246,19 @@
       },
       {
         "tableName": "savedvacancy",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `jobTitle` TEXT, `description` TEXT, `company` TEXT, `location` TEXT, `min_qual` TEXT, `duties` TEXT, `liked` INTEGER NOT NULL, `webViewViewable` INTEGER NOT NULL, `advertDate` INTEGER, `closingDate` INTEGER, `url` TEXT, `imageUrl` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id` TEXT, `jobTitle` TEXT, `description` TEXT, `company` TEXT, `location` TEXT, `min_qual` TEXT, `duties` TEXT, `liked` INTEGER NOT NULL, `webViewViewable` INTEGER NOT NULL, `advertDate` INTEGER, `closingDate` INTEGER, `url` TEXT, `imageUrl` TEXT)",
         "fields": [
+          {
+            "fieldPath": "_id",
+            "columnName": "_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "jobTitle",
@@ -329,9 +335,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "_id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -339,7 +345,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7dac392678d32e89e939a917387aa04d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f8811623f2e83c4af0afc13328fb532f\")"
     ]
   }
 }

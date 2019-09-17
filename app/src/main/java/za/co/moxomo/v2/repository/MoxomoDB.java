@@ -11,7 +11,7 @@ import za.co.moxomo.v2.model.Notification;
 import za.co.moxomo.v2.model.SavedVacancy;
 import za.co.moxomo.v2.model.Vacancy;
 
-@Database(entities = {Notification.class, Alert.class, Vacancy.class, SavedVacancy.class}, version =3)
+@Database(entities = {Notification.class, Alert.class, Vacancy.class, SavedVacancy.class}, version =9)
 public abstract class MoxomoDB extends RoomDatabase {
     public abstract NotificationDao notificationDao();
     public abstract AlertDao alertDao();

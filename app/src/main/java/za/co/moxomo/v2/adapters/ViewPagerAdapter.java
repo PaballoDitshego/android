@@ -33,7 +33,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Home";
+                return "Jobs";
             case 1:
                 return "Notifications";
                 default:
