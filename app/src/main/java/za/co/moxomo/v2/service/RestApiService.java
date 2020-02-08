@@ -22,6 +22,8 @@ public interface RestApiService {
     Observable<JsonElement> fetchVacancies(@Query("searchString") String searchString,
                                            @Query("latitude") double latitude,
                                            @Query("longitude") double longitude,
+                                           @Query("location") String location,
+                                           @Query("filterByLocation") boolean filterByLocation,
                                            @Query("offset") int offset,
                                            @Query("limit") int limit);
 

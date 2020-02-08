@@ -6,9 +6,9 @@ import za.co.moxomo.v2.R;
 @Getter
 public enum FragmentEnum {
 
-    CREATE_ALERT(R.id.createAlertFragment, "Create Alert"),
-    VIEW_ALERT(R.id.viewAlertsFragment, "Alerts"),
-    EDIT_ALERT(R.id.viewAlertsFragment, "Edit Alert");
+    CREATE_ALERT(R.id.createAlertFragment, "Create Alarm"),
+    VIEW_ALERT(R.id.viewAlertsFragment, "Alarms"),
+    EDIT_ALERT(R.id.viewAlertsFragment, "Edit Alarm");
 
     private int fragmentId;
     private String title;

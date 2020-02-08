@@ -8,8 +8,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -43,6 +45,7 @@ public class Utility {
     private final static String phoneNumberRegex = "^((?:\\+27|27|0))(6|7|8)(\\d{8})$";
     private static Pattern pattern;
     private static Matcher matcher;
+    private static final String TAG = Utility.class.getSimpleName();
 
 
     public static boolean validateMsisdn(String msisdn) throws RuntimeException {
@@ -140,6 +143,25 @@ public class Utility {
 
     public static String getFcmTokenInSharedPref(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_fcm_key), null);
+    }
+
+    public static boolean locationServicesEnabled(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean net_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+            Log.e(TAG,"Exception gps_enabled");
+        }
+
+        try {
+            net_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+            Log.e(TAG,"Exception network_enabled");
+        }
+        return gps_enabled || net_enabled;
     }
 
 

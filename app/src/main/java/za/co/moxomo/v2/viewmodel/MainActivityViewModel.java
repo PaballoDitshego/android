@@ -49,7 +49,6 @@ public class MainActivityViewModel extends ViewModel {
     private VacancyClassDatasourceFactory vacancyClassDatasourceFactory;
     private LiveData<PagedList<Vacancy>> vacancies;
     private LiveData<PagedList<Notification>> notifications;
-    private LiveData<PagedList<Vacancy>> pagedDBVacancies;
     private LiveData<String> progressLoadStatus = new MutableLiveData<>();
     private MutableLiveData<String> resultSetSize = new MutableLiveData<>();
     private MutableLiveData<String> searchString = new MutableLiveData<>();
