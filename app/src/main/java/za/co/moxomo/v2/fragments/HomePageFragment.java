@@ -149,21 +149,6 @@ public class HomePageFragment extends Fragment {
 
             }
         });
-      /*  vacancyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeChanged(int positionStart, int itemCount) {
-                super.onItemRangeChanged(positionStart, itemCount);
-                Log.d(TAG, "position: " + positionStart);
-                if (positionStart == 0) {
-                    binding.list.smoothScrollToPosition(0);
-                    layoutManager.scrollToPosition(0);
-                } else {
-                    binding.list.smoothScrollToPosition(0);
-                    //layoutManager.scrollToPosition(positionStart + 3);
-                }
-            }
-
-        });*/
 
         binding.list.setAdapter(vacancyListAdapter);
         mainActivityViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(MainActivityViewModel.class);
@@ -198,13 +183,14 @@ public class HomePageFragment extends Fragment {
                 binding.swipeRefreshLayout.setRefreshing(false);
                 if(isRefresh) {
                     scrollToTop();
-                  //a  binding.list.smoothScrollToPosition(0);
+
                 }
                 isRefresh =false;
             }
         });
 
         mainActivityViewModel.getResultSetSize().observe(getActivity(), results -> {
+
 
         });
     }

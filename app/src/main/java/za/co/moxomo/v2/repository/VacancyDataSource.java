@@ -24,6 +24,7 @@ import za.co.moxomo.v2.model.Vacancy;
 
 public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
 
+    private static final String TAG = VacancyDataSource.class.getSimpleName();
     private Repository repository;
     private Gson gson;
     private MutableLiveData<String> progressLiveStatus;
@@ -64,8 +65,13 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, Vacancy> callback) {
+        Log.d(TAG,"search "+ Repository.SEARCH_STRING );
+        Log.d(TAG,"lat "+ Repository.LATITUDE );
+        Log.d(TAG,"lon "+ Repository.LONGITUDE );
+        Log.d(TAG,"area  "+ Repository.AREA);
+        Log.d(TAG,"filtebyloc "+ Repository.filterByLocation);
 
-        repository.fetchVacancies(Repository.SEARCH_STRING, Repository.LATITUDE, Repository.LONGITUDE,1, params.requestedLoadSize).doOnSubscribe(disposable -> {
+        repository.fetchVacancies(Repository.SEARCH_STRING, Repository.LATITUDE, Repository.LONGITUDE,Repository.AREA,Repository.filterByLocation, 1, params.requestedLoadSize).doOnSubscribe(disposable -> {
             compositeDisposable.add(disposable);
             progressLiveStatus.postValue(ApplicationConstants.LOADING);
 
@@ -91,7 +97,12 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
 
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Vacancy> callback) {
-        repository.fetchVacancies(Repository.SEARCH_STRING,Repository.LATITUDE, Repository.LONGITUDE, params.key, params.requestedLoadSize).doOnSubscribe(disposable -> {
+        Log.d(TAG,"search "+ Repository.SEARCH_STRING );
+        Log.d(TAG,"lat "+ Repository.LATITUDE );
+        Log.d(TAG,"lon "+ Repository.LONGITUDE );
+        Log.d(TAG,"area  "+ Repository.AREA);
+        Log.d(TAG,"filtebyloc "+ Repository.filterByLocation);
+        repository.fetchVacancies(Repository.SEARCH_STRING,Repository.LATITUDE, Repository.LONGITUDE,Repository.AREA, Repository.filterByLocation,params.key, params.requestedLoadSize).doOnSubscribe(disposable -> {
             compositeDisposable.add(disposable);
             progressLiveStatus.postValue(ApplicationConstants.LOADING);
         }).subscribe((JsonElement result) ->

@@ -47,7 +47,7 @@
             android:layout_centerVertical="true"
             android:clickable="false"
             android:focusable="false"
-            android:text="No matching records found."
+            android:text="No records founds that matched your query!"
             android:visibility="gone"/>
 
     </RelativeLayout>

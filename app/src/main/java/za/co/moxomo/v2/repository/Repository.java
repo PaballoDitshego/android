@@ -24,6 +24,8 @@ public class Repository {
     public static String SEARCH_STRING = null;
     public static double LATITUDE = 0.0;
     public static double LONGITUDE =0.0;
+    public static String AREA =null;
+    public static boolean filterByLocation;
     public static int PAGE_NUMBER=1;
     private RestApiService restAPIService;
     private MoxomoDB moxomoDB;
@@ -36,8 +38,8 @@ public class Repository {
     }
 
 
-    public Observable<JsonElement> fetchVacancies(String searchString,double latitude, double longitude, int pageNumber, int pageSize) {
-        return restAPIService.fetchVacancies(searchString, latitude, longitude, pageNumber, pageSize);
+    public Observable<JsonElement> fetchVacancies(String searchString,double latitude, double longitude,String location, boolean filterByLocation,int pageNumber, int pageSize) {
+        return restAPIService.fetchVacancies(searchString, latitude, longitude, location, filterByLocation, pageNumber, pageSize);
     }
 
     public Call<JsonElement> fetchSearchResults(String searchString, int pageNumber, int pageSize) {
