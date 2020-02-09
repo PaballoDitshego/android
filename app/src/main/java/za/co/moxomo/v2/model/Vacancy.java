@@ -11,6 +11,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -42,7 +43,8 @@ public class  Vacancy  extends BaseObservable {
     public String duties;
     public boolean liked;
     public boolean webViewViewable;
-    private String distance;
+    @Ignore
+    public String distance;
 
     @ParcelPropertyConverter(JodaDateTimeConverter.class)
     @TypeConverters(JodaDateTimeConverter.class)
