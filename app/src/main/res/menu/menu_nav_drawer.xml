@@ -8,6 +8,10 @@
       </group>-->
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_action_profile"
+            android:title="Profile" />
+        <item
             android:id="@+id/nav_view_alerts"
             android:icon="@drawable/ic_action_alarms"
             android:title="My Alarms" />
@@ -33,10 +37,10 @@
             android:title="Share App" />
     </group>
 
-   <!-- <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_action_settings"
             android:title="Settings" />
-    </group>-->
+    </group>
 </menu>

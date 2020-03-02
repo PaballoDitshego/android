@@ -311,6 +311,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void viewProfile() {
+        Intent intent = new Intent(this, AlertActivity.class);
+        intent.putExtra(FragmentEnum.VIEW_PROFILE.name(), FragmentEnum.VIEW_PROFILE.getFragmentId());
+        intent.putExtra(getString(R.string.fragment_title), FragmentEnum.VIEW_PROFILE.getTitle());
+        startActivity(intent);
+
+    }
+
     private Cursor createCursorFromResult(List<String> suggestions) {
         String[] menuCols = new String[]{BaseColumns._ID,
                 SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_INTENT_DATA};
@@ -456,6 +464,9 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
                 case R.id.nav_view_alerts:
                     viewAlerts();
+                    break;
+                case R.id.nav_profile:
+                    viewProfile();
                     break;
 
                 case R.id.nav_privacy_policy:

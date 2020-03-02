@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1066631986619-rdidfuuv79a6r31m44cnneialsepd0i9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "za.co.moxomo.v2",
+            "certificate_hash": "8b03b4f73ca4aef92c9dc16e0418a9d6ff306cea"
+          }
+        },
+        {
           "client_id": "1066631986619-02bmhplv2fci9sca4vsgojksfskbco96.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

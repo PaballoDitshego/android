@@ -102,7 +102,8 @@ public class VacancyDataSource extends PageKeyedDataSource<Integer, Vacancy> {
         Log.d(TAG,"lon "+ Repository.LONGITUDE );
         Log.d(TAG,"area  "+ Repository.AREA);
         Log.d(TAG,"filtebyloc "+ Repository.filterByLocation);
-        repository.fetchVacancies(Repository.SEARCH_STRING,Repository.LATITUDE, Repository.LONGITUDE,Repository.AREA, Repository.filterByLocation,params.key, params.requestedLoadSize).doOnSubscribe(disposable -> {
+        repository.fetchVacancies(Repository.SEARCH_STRING,Repository.LATITUDE, Repository.LONGITUDE,Repository.AREA, Repository.filterByLocation,params.key, params.requestedLoadSize)
+                .doOnSubscribe(disposable -> {
             compositeDisposable.add(disposable);
             progressLiveStatus.postValue(ApplicationConstants.LOADING);
         }).subscribe((JsonElement result) ->

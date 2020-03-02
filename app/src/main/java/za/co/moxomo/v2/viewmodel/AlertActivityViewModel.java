@@ -44,7 +44,6 @@ public class AlertActivityViewModel extends ViewModel {
     private LiveData<PagedList<Alert>> alerts;
     private MutableLiveData<String> progressLiveStatus = new MutableLiveData<>();
     private LiveData<String> progressLoadStatus = new MutableLiveData<>();
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MutableLiveData<Event<ApiResponse>> alertServiceResponse = new MutableLiveData<>();
     private MutableLiveData<List<String>> locationSuggestions = new MutableLiveData<>();
     private MutableLiveData<List<String>> keywordSuggestions = new MutableLiveData<>();
@@ -78,10 +77,8 @@ public class AlertActivityViewModel extends ViewModel {
 
     public void createAlert(Alert alert) {
         Log.d(TAG, alert.toString());
-        repository.createAlert(alert).doOnSubscribe(disposable -> {
-            compositeDisposable.add(disposable);
-            progressLiveStatus.postValue(ApplicationConstants.LOADING);
-        }).subscribeOn(Schedulers.io())
+        repository.createAlert(alert)
+        .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe((d) -> progressLiveStatus.setValue(ApplicationConstants.LOADING)).subscribe(result -> {
                     Log.d(TAG, "result " +result.toString());
@@ -104,10 +101,8 @@ public class AlertActivityViewModel extends ViewModel {
     }
 
     public void updateAlert(Alert alert) {
-        repository.updateAlert(alert).doOnSubscribe(disposable -> {
-            compositeDisposable.add(disposable);
-            progressLiveStatus.postValue(ApplicationConstants.LOADING);
-        }).subscribeOn(Schedulers.io())
+        repository.updateAlert(alert)
+          .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe((d) -> progressLiveStatus.setValue(ApplicationConstants.LOADING)).subscribe(result -> {
                     AlertResponse alertResponse = gson.fromJson(result, AlertResponse.class);
@@ -126,10 +121,8 @@ public class AlertActivityViewModel extends ViewModel {
 
 
     public void getLocationSuggestion(String location) {
-        repository.getLocationSuggestion(location).doOnSubscribe(disposable -> {
-            compositeDisposable.add(disposable);
-
-        }).subscribeOn(Schedulers.io())
+        repository.getLocationSuggestion(location)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     List<String> suggestions = gson.fromJson(result, new TypeToken<List<String>>(){}.getType());
@@ -142,10 +135,8 @@ public class AlertActivityViewModel extends ViewModel {
     }
 
     public void getKeywordSuggestion(String keyword) {
-        repository.getKeywordSuggestion(keyword).doOnSubscribe(disposable -> {
-            compositeDisposable.add(disposable);
-
-        }).subscribeOn(Schedulers.io())
+        repository.getKeywordSuggestion(keyword)
+           .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                             List<String> suggestions = gson.fromJson(result, new TypeToken<List<String>>(){}.getType());
@@ -171,7 +162,6 @@ public class AlertActivityViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        compositeDisposable.clear();
     }
 
     public MutableLiveData<String> getProgressLiveStatus() {
