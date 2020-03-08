@@ -691,5 +691,13 @@
     <string name="open">Open</string>
     <string name="PUSH_NOTIFICATION">notification</string>
 
+    <string name="facebook_application_id" translatable="false">570317133693675</string>
+    <!-- Facebook Application ID, prefixed by 'fb'. Enables Chrome Custom tabs. -->
+    <string name="facebook_login_protocol_scheme" translatable="false">fb570317133693675</string>
+
+    <!-- Twitter consumer key and secret -->
+    <string name="twitter_consumer_key" translatable="false">EdgBt5h6UyFFfeMbwpEzUw</string>
+    <string name="twitter_consumer_secret" translatable="false">sczdDSxk38lfuSTTmwc5OArCLRlH2FURQUFvQhnGKU</string>
+
 
 </resources>

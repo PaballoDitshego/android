@@ -52,6 +52,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.SearchEvent;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -59,11 +61,16 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -88,7 +95,8 @@ import static za.co.moxomo.v2.fragments.HomePageFragment.CUSTOM_TAB_PACKAGE_NAME
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int REQUEST_CODE_RECOVER_PLAY_SERVICES = 200;
+    private static final int REQUEST_CODE_RECOVER_PLAY_SERVICES = 200;
+    private static final int RC_SIGN_IN = 123;
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -110,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
     private boolean hasLocation;
 
     private boolean viewpageInitialised = false;
@@ -117,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int TRIGGER_AUTO_COMPLETE = 100;
     private static final long AUTO_COMPLETE_DELAY = 300;
     private Geocoder geocoder;
+
 
     private boolean isGPS;
     private String query;
@@ -133,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel.class);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        firebaseAuth = FirebaseAuth.getInstance();
         requestLocationUpdate();
 
         geocoder = new Geocoder(this, Locale.ENGLISH);
@@ -147,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         Utility.changeStatusBarColor(this);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -183,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
             binding.viewpager.setCurrentItem(0);
 
         } else if (intent.getAction().equals(getString(R.string.PUSH_NOTIFICATION))) {
-            Log.d(TAG, "Is push, setting current item to 1");
+
             binding.viewpager.setCurrentItem(1);
         }
     }
@@ -226,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        firebaseUser = firebaseAuth.getCurrentUser();
     }
 
 
@@ -237,6 +251,22 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ApplicationConstants.GPS_REQUEST) {
                 isGPS = true; // flag maintain before get location
+            }
+        }
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                // ...
+            } else {
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
             }
         }
     }
@@ -279,6 +309,53 @@ public class MainActivity extends AppCompatActivity {
         if (!viewpageInitialised) initialiseViewPager();
     }
 
+    public void createSignInIntent() {
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+               // new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build(),
+                new AuthUI.IdpConfig.TwitterBuilder().build(),
+                new AuthUI.IdpConfig.PhoneBuilder().build()
+                );
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .setLogo(R.drawable.logo)      // Set logo drawable
+                        .setTheme(R.style.AuthTheme)
+                        .setTosAndPrivacyPolicyUrls(
+                                "https://example.com/terms.html",
+                                "https://moxomo.co.za/privacy_policy.html")
+                        .build(),
+                RC_SIGN_IN);
+
+    }
+
+
+    public void signOut() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
+
+    }
+
+    public void delete() {
+        AuthUI.getInstance()
+                .delete(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                    }
+                });
+        // [END auth_fui_delete]
+    }
+
 
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -312,10 +389,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void viewProfile() {
-        Intent intent = new Intent(this, AlertActivity.class);
-        intent.putExtra(FragmentEnum.VIEW_PROFILE.name(), FragmentEnum.VIEW_PROFILE.getFragmentId());
-        intent.putExtra(getString(R.string.fragment_title), FragmentEnum.VIEW_PROFILE.getTitle());
-        startActivity(intent);
+
+        if (firebaseUser != null) {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra(FragmentEnum.VIEW_PROFILE.name(), FragmentEnum.VIEW_PROFILE.getFragmentId());
+            intent.putExtra(getString(R.string.fragment_title), FragmentEnum.VIEW_PROFILE.getTitle());
+            startActivity(intent);
+        } else {
+            createSignInIntent();
+        }
 
     }
 
@@ -345,9 +427,9 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 if (position != 0) {
                     handleSuggestions(Collections.emptyList());
-                  //  binding.fab.setVisibility(View.INVISIBLE);
+                    //  binding.fab.setVisibility(View.INVISIBLE);
                 } else {
-                   // binding.fab.setVisibility(View.VISIBLE);
+                    // binding.fab.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -451,9 +533,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                     }
-                } /*else {
-                    setLocation();
-                }*/
+                }
             }
         });
     }
@@ -728,7 +808,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "setting loc");
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            hasGeoPermission =true;
+            hasGeoPermission = true;
             if (null != fusedLocationProviderClient) {
                 fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
                     if (location != null) {
@@ -775,5 +855,5 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    }
+}
 

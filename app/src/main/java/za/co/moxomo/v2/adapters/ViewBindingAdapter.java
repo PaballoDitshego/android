@@ -13,7 +13,8 @@ import org.joda.time.DateTime;
 
 import androidx.databinding.BindingAdapter;
 
-public class ViewBindingAdapter {
+public class
+ViewBindingAdapter {
 
     @BindingAdapter({"android:imageUrl"})
     public static void loadImage(ImageView view, String imageUrl) {

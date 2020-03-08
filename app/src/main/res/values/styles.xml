@@ -20,6 +20,13 @@
 
     </style>
 
+    <style name="AuthTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Required for sign-in flow styling -->
+        <item name="colorPrimary">@color/action_color</item>
+        <item name="colorPrimaryDark">@color/action_color</item>
+        <item name="colorAccent">@color/action_color</item>
+    </style>
+
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <!-- Background for the search query section (e.g. EditText) -->
