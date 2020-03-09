@@ -2,10 +2,13 @@ package za.co.moxomo.v2.activities;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
@@ -36,7 +39,8 @@ public class AlertActivity extends AppCompatActivity {
         NavInflater navInflater = navController.getNavInflater();
         NavGraph graph = navInflater.inflate(R.navigation.alert_activity_navigation);
 
-        navController.addOnNavigatedListener(((controller, destination) -> {
+
+        navController.addOnDestinationChangedListener(((controller, destination, args) -> {
             switch (destination.getId()){
                 case R.id.createAlertFragment:
                     toolbar.setTitle(FragmentEnum.CREATE_ALERT.getTitle());

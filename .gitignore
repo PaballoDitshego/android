@@ -9,3 +9,4 @@
 *.log
 *.zip
 /app/release/*
+*.iml
